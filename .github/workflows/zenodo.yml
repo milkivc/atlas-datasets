@@ -1,0 +1,29 @@
+name: Upload to Zenodo
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - '**/*.json'
+      - '**/*.csv'
+      - '**/*.geojson'
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Upload to Zenodo
+        env:
+          ZENODO_TOKEN: ${{ secrets.ZENODO_TOKEN }}
+          DEPOSIT_ID: ${{ secrets.ZENODO_DEPOSIT_ID }}
+        run: |
+          sudo apt-get update && sudo apt-get install -y curl jq
+          
+          for FILE in $(find . -type f \( -name "*.json" -o -name "*.csv" -o -name "*.geojson" \)); do
+            curl -X POST \
+              -H "Authorization: Bearer $ZENODO_TOKEN" \
+              -F "file=@$FILE" \
+              "https://zenodo.org/api/deposit/depositions/$DEPOSIT_ID/files"
+          done
