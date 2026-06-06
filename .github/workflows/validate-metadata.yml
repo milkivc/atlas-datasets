@@ -1,0 +1,14 @@
+name: Validate Metadata
+
+on: [push, pull_request]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install AJV CLI
+        run: npm install -g ajv-cli
+      - name: Validate JSON-LD Metadata
+        run: |
+          ajv validate -s .github/schemas/metadata-schema.json -d metadata.json --spec=draft7
