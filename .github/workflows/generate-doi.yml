@@ -1,0 +1,27 @@
+name: Generate DOI via Zenodo
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  generate-doi:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Trigger Zenodo Deposit
+        run: |
+          curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.ZENODO_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d '{"metadata": {"title": "${{ github.event.release.name }}", "description": "${{ github.event.release.body }}", "creators": [{"name": "Associação MILK", "orcid": "0000-0000-0000-0000"}, {"name": "Eduardo Maurício Vieira Cabral e Araujo", "orcid": "0000-0000-0000-0000"}], "license": "CC-BY-SA-4.0", "keywords": ["geoespacial", "Portugal", "património cultural"], "version": "${{ github.event.release.tag_name }}", "datePublished": "${{ github.event.release.published_at }}"}}' \
+            https://zenodo.org/api/deposit/depositions
+      - name: Update Release with DOI
+        run: |
+          DOI=$(curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.ZENODO_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d '{"metadata": {"title": "${{ github.event.release.name }}", "description": "${{ github.event.release.body }}", "creators": [{"name": "Associação MILK", "orcid": "0000-0000-0000-0000"}, {"name": "Eduardo Maurício Vieira Cabral e Araujo", "orcid": "0000-0000-0000-0000"}], "license": "CC-BY-SA-4.0", "keywords": ["geoespacial", "Portugal", "património cultural"], "version": "${{ github.event.release.tag_name }}", "datePublished": "${{ github.event.release.published_at }}"}}' \
+            https://zenodo.org/api/deposit/depositions | jq -r '.metadata.doi')
+          echo "DOI: $DOI"
+          echo "DOI=$DOI" >> $GITHUB_ENV
