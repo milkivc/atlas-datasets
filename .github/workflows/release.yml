@@ -81,7 +81,7 @@ jobs:
                 "publication_date": "$(date +%Y-%m-%d)",
                 "creators": [
                   {"name": "Associação MILK - Movimentos de Intervenções e Linguagens Kulturais e Arte", "orcid": "0000-0000-0000-0000"},
-                  {"name": "Eduardo Maurício Vieira Cabral e Araujo", "orcid": "0000-0000-0000-0000"}
+                  {"name": "Eduardo Maurício Vieira Cabral e Araujo", "orcid": "0009-0004-9132-2925"}
                 ],
                 "keywords": ["geoespacial", "Portugal", "património cultural", "shapefile", "KML", "CSV"],
                 "notes": "Automatic release from GitHub: ${{ github.event.repository.html_url }}/releases/tag/${{ steps.release.outputs.tag }}"
@@ -183,7 +183,7 @@ jobs:
                   "published": "$(date +%Y-%m-%d)"
                 }
               }' \
-              https://api.orcid.org/v3.0/0000-0000-0000-0000/work
+              https://api.orcid.org/v3.0/0009-0004-9132-2925/work
           else
             echo "Skipping ORCID sync: missing token or DOI"
           fi

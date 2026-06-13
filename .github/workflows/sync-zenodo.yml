@@ -43,7 +43,11 @@ jobs:
                   "title": "${{ github.event.repository.name }}",
                   "description": "${{ github.event.repository.description || '' }} - Development version",
                   "upload_type": "dataset",
-                  "license": "CC-BY-SA-4.0"
+                  "license": "CC-BY-SA-4.0",
+                  "creators": [
+                    {"name": "Associação MILK - Movimentos de Intervenções e Linguagens Kulturais e Arte", "orcid": "0000-0000-0000-0000"},
+                    {"name": "Eduardo Maurício Vieira Cabral e Araujo", "orcid": "0009-0004-9132-2925"}
+                  ]
                 }
               }' \
               https://zenodo.org/api/deposit/depositions)
