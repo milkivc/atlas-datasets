@@ -1,5 +1,9 @@
 # Atlas Vivo MILK - Dados Territoriais
 
+[![ORCID](https://img.shields.io/badge/ORCID-0009--0004--9132--2925-green?logo=orcid)](https://orcid.org/0009-0004-9132-2925)
+[![Zenodo](https://img.shields.io/badge/Zenodo-DOI-blue?logo=zenodo)](https://doi.org/10.5281/zenodo.XXXXXXX)
+[![GitHub](https://img.shields.io/badge/GitHub-milkivc%2Fatlas--datasets-black?logo=github)](https://github.com/milkivc/atlas-datasets)
+
 ## Descrição
 Este repositório contém **dados geoespaciais** do Atlas Vivo MILK, incluindo shapefiles, KML e CSV com informações sobre património cultural e territorial em Portugal. Os dados estão organizados para facilitar a interoperabilidade com plataformas como **Zenodo**, **ORCID**, e sistemas de financiamento europeus.
 
@@ -32,7 +36,7 @@ Este repositório está licenciado sob a **CC BY-SA 4.0**. Consulte o ficheiro [
 
 ## Autores
 - [Associação MILK](https://orcid.org/0000-0000-0000-0000) - Movimentos de Intervenções e Linguagens Kulturais e Arte
-- [Eduardo Maurício Vieira Cabral e Araujo](https://orcid.org/0000-0000-0000-0000)
+- [Eduardo Maurício Vieira Cabral e Araujo](https://orcid.org/0009-0004-9132-2925)
 
 ---
 
@@ -65,4 +69,4 @@ Este repositório está licenciado sob a **CC BY-SA 4.0**. Consulte o ficheiro [
 - [Atlas Vivo MILK](https://github.com/milkivc/atlas-vivo-milk)
 - [Documentação do Atlas](https://github.com/milkivc/atlas-docs)
 - [Zenodo Community MILK](https://zenodo.org/communities/milk/)
-- [ORCID Associação MILK](https://orcid.org/0000-0000-0000-0000)
+- [ORCID Eduardo Maurício Vieira Cabral e Araujo](https://orcid.org/0009-0004-9132-2925)
