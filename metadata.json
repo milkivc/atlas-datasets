@@ -1,20 +1,28 @@
 {
   "title": "Atlas Vivo MILK - Dados Territoriais",
-  "description": "Shapefiles e dados geoespaciais do Atlas Vivo MILK, incluindo informações sobre património cultural e territorial em Portugal.",
+  "description": "Shapefiles e dados geoespaciais do Atlas Vivo MILK, incluindo informações sobre património cultural e territorial em Portugal. Dados organizados para interoperabilidade com Zenodo, ORCID e sistemas de financiamento europeus.",
   "license": "CC-BY-SA-4.0",
-  "keywords": ["geoespacial", "Portugal", "património cultural", "shapefile", "KML", "CSV"],
+  "keywords": ["geoespacial", "Portugal", "património cultural", "shapefile", "KML", "CSV", "GeoJSON", "Zenodo", "ORCID", "RGPD", "AI Act", "NIS2"],
   "creators": [
     {
-      "name": "Associação MILK - Movimentos de Intervenções e Linguagens Kulturais e Arte",
-      "orcid": "0000-0000-0000-0000"
+      "name": "Associação MILK - Movimento de Intervenções e Linguagens Kulturais e Arte"
     },
     {
       "name": "Eduardo Maurício Vieira Cabral e Araujo",
-      "orcid": "0000-0000-0000-0000"
+      "orcid": "0009-0004-9132-2925"
     }
   ],
   "version": "1.0.0",
-  "datePublished": "2026-06-06",
+  "datePublished": "2025-06-14",
   "doi": "",
-  "relatedIdentifiers": []
+  "relatedIdentifiers": [
+    {
+      "relation": "isPartOf",
+      "identifier": "https://github.com/milkivc/atlas-vivo-milk"
+    },
+    {
+      "relation": "hasPart",
+      "identifier": "https://github.com/milkivc/atlas-docs"
+    }
+  ]
 }

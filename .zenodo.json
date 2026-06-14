@@ -5,8 +5,8 @@
     "description": "Repositório de dados geoespaciais do Atlas Vivo MILK, incluindo shapefiles, KML e CSV com informações sobre patrimônio cultural e territorial em Portugal. Dados organizados para interoperabilidade com Zenodo, ORCID e sistemas de financiamento europeus.",
     "creators": [
       {
-        "name": "Associação MILK",
-        "affiliation": "Associação MILK - Movimento de Intervenções e Linguagens Kulturais e Arte"
+        "name": "Associação MILK - Movimento de Intervenções e Linguagens Kulturais e Arte",
+        "affiliation": "Associação MILK"
       },
       {
         "name": "Eduardo Maurício Vieira Cabral e Araujo",
@@ -26,7 +26,10 @@
       "CSV",
       "GeoJSON",
       "Zenodo",
-      "ORCID"
+      "ORCID",
+      "RGPD",
+      "AI Act",
+      "NIS2"
     ],
     "notes": "Dados licenciados sob CC BY-SA 4.0. Conformidade com RGPD, AI Act e NIS2. Infraestrutura alinhada com provedores europeus (PTServidor, Forgejo).",
     "related_identifiers": [
@@ -39,12 +42,24 @@
         "identifier": "https://github.com/milkivc/atlas-vivo-milk",
         "scheme": "url",
         "relation": "isPartOf"
+      },
+      {
+        "identifier": "https://github.com/milkivc/atlas-docs",
+        "scheme": "url",
+        "relation": "hasPart"
       }
     ],
     "communities": [
       {
         "identifier": "milkivc"
       }
-    ]
+    ],
+    "access_right": "open",
+    "conformity": {
+      "rgpd": true,
+      "ai_act": true,
+      "nis2": true,
+      "eu_tech_sovereignty": true
+    }
   }
 }
