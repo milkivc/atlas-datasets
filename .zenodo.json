@@ -1,44 +1,51 @@
 {
   "metadata": {
-    "title": "Atlas Vivo MILK - Dados Territoriais",
+    "title": "Atlas Vivo - Datasets",
     "upload_type": "dataset",
-    "description": "Repositório de dados geoespaciais do Atlas Vivo MILK, incluindo shapefiles, KML e CSV com informações sobre patrimônio cultural e territorial em Portugal. Dados organizados para interoperabilidade com Zenodo, ORCID e sistemas de financiamento europeus.",
+    "description": "Repositorio central de datasets geospaciais e culturais do projeto Atlas Vivo, contendo documentacao legal fundacional da Associacao MILK para preservacao do patrimonio cultural imaterial portugues.",
     "creators": [
       {
-        "name": "Associação MILK",
-        "affiliation": "Associação MILK - Movimento de Intervenções e Linguagens Kulturais e Arte"
+        "name": "Nuno Filipe Fernandes Vieira Cabral e Araujo",
+        "orcid": "0009-0004-9132-2925",
+        "affiliation": "Associacao MILK - Movimento de Intervencoes e Linguagens Kulturais e Arte"
       },
       {
-        "name": "Eduardo Maurício Vieira Cabral e Araujo",
-        "orcid": "0009-0004-9132-2925",
-        "affiliation": "Associação MILK"
+        "name": "Eduardo Mauricio Vieira Cabral e Araujo",
+        "orcid": "0009-0007-6892-6570",
+        "affiliation": "Associacao MILK - Movimento de Intervencoes e Linguagens Kulturais e Arte"
       }
     ],
-    "license": "CC-BY-SA-4.0",
-    "version": "1.0.0",
+    "license": "EUPL-1.2",
+    "version": "v1.0.0",
     "keywords": [
-      "geoespacial",
+      "Associacao MILK",
+      "Atlas Vivo",
+      "patrimonio cultural",
+      "dados geospaciais",
       "Portugal",
-      "patrimônio cultural",
-      "dados abertos",
-      "shapefile",
-      "KML",
-      "CSV",
-      "GeoJSON",
-      "Zenodo",
-      "ORCID"
+      "documentacao legal"
     ],
-    "notes": "Dados licenciados sob CC BY-SA 4.0. Conformidade com RGPD, AI Act e NIS2. Infraestrutura alinhada com provedores europeus (PTServidor, Forgejo).",
+    "notes": "Dataset em conformidade com RGPD e AI Act. Todos os dados pessoais foram anonimizados ou pseudonimizados.",
     "related_identifiers": [
       {
-        "identifier": "https://github.com/milkivc/atlas-datasets",
+        "identifier": "https://codeberg.org/milkivc/associacao-milk-marco-zero",
         "scheme": "url",
         "relation": "isSupplementTo"
       },
       {
-        "identifier": "https://github.com/milkivc/atlas-vivo-milk",
+        "identifier": "https://github.com/milkivc/atlas-datasets",
         "scheme": "url",
-        "relation": "isPartOf"
+        "relation": "isIdenticalTo"
+      },
+      {
+        "identifier": "0009-0004-9132-2925",
+        "scheme": "orcid",
+        "relation": "isAuthoredBy"
+      },
+      {
+        "identifier": "0009-0007-6892-6570",
+        "scheme": "orcid",
+        "relation": "isAuthoredBy"
       }
     ],
     "communities": [
