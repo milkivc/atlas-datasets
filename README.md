@@ -1,72 +1,175 @@
-# Atlas Vivo MILK - Dados Territoriais
+# Atlas Vivo - Datasets
 
-[![ORCID](https://img.shields.io/badge/ORCID-0009--0004--9132--2925-green?logo=orcid)](https://orcid.org/0009-0004-9132-2925)
-[![Zenodo](https://img.shields.io/badge/Zenodo-DOI-blue?logo=zenodo)](https://doi.org/10.5281/zenodo.XXXXXXX)
-[![GitHub](https://img.shields.io/badge/GitHub-milkivc%2Fatlas--datasets-black?logo=github)](https://github.com/milkivc/atlas-datasets)
-
-## Descrição
-Este repositório contém **dados geoespaciais** do Atlas Vivo MILK, incluindo shapefiles, KML e CSV com informações sobre património cultural e territorial em Portugal. Os dados estão organizados para facilitar a interoperabilidade com plataformas como **Zenodo**, **ORCID**, e sistemas de financiamento europeus.
+Associacao MILK - Movimento de Intervencoes e Linguagens Kulturais e Arte
+NIPC: 518706451
+Repositorio Canonico: Codeberg | Mirror: GitHub
 
 ---
 
-## Estrutura do Repositório
-```
-.
-├── README.md                 # Este ficheiro
-├── LICENSE                   # Licença CC-BY-SA-4.0
-├── metadata.json             # Metadados padronizados
-├── .github/
-│   ├── workflows/
-│   │   ├── validate-metadata.yml  # Validação de metadados
-│   │   └── generate-doi.yml        # Geração de DOI via Zenodo
-│   └── schemas/
-│       └── metadata-schema.json   # Schema para validação
-└── data/                     # Dados geoespaciais
-    ├── shapefiles/
-    ├── kml/
-    └── csv/
-```
+## Descricao
+
+Repositorio central para armazenamento e gestao de datasets geospaciais e culturais do projeto Atlas Vivo.
+
+Estado: Em desenvolvimento ativo
+Versao: v1.0.0
+Ultima atualizacao: 25/06/2026
 
 ---
 
-## Licença
-Este repositório está licenciado sob a **CC BY-SA 4.0**. Consulte o ficheiro [LICENSE](LICENSE) para mais detalhes.
+## Objetivos
+
+- Preservacao: Armazenar dados de patrimonio cultural imaterial portugues
+- Interoperabilidade: Garantir conformidade com standards INSPIRE, DataCite e DCAT-AP
+- Acesso Aberto: Disponibilizar dados para investigacao e politicas publicas
+- Soberania Digital: Manter controle sobre dados estrategicos nacionais
 
 ---
 
-## Autores
-- [Associação MILK](https://orcid.org/0000-0000-0000-0000) - Movimentos de Intervenções e Linguagens Kulturais e Arte
-- [Eduardo Maurício Vieira Cabral e Araujo](https://orcid.org/0009-0004-9132-2925)
+## Estrutura do Repositorio
+
+atlas-datasets/
+├── documentacao/
+│   ├── estatutos.pdf
+│   ├── RCBE.pdf
+│   ├── certidao_funchal.pdf
+│   └── rececao_fcpc.pdf
+├── dados/
+│   ├── geospaciais/
+│   └── culturais/
+├── legal/
+│   ├── registro-tratamento-dados.md
+│   ├── dpia-atlas-vivo.md
+│   ├── politica-privacidade.md
+│   └── documentacao-tecnica-ai-act.md
+├── LICENSE
+├── CITATION.cff
+├── codemeta.json
+├── zenodo.json
+├── REUSE.toml
+├── CHANGELOG.md
+├── CONTRIBUTING.md
+├── CODE_OF_CONDUCT.md
+└── README.md
+
+---
+
+## Datasets Disponiveis
+
+| Dataset | Descricao | Formato | Tamanho | DOI | ORCID | Estado |
+|---------|-----------|---------|---------|-----|-------|--------|
+| Marco Zero v1.0.0 | Documentacao legal fundacional | PDF, JSON | ~50MB | Pendente | 0009-0004-9132-2925, 0009-0007-6892-6570 | Publicado |
+
+---
+
+## Identificadores Persistentes
+
+- ORCID Nuno: 0009-0004-9132-2925
+- ORCID Eduardo: 0009-0007-6892-6570
+- Codeberg: milkivc/associacao-milk-marco-zero (Canonico)
+- GitHub: milkivc/atlas-datasets (Mirror)
+- Zenodo: Pendente
+
+---
+
+## Conformidade Legal
+
+### RGPD
+- Registro de Tratamento: legal/registro-tratamento-dados.md
+- DPIA: legal/dpia-atlas-vivo.md
+- Politica de Privacidade: legal/politica-privacidade.md
+- Base Legal: Missao de interesse publico (Art. 6(1)(e) RGPD)
+
+### AI Act
+- Classificacao: Alto risco (Anexo III, ponto 1)
+- Documentacao Tecnica: legal/documentacao-tecnica-ai-act.md
+- Registro na UE: Pendente
+
+### Lei Portuguesa
+- Lei 58/2019: Execucao do RGPD em Portugal
+- Lei 41/2021: Servicos Digitais
+- Decreto-Lei 12/2021: Interoperabilidade
+
+---
+
+## Interoperabilidade
+
+### Standards
+- INSPIRE: Metadados geospaciais
+- DataCite 4.4: Metadados para datasets
+- DCAT-AP: Catalogo de dados
+- Schema.org: Dados estruturados
+
+### Integracao
+- GitHub Connector: Funcionando
+- Notion Connector: Funcionando
+- Zenodo API: Aguardando connector nativo
+- ORCID API: Aguardando connector nativo
+- Codeberg API: Aguardando connector nativo
+
+---
+
+## Financiabilidade
+
+### Programas Alvo
+- Portugal 2030
+- FCT
+- DGARTES
+- Europa Criativa
+- Erasmus+
+- CERV
+
+### Estado
+- Documentacao Legal: Completa
+- Documentacao Tecnica: Completa
+- Metadados: Em preparacao
+- Submissao: Pendente validacao final
 
 ---
 
 ## Como Contribuir
-1. Faça um *fork* do repositório.
-2. Crie uma *branch* para a sua contribuição (`git checkout -b feature/nova-funcionalidade`).
-3. Adicione os seus dados ou alterações, garantindo que:
-   - Os metadados estejam atualizados em `metadata.json`.
-   - Os dados sigam a licença **CC BY-SA 4.0**.
-   - Os ficheiros estejam organizados nas pastas corretas.
-4. Submeta um *pull request* para a branch `main`.
+
+1. Fork este repositorio
+2. Crie um branch (git checkout -b feature/nova-contribuicao)
+3. Commit as suas alteracoes
+4. Push para o branch
+5. Abra um Pull Request
+
+### Regras
+- Todos os commits devem ser assinados (GPG)
+- Todos os PRs devem ser revistos por 2 colaboradores
+- Todos os ficheiros devem ter licenca clara
+- Todos os dados pessoais devem ser anonimizados
 
 ---
 
-## Integração com Zenodo e ORCID
-- **Zenodo**: Cada *release* deste repositório gera automaticamente um **DOI** via [Zenodo GitHub App](https://zenodo.org/integrations/github).
-- **ORCID**: Os autores estão vinculados aos seus perfis ORCID para garantir autoria e conformidade com padrões europeus.
+## Licenca
+
+EUPL-1.2 (Licenca da Uniao Europeia)
 
 ---
 
-## Conformidade
-- **RGPD**: Todos os dados pessoais estão anonimizados ou com consentimento explícito.
-- **AI Act**: Modelos de IA utilizados são *open-source* (ex: Mistral AI).
-- **NIS2**: Logs de auditoria imutáveis para metadados críticos.
-- **EU Tech Sovereignty**: Infraestrutura alinhada com provedores europeus (PTServidor, Forgejo).
+## Contactos
+
+- Responsavel: Associacao MILK (milk@associacaomilk.pt)
+- DPO: dpo@associacaomilk.pt
+- Tecnico: Eduardo Mauricio (eduardo@associacaomilk.pt | ORCID: 0009-0007-6892-6570)
+- Tecnico: Nuno Filipe (nuno@associacaomilk.pt | ORCID: 0009-0004-9132-2925)
 
 ---
 
-## Links Úteis
-- [Atlas Vivo MILK](https://github.com/milkivc/atlas-vivo-milk)
-- [Documentação do Atlas](https://github.com/milkivc/atlas-docs)
-- [Zenodo Community MILK](https://zenodo.org/communities/milk/)
-- [ORCID Eduardo Maurício Vieira Cabral e Araujo](https://orcid.org/0009-0004-9132-2925)
+## Seguranca
+
+Para reportar vulnerabilidades: security@associacaomilk.pt
+
+---
+
+## Changelog
+
+Consulte CHANGELOG.md para historico de alteracoes.
+
+---
+
+Documento gerado pelo Vibe Work Agent
+Data: 25/06/2026
+Versao: v1.0.0
+Status: Em revisao
