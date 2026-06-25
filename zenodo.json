@@ -1,0 +1,107 @@
+{
+  "metadata": {
+    "title": "Atlas Vivo - Datasets",
+    "upload_type": "dataset",
+    "description": "Repositorio central de datasets geospaciais e culturais do projeto Atlas Vivo, contendo documentacao legal fundacional da Associacao MILK para preservacao do patrimonio cultural imaterial portugues. Este dataset inclui Estatutos Oficiais, Declaracao RCBE, Certidao Funchal e Rececao FCPC.",
+    "creators": [
+      {
+        "name": "Nuno Filipe Fernandes Vieira Cabral e Araujo",
+        "orcid": "0009-0004-9132-2925",
+        "affiliation": "Associacao MILK - Movimento de Intervencoes e Linguagens Kulturais e Arte"
+      },
+      {
+        "name": "Eduardo Mauricio Vieira Cabral e Araujo",
+        "orcid": "0009-0007-6892-6570",
+        "affiliation": "Associacao MILK - Movimento de Intervencoes e Linguagens Kulturais e Arte"
+      }
+    ],
+    "resource_type": {
+      "type": "dataset",
+      "subtype": "geospatial"
+    },
+    "keywords": [
+      "Associacao MILK",
+      "Atlas Vivo",
+      "patrimonio cultural",
+      "dados geospaciais",
+      "Portugal",
+      "documentacao legal",
+      "estatutos",
+      "RCBE",
+      "Funchal",
+      "FCPC"
+    ],
+    "license": {
+      "id": "EUPL-1.2"
+    },
+    "version": "v1.0.0",
+    "publication_date": "2026-06-25",
+    "related_identifiers": [
+      {
+        "identifier": "https://codeberg.org/milkivc/associacao-milk-marco-zero",
+        "scheme": "url",
+        "relation": "isSupplementTo"
+      },
+      {
+        "identifier": "https://github.com/milkivc/atlas-datasets",
+        "scheme": "url",
+        "relation": "isIdenticalTo"
+      },
+      {
+        "identifier": "0009-0004-9132-2925",
+        "scheme": "orcid",
+        "relation": "isAuthoredBy"
+      },
+      {
+        "identifier": "0009-0007-6892-6570",
+        "scheme": "orcid",
+        "relation": "isAuthoredBy"
+      }
+    ],
+    "subjects": [
+      {
+        "subject": "geospatial data",
+        "subject_scheme": "GEMET"
+      },
+      {
+        "subject": "cultural heritage",
+        "subject_scheme": "INSPIRE"
+      },
+      {
+        "subject": "legal documentation",
+        "subject_scheme": "other"
+      }
+    ],
+    "notes": "Dataset em conformidade com RGPD (Regulamento Geral sobre a Protecao de Dados) e AI Act (Regulamento (UE) 2024/1689). Todos os dados pessoais foram anonimizados ou pseudonimizados conforme exigido pela legislacao europeia e portuguesa.",
+    "language": "por",
+    "access_right": "open",
+    "conform_to": "DataCite 4.4",
+    "metadata_version": "1.0"
+  },
+  "files": [
+    {
+      "filename": "documentacao/estatutos.pdf",
+      "filesize": 5242880,
+      "checksum": "sha256:PENDENTE",
+      "mimetype": "application/pdf"
+    },
+    {
+      "filename": "documentacao/RCBE.pdf",
+      "filesize": 3145728,
+      "checksum": "sha256:PENDENTE",
+      "mimetype": "application/pdf"
+    },
+    {
+      "filename": "documentacao/certidao_funchal.pdf",
+      "filesize": 2097152,
+      "checksum": "sha256:PENDENTE",
+      "mimetype": "application/pdf"
+    },
+    {
+      "filename": "documentacao/rececao_fcpc.pdf",
+      "filesize": 1048576,
+      "checksum": "sha256:PENDENTE",
+      "mimetype": "application/pdf"
+    }
+  ]
+}
