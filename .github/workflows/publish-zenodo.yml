@@ -1,0 +1,21 @@
+name: Publish All Zenodo
+on: workflow_dispatch
+jobs:
+  publish:
+    runs-on: windows-latest
+    steps:
+      - run: |
+        $t = $env:ZENODO_TOKEN
+        $repos = @("milkivc","atlas-vivo-milk","folclore-vivo-metodologia","atlas-docs","catalogo-operacional-milk","site-institucional","atlas-datasets")
+        foreach ($r in $repos) {
+          $d = Invoke-RestMethod -Uri "https://zenodo.org/api/deposit/depositions" -Method Get -Headers @{Authorization="Bearer $t"}
+          $deposits = $d | Where-Object { $_.metadata.title -like "*$r*" }
+          foreach ($dep in $deposits) {
+            if ($dep.submitted -eq $false) {
+              $p = Invoke-RestMethod -Uri "https://zenodo.org/api/deposit/depositions/$($dep.id)/actions/publish" -Method Post -Headers @{Authorization="Bearer $t"} -ContentType "application/json"
+              Write-Host "Publicado: $($p.doi)"
+            }
+          }
+        }
+        env:
+          ZENODO_TOKEN: ${{ secrets.ZENODO_TOKEN }}
