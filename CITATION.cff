@@ -1,12 +1,55 @@
 cff-version: 1.2.0
-message: "If you use this dataset, please cite it as below."
-title: "Atlas Vivo MILK - Datasets"
-type: dataset
+message: "If you use this work, please cite it as follows."
+
+title: "Atlas Vivo - Datasets"
+
 authors:
-  - given-names: "Associação"
-    family-names: "MILK"
-    affiliation: "Associação MILK"
-version: 1.0.0
-license: CC-BY-SA-4.0
-repository-code: "https://github.com/milkivc/atlas-datasets"
-keywords: ["folclore", "património imaterial", "lendas", "geodados", "Portugal", "datasets"]
+  - given-names: "Nuno Filipe Fernandes Vieira Cabral e"
+    family-names: "Araujo"
+    orcid: "https://orcid.org/0009-0004-9132-2925"
+    email: "nuno@associacaomilk.pt"
+    affiliation: "Associacao MILK - Movimento de Intervencoes e Linguagens Kulturais e Arte"
+  - given-names: "Eduardo Mauricio Vieira Cabral e"
+    family-names: "Araujo"
+    orcid: "https://orcid.org/0009-0007-6892-6570"
+    email: "eduardo@associacaomilk.pt"
+    affiliation: "Associacao MILK - Movimento de Intervencoes e Linguagens Kulturais e Arte"
+
+abstract: "Repositorio central de datasets geospaciais e culturais do projeto Atlas Vivo, contendo documentacao legal fundacional da Associacao MILK para preservacao do patrimonio cultural imaterial portugues."
+
+keywords:
+  - "patrimonio cultural"
+  - "dados geospaciais"
+  - "interoperabilidade"
+  - "preservacao digital"
+  - "Portugal"
+  - "Associacao MILK"
+  - "Atlas Vivo"
+
+version: "v1.0.0"
+
+date-released: "2026-06-25"
+
+url: "https://github.com/milkivc/atlas-datasets"
+
+repository: "https://github.com/milkivc/atlas-datasets"
+
+repository-code: "https://codeberg.org/milkivc/associacao-milk-marco-zero"
+
+license: "EUPL-1.2"
+
+preferred-citation:
+  title: "Atlas Vivo - Datasets"
+  authors:
+    - given-names: "Nuno Filipe Fernandes Vieira Cabral e"
+      family-names: "Araujo"
+      orcid: "https://orcid.org/0009-0004-9132-2925"
+    - given-names: "Eduardo Mauricio Vieira Cabral e"
+      family-names: "Araujo"
+      orcid: "https://orcid.org/0009-0007-6892-6570"
+  year: 2026
+  version: "v1.0.0"
+  url: "https://github.com/milkivc/atlas-datasets"
+  type: "software"
+
+commit: "ab000b8d51878d5b324ab291b9e37bdc7acca7b6"
