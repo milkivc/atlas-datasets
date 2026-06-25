@@ -1,0 +1,102 @@
+{
+  "project": {
+    "name": "Marco Zero - Associacao MILK",
+    "version": "v1.0.0",
+    "description": "Documentacao legal fundacional",
+    "date": "2025-06-25"
+  },
+  "organization": {
+    "legal_name": "ASSOCIACAO MILK - MOVIMENTO DE INTERVENCOES E LINGUAGENS KULTURAIS E ARTE",
+    "nipc": "518706451",
+    "niss": "25187064511",
+    "address": "Rua Carlos da Maia, Numero 44, 2o direito, Campo de Ourique, Lisboa",
+    "email": "milkurbanart@gmail.com"
+  },
+  "founders": [
+    {
+      "name": "Nuno Filipe Fernandes Vieira Cabral e Araujo",
+      "orcid": "0009-0004-9132-2925",
+      "github": "nunofilipearaujo-crypt",
+      "nif": "212159011"
+    },
+    {
+      "name": "Eduardo Mauricio Vieira Cabral e Araujo",
+      "orcid": "0009-0007-6892-6570",
+      "github": "eduardomauer",
+      "nif": "314659951"
+    }
+  ],
+  "documents": {
+    "estatutos": {
+      "title": "Estatutos Oficiais",
+      "type": "constitution",
+      "rcbe_code": "160b414f-d158-4ef2-8e30-90da5fc1b402",
+      "path": "estatutos/estatutos.md"
+    },
+    "rcbe": {
+      "title": "Declaracao RCBE Validada",
+      "type": "beneficial-owner-declaration",
+      "code": "160b414f-d158-4ef2-8e30-90da5fc1b402",
+      "path": "rcbe/declaracao-validada.md"
+    },
+    "funchal": {
+      "title": "Certidao Municipio Funchal",
+      "type": "certificate",
+      "number": "119/2026",
+      "path": "certidoes/funchal.md"
+    },
+    "fcpc": {
+      "title": "Rececao Pedido FCPC",
+      "type": "certificate-receipt",
+      "code": "8401-1877-2754",
+      "path": "certidoes/fcpc.md"
+    }
+  },
+  "repositories": {
+    "github": {
+      "url": "https://github.com/milkivc/atlas-datasets/tree/master/documentacao/marco-zero/v1.0.0",
+      "branch": "master",
+      "status": "deployed"
+    },
+    "codeberg": {
+      "url": "https://codeberg.org/milkivc/associacao-milk-marco-zero",
+      "status": "pending"
+    },
+    "zenodo": {
+      "url": "https://zenodo.org/deposit/PENDING",
+      "doi": "PENDING",
+      "status": "pending"
+    },
+    "software_heritage": {
+      "url": "https://archive.softwareheritage.org/browse/swh:1:dir:PENDING",
+      "swhid": "PENDING",
+      "status": "pending"
+    }
+  },
+  "compliance": {
+    "rgpd": true,
+    "ai_act": false,
+    "portuguese_law": true,
+    "state_interoperability": true,
+    "soberania_digital": true
+  },
+  "qualified_identifiers": {
+    "origin": [
+      "https://irn.justica.gov.pt/",
+      "https://funchal.pt/"
+    ],
+    "visit": "https://github.com/milkivc/atlas-datasets/tree/master/documentacao/marco-zero/v1.0.0",
+    "anchor": [
+      "aaa484d9ba3ac756724c01196d4e638f96bceb5a",
+      "99af4b55f67d27c9ed5199b09cf11b0d265de66d",
+      "5401bb48aef9be8e43895b42655740684a47e267",
+      "8006b2718319a7a065751298f71c4d68740a33c5",
+      "cc6b661999093897309440e3b499952cf9330069",
+      "c42398400825bf8758cf1cd2616aa81edad79a61",
+      "4c2548f4cf40023a11b5248ea6bbbdd4347944e2",
+      "93f996232426896737ff586f2018df25928dde0c"
+    ],
+    "path_lines": "/documentacao/marco-zero/v1.0.0/"
+  },
+  "license": "CC-BY-4.0"
+}
