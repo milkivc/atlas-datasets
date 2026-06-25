@@ -1,0 +1,110 @@
+{
+  "@context": "https://schema.org/",
+  "@type": "SoftwareSourceCode",
+  "name": "Atlas Vivo - Datasets",
+  "description": "Repositorio central de datasets geospaciais e culturais do projeto Atlas Vivo, contendo documentacao legal fundacional da Associacao MILK para preservacao do patrimonio cultural imaterial portugues.",
+  "identifier": "https://github.com/milkivc/atlas-datasets",
+  "version": "v1.0.0",
+  "datePublished": "2026-06-25",
+  "dateModified": "2026-06-25",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Nuno Filipe Fernandes Vieira Cabral e Araujo",
+      "email": "nuno@associacaomilk.pt",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Associacao MILK - Movimento de Intervencoes e Linguagens Kulturais e Arte",
+        "url": "https://github.com/milkivc"
+      }
+    },
+    {
+      "@type": "Person",
+      "name": "Eduardo Mauricio Vieira Cabral e Araujo",
+      "email": "eduardo@associacaomilk.pt",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Associacao MILK - Movimento de Intervencoes e Linguagens Kulturais e Arte",
+        "url": "https://github.com/milkivc"
+      }
+    }
+  ],
+  "contributor": [
+    {
+      "@type": "Organization",
+      "name": "Associacao MILK - Movimento de Intervencoes e Linguagens Kulturais e Arte",
+      "url": "https://github.com/milkivc",
+      "roleName": ["maintainer", "copyrightHolder"]
+    }
+  ],
+  "license": "EUPL-1.2",
+  "url": "https://github.com/milkivc/atlas-datasets",
+  "codeRepository": "https://github.com/milkivc/atlas-datasets",
+  "issueTracker": "https://github.com/milkivc/atlas-datasets/issues",
+  "releaseNotes": "https://github.com/milkivc/atlas-datasets/blob/master/CHANGELOG.md",
+  "readme": "https://github.com/milkivc/atlas-datasets/blob/master/README.md",
+  "contributing": "https://github.com/milkivc/atlas-datasets/blob/master/CONTRIBUTING.md",
+  "keywords": [
+    "patrimonio cultural",
+    "dados geospaciais",
+    "interoperabilidade",
+    "preservacao digital",
+    "Portugal",
+    "Associacao MILK",
+    "Atlas Vivo",
+    "RGPD",
+    "AI Act",
+    "DataCite"
+  ],
+  "programmingLanguage": "Shell",
+  "operatingSystem": ["Linux", "macOS", "Windows"],
+  "runtimePlatform": "GitHub",
+  "developmentStatus": "https://www.repostatus.org/#active",
+  "intendedAudience": {
+    "@type": "Audience",
+    "audienceType": ["researchers", "developers", "public sector", "cultural institutions"]
+  },
+  "applicationCategory": "data-management",
+  "applicationSubCategory": ["data-preservation", "geospatial", "cultural-heritage"],
+  "relatedLink": [
+    {
+      "@type": "Link",
+      "name": "Codeberg Repository (Canonical)",
+      "url": "https://codeberg.org/milkivc/associacao-milk-marco-zero"
+    },
+    {
+      "@type": "Link",
+      "name": "Associacao MILK Website",
+      "url": "https://github.com/milkivc/site-institucional"
+    },
+    {
+      "@type": "Link",
+      "name": "ORCID - Nuno Filipe",
+      "url": "https://orcid.org/0009-0004-9132-2925"
+    },
+    {
+      "@type": "Link",
+      "name": "ORCID - Eduardo Mauricio",
+      "url": "https://orcid.org/0009-0007-6892-6570"
+    }
+  ],
+  "funder": {
+    "@type": "Organization",
+    "name": "Associacao MILK - Movimento de Intervencoes e Linguagens Kulturais e Arte",
+    "url": "https://github.com/milkivc"
+  },
+  "isPartOf": {
+    "@type": "CreativeWork",
+    "name": "Atlas Vivo MILK",
+    "url": "https://github.com/milkivc/atlas-vivo-milk"
+  },
+  "hasPart": [
+    {
+      "@type": "Dataset",
+      "name": "Marco Zero v1.0.0",
+      "description": "Documentacao legal fundacional da Associacao MILK",
+      "url": "https://github.com/milkivc/atlas-datasets/tree/master/documentacao",
+      "datePublished": "2026-06-25"
+    }
+  ]
+}
