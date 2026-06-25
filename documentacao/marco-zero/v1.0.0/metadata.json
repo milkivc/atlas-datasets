@@ -1,0 +1,57 @@
+{
+  "package": {
+    "name": "Associacao MILK - Marco Zero",
+    "version": "v1.0.0",
+    "description": "Documentacao legal fundacional",
+    "type": "legal-documentation",
+    "release_date": "2025-06-25"
+  },
+  "organization": {
+    "legal_name": "ASSOCIACAO MILK - MOVIMENTO DE INTERVENCOES E LINGUAGENS KULTURAIS E ARTE",
+    "nipc": "518706451",
+    "founding_date": "2025-06-12"
+  },
+  "founders": [
+    {
+      "name": "Nuno Filipe Fernandes Vieira Cabral e Araujo",
+      "orcid": "0009-0004-9132-2925",
+      "github": "nunofilipearaujo-crypt"
+    },
+    {
+      "name": "Eduardo Mauricio Vieira Cabral e Araujo",
+      "orcid": "0009-0007-6892-6570",
+      "github": "eduardomauer"
+    }
+  ],
+  "documents": [
+    {
+      "id": "estatutos",
+      "title": "Estatutos Oficiais",
+      "path": "/documentacao/marco-zero/v1.0.0/estatutos/"
+    },
+    {
+      "id": "rcbe",
+      "title": "Declaracao RCBE Validada",
+      "code": "160b414f-d158-4ef2-8e30-90da5fc1b402",
+      "path": "/documentacao/marco-zero/v1.0.0/rcbe/"
+    },
+    {
+      "id": "funchal",
+      "title": "Certidao Municipio Funchal",
+      "number": "119/2026",
+      "path": "/documentacao/marco-zero/v1.0.0/certidoes/funchal"
+    },
+    {
+      "id": "fcpc",
+      "title": "Rececao Pedido FCPC",
+      "code": "8401-1877-2754",
+      "path": "/documentacao/marco-zero/v1.0.0/certidoes/fcpc"
+    }
+  ],
+  "license": "CC-BY-4.0",
+  "compliance": {
+    "rgpd": true,
+    "portuguese_law": true,
+    "interoperability": true
+  }
+}
