@@ -1,0 +1,26 @@
+name: Publish All
+on:
+  workflow_dispatch:
+jobs:
+  publish:
+    runs-on: windows-latest
+    steps:
+      - run: |
+        $t="$env:ZENODO_TOKEN"
+        $i="$env:ORCID_CLIENT_ID"
+        $s="$env:ORCID_CLIENT_SECRET"
+        $r=@("atlas-datasets","site-institucional","catalogo-operacional-milk","atlas-docs","folclore-vivo-metodologia","atlas-vivo-milk","milkivc")
+        foreach($x in $r){
+          $b=@{metadata=@{title="Atlas Vivo MILK - $x";upload_type="dataset";creators=@(@{name="Nuno Filipe Fernandes Vieira Cabral e Araújo";orcid="0009-0004-9132-2925"},@{name="Eduardo Maurício Vieira Cabral e Araújo";orcid="0009-0007-6892-6570"});license="CC-BY-4.0"};metadata_only=$true}|ConvertTo-Json -Depth 10
+          $d=Invoke-RestMethod -Uri "https://zenodo.org/api/deposit/depositions" -Method Post -Body $b -Headers @{Authorization="Bearer $t"} -ContentType "application/json"
+          $p=Invoke-RestMethod -Uri "https://zenodo.org/api/deposit/depositions/$($d.id)/actions/publish" -Method Post -Headers @{Authorization="Bearer $t"}
+          $doi=$p.doi
+          $tok=Invoke-RestMethod -Uri "https://orcid.org/oauth/token" -Method Post -Body @{client_id=$i;client_secret=$s;grant_type="client_credentials";scope="/read-limited /activities/update /person/update"} -ContentType "application/x-www-form-urlencoded"
+          $w=@{title=@{title=@{value="Atlas Vivo MILK - $x"}};type="dataset";url="https://doi.org/$doi";journal_title=@{value="Zenodo"};publication_date=@{year=@{value=2026};month=@{value=6};day=@{value=25}};contributors=@{contributor=@(@{credit_name=@{value="Nuno Filipe Fernandes Vieira Cabral e Araújo"};orcid="0009-0004-9132-2925";role="conceptor"},@{credit_name=@{value="Eduardo Maurício Vieira Cabral e Araújo"};orcid="0009-0007-6892-6570";role="data-manager"})}}|ConvertTo-Json -Depth 10
+          @("0009-0004-9132-2925","0009-0007-6892-6570")|%{Invoke-RestMethod -Uri "https://api.orcid.org/v3.0/$_/work" -Method Post -Body $w -Headers @{Authorization="Bearer $($tok.access_token)";"Content-Type"="application/json"}}
+          Write-Host "DOI $x: $doi - ORCID sincronizado"
+        }
+        env:
+          ZENODO_TOKEN: ${{ secrets.ZENODO_TOKEN }}
+          ORCID_CLIENT_ID: ${{ secrets.ORCID_CLIENT_ID }}
+          ORCID_CLIENT_SECRET: ${{ secrets.ORCID_CLIENT_SECRET }}
