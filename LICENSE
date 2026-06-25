@@ -1,22 +1,72 @@
-Creative Commons Attribution-ShareAlike 4.0 International License
+EUPL-1.2
 
-To view a copy of this license, visit https://creativecommons.org/licenses/by-sa/4.0/
+EUROPEAN UNION PUBLIC LICENCE v. 1.2
 
-This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License.
-To view a copy of this license, visit https://creativecommons.org/licenses/by-sa/4.0/ or send a letter to Creative Commons, P.O. Box 1866, Mountain View, CA 94042, USA.
+EUPL © the European Union 2007, 2016
+This European Union public licence (the 'EUPL') applies to the work or software (the 'Work') provided under this licence. Any use of a work other than as authorised under this licence or copyright law is prohibited.
 
-You are free to:
-- Share: copy and redistribute the material in any medium or format.
-- Adapt: remix, transform, and build upon the material for any purpose, even commercially.
+The Work is provided under the terms of this licence when the Licensor (the original developer or a subsequent rights holder) has placed the following notice immediately following the copyright notice:
 
-Under the following terms:
-- Attribution: You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
-- ShareAlike: If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
-- No additional restrictions: You may not apply legal terms or technological measures that legally restrict others from doing anything the permission permits.
+Licensed under the EUPL
 
---- 
+or when the Work has been distributed under the EUPL by a rights holder other than the Licensor.
 
-**Notices:**
-You do not have to comply with the license for elements of the material in the public domain or where your use is permitted by an applicable exception or limitation.
+Article 1 - Definitions
+1.1. 'Licensor' means the natural or legal person(s), or a body governed by public law, that offers the Work under the terms of the EUPL.
+1.2. 'Work' means any work or software provided under the terms of this licence.
+1.3. 'Derivative Work' means any work or software directly derived from the Work or from another work based on the Work.
+1.4. 'Source Code' means the preferred form in which the Licensor would make modifications to the Work.
+1.5. 'Object Code' means any form resulting from mechanical transformation or translation of a Source Code, including but not limited to compiled object code, generated documentation, or conversions to other media types.
+1.6. 'Contributor' means any natural or legal person that modifies or otherwise contributes to the creation of the Derivative Work.
+1.7. 'Reproduction' means making copies of the Work, including copies made by downloading and temporary copies.
+1.8. 'Distribution' means acts of providing copies of the Work or making it available to the public, including but not limited to on-line transmission.
+1.9. 'Communication' means any act of transmission of the Work or Derivative Work on a network, including transmission on the Internet or within any other digital network.
+1.10. 'Relevant Patents' means patent claims (including without limitation patent applications and other patent rights, including supplementary protection certificates) licensable by the Licensor and infringed by the making, using, sale, offer for sale, or import of the Work or the making, using, sale, offer for sale, or import of any Contribution.
 
-No warranties are given. The license may not give you all of the permissions necessary for your intended use. For example, other rights such as publicity, privacy, or moral rights may limit how you use the material.
+Article 2 - Scope of the Licence
+2.1. The rights granted under this licence concern the Work as a whole. The Licensor grants You a world-wide, royalty-free, non-exclusive, sublicensable licence to do the following, for the duration of copyright vested in the original Work:
+   a) to Reproduce the Work;
+   b) to create Derivative Works based upon the Work;
+   c) to Distribute or Communicate to the public copies of the Work or this Derivative Works in any medium with or without modifications, in Source or Object Code form, provided that You comply with the terms of this licence.
+2.2. The rights granted under this licence are the same for all categories of the Work and apply to the whole Work, including any parts or components thereof.
+2.3. This licence does not grant You explicit or implicit rights on the Work that infringe the intellectual property rights of the Licensor or of any third party.
+2.4. This licence does not grant You any right, title or interest in the trademarks, brands, service marks or trade names of the Licensor or any third party.
+2.5. The Licensor reserves the right to release the Work under different licence terms or to stop the distribution of the Work at any time. Such use, however, shall not serve to retroactively withdraw this licence from any Derivative Work that has already been distributed under these terms, or to retroactively withdraw the licence from any Contributor who has already created or distributed a Derivative Work based on the Work.
+
+Article 3 - Communication of Source Code
+3.1. The Licensor may provide the Work either in Source Code form, in Object Code form or in both forms. Where the Work is provided in Object Code form only, the Licensor shall accompany the Work with a copy of the Source Code or with a written offer, valid for at least three years, to provide a copy of the Source Code.
+3.2. Where the Licensor provides the Work in Object Code form only and with an offer to provide a copy of the Source Code, the Contributor providing a Derivative Work in Object Code form shall accompany the Derivative Work with a copy of the Source Code or with a written offer, valid for at least three years, to provide a copy of the Source Code.
+
+Article 4 - Restrictions
+4.1. The exercise of the rights granted under this licence is subject to the following restrictions:
+   a) You must include a copy of this licence. If the Work is provided in a digital format, this copy must be included in at least one appropriate standard container format;
+   b) You must identify the Licensor and include a copyright notice on all copies of the Work and Derivative Works that You Distribute or Communicate to the public. The Licensor may specify a particular place in the Work to include such copyright notice;
+   c) You must retain intact all copyright, patent or trademark notices and all notices that refer to this licence. When You Distribute or Communicate to the public Derivative Works in Source Code form, the copyright notice must also include this licence and a list of all the changes made to the original Work;
+   d) You must document all modifications made to the Work in the Derivative Work's Source Code. You must also include a copy of or the URI for the licence of the Work with each copy of the Derivative Work that You Distribute or Communicate to the public;
+   e) You may not impose any further restrictions on the exercise of the rights granted or attempted to be granted under this licence.
+4.2. Where the Licensor has specified a particular place in the Work to include a copyright notice as referred to in point 4.1(b), or when You Distribute or Communicate to the public the Work in modified form, You may satisfy the conditions of point 4.1(b) by placing such copyright notice at an appropriate place for third-party software or documentation that includes the Work or Derivative Work.
+4.3. The obligations of points 4.1 and 4.2 do not apply to the extent that they are incompatible with the nature of the action or the media used for the Distribution or Communication.
+
+Article 5 - Exclusion of Liability
+5.1. The Licence is provided on an 'as is' and 'as available' basis and without warranties, either express or implied, including without limitation any warranty that the Work will be free of defects.
+5.2. The Licensor shall not be liable for any direct, indirect, incidental, or consequential damages of any kind, or any damages whatsoever resulting from loss of use, data or profits, whether in an action of contract, negligence or other tortious action, arising out of or in connection with the use or inability to use the Work or this licence.
+5.3. You are solely responsible for determining the appropriateness of using or redistributing the Work and assume any risks associated with Your exercise of rights under this licence.
+
+Article 6 - Termination
+6.1. This licence and the rights granted hereunder will terminate automatically upon any breach by the Licensee of the terms of this licence.
+6.2. Individuals or entities that have received Derivative Works from You under this licence, however, will not have their licences terminated provided such individuals or entities remain in full compliance.
+6.3. Sections 1, 2, 4, 5, 6, 7, and 8 will continue to apply after any termination.
+
+Article 7 - Language
+7.1. This licence is written in English.
+
+Article 8 - Miscellaneous
+8.1. If any provision of this licence is held to be invalid, illegal or otherwise unenforceable, the validity, legality and enforceability of the remaining provisions shall not in any way be affected or impaired thereby.
+8.2. This licence shall not be enforced to the extent that it conflicts with applicable law. In that case, the licence shall be enforced to the maximum extent permitted by applicable law.
+8.3. No element of this licence shall be interpreted or construed to create or imply any liability on behalf of the European Union or any of its institutions, bodies, agencies or entities.
+
+Article 9 - Governing Law
+9.1. This licence shall be governed by the laws of the country specified in the copyright notice of the Work, without application of its conflict of law provisions.
+
+Article 10 - Jurisdiction
+10.1. Any litigation relating to the interpretation or execution of this licence shall be subject to the jurisdiction of the courts of the country specified in the copyright notice of the Work, with the venue lying in the place of the seat of the Licensor.
