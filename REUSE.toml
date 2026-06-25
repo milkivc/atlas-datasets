@@ -1,0 +1,41 @@
+version = "3.0"
+
+[[annotation]]
+path = "LICENSE"
+precedence = "aggregate"
+SPDX-License-Identifier = "EUPL-1.2"
+
+[[annotation]]
+path = "documentacao/*.pdf"
+precedence = "aggregate"
+SPDX-License-Identifier = "CC-BY-4.0"
+
+[[annotation]]
+path = "dados/*"
+precedence = "aggregate"
+SPDX-License-Identifier = "CC-BY-4.0"
+
+[[annotation]]
+path = "*.md"
+precedence = "aggregate"
+SPDX-License-Identifier = "CC-BY-4.0"
+
+[[annotation]]
+path = "CITATION.cff"
+precedence = "aggregate"
+SPDX-License-Identifier = "CC-BY-4.0"
+
+[[annotation]]
+path = "codemeta.json"
+precedence = "aggregate"
+SPDX-License-Identifier = "CC-BY-4.0"
+
+[[annotation]]
+path = "zenodo.json"
+precedence = "aggregate"
+SPDX-License-Identifier = "CC-BY-4.0"
+
+[[annotation]]
+path = "REUSE.toml"
+precedence = "aggregate"
+SPDX-License-Identifier = "CC-BY-4.0"
