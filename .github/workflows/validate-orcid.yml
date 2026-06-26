@@ -37,36 +37,52 @@ jobs:
             const path = require('path');
             
             // Função para validar ORCID
-            function validateORCID(orcid) {
+            function validateORCID(orcid, filePath) {
               const normalized = orcid.replace(/-/g, '').toLowerCase();
               if (!/^[0-9]{16}$/.test(normalized)) {
-                console.error('❌ ORCID inválido:', orcid);
+                console.error('❌ ORCID inválido:', orcid, 'em', filePath);
                 return false;
               }
-              console.log('✅ ORCID válido:', orcid);
+              console.log('✅ ORCID válido:', orcid, 'em', filePath);
               return true;
             }
             
-            // Procurar ORCIDs em arquivos
-            const files = fs.readdirSync('.');
+            // Função recursiva para varrer diretórios
+            function scanFiles(dir, fileList = []) {
+              const files = fs.readdirSync(dir);
+              files.forEach(file => {
+                const filePath = path.join(dir, file);
+                if (fs.statSync(filePath).isDirectory()) {
+                  scanFiles(filePath, fileList);
+                } else if (filePath.endsWith('.json') || filePath.endsWith('.md') || filePath.endsWith('.yml') || filePath.endsWith('.yaml')) {
+                  fileList.push(filePath);
+                }
+              });
+              return fileList;
+            }
+            
+            // Procurar ORCIDs em arquivos (recursivamente)
+            const allFiles = scanFiles('.');
             let allValid = true;
             let orcidCount = 0;
             
-            files.forEach(file => {
-              const filePath = path.join('.', file);
-              if (fs.statSync(filePath).isFile()) {
+            allFiles.forEach(filePath => {
+              try {
                 const content = fs.readFileSync(filePath, 'utf8');
                 const orcidMatches = content.match(/000[0-9]{3}-000[0-9]{3}-[0-9]{3}[0-9X]/g) || [];
                 orcidMatches.forEach(orcid => {
                   orcidCount++;
-                  if (!validateORCID(orcid)) {
+                  if (!validateORCID(orcid, filePath)) {
                     allValid = false;
                   }
                 });
+              } catch (err) {
+                console.error('⚠️ Erro ao ler arquivo:', filePath, err.message);
               }
             });
             
             console.log('📊 Total de ORCIDs encontrados:', orcidCount);
+            console.log('📁 Arquivos verificados:', allFiles.length);
             
             if (!allValid) {
               console.error('❌ ORCIDs inválidos encontrados!');

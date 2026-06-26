@@ -27,7 +27,7 @@ jobs:
         env:
           ZENODO_TOKEN: ${{ secrets.ZENODO_TOKEN }}
         run: |
-          # Criar um script temporário para depositar no Zenodo
+          # Criar um script temporário para depositar no Zenodo (otimizado)
           cat > deposit_zenodo.js << 'EOF'
           const fetch = require('node-fetch');
           const fs = require('fs');
@@ -35,9 +35,27 @@ jobs:
           
           const ZENODO_API_URL = 'https://zenodo.org/api';
           const ZENODO_TOKEN = process.env.ZENODO_TOKEN;
+          const MAX_RETRIES = 3;
+          const RETRY_DELAY = 5000; // 5 segundos
+          
+          // Função para retry com delay
+          async function fetchWithRetry(url, options, retries = MAX_RETRIES) {
+            try {
+              const response = await fetch(url, options);
+              if (!response.ok) {
+                throw new Error(`${response.status} - ${response.statusText}`);
+              }
+              return response;
+            } catch (error) {
+              if (retries <= 0) throw error;
+              console.log(`⚠️ Tentativa falhou, aguardando ${RETRY_DELAY/1000}s... (${retries} tentativas restantes)`);
+              await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
+              return fetchWithRetry(url, options, retries - 1);
+            }
+          }
           
           async function createDeposition(metadata) {
-            const response = await fetch(`${ZENODO_API_URL}/deposit/depositions`, {
+            const response = await fetchWithRetry(`${ZENODO_API_URL}/deposit/depositions`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -45,48 +63,64 @@ jobs:
               },
               body: JSON.stringify(metadata)
             });
-            
-            if (!response.ok) {
-              throw new Error(`Erro ao criar depósito: ${response.status} - ${response.statusText}`);
-            }
-            
             return await response.json();
           }
           
           async function uploadFile(depositionId, filePath, fileName = null) {
             const fileNameToUse = fileName || path.basename(filePath);
             const fileData = fs.readFileSync(filePath);
+            const fileSize = fileData.length;
             
-            const response = await fetch(`${ZENODO_API_URL}/deposit/depositions/${depositionId}/files/${fileNameToUse}`, {
-              method: 'PUT',
-              headers: {
-                'Content-Type': 'application/octet-stream',
-                'Authorization': `Bearer ${ZENODO_TOKEN}`
-              },
-              body: fileData
-            });
+            console.log(`📤 Enviando ${fileNameToUse} (${(fileSize / 1024 / 1024).toFixed(2)} MB)...`);
             
-            if (!response.ok) {
-              throw new Error(`Erro ao fazer upload do arquivo ${fileNameToUse}: ${response.status} - ${response.statusText}`);
-            }
-            
+            const response = await fetchWithRetry(
+              `${ZENODO_API_URL}/deposit/depositions/${depositionId}/files/${fileNameToUse}`,
+              {
+                method: 'PUT',
+                headers: {
+                  'Content-Type': 'application/octet-stream',
+                  'Authorization': `Bearer ${ZENODO_TOKEN}`
+                },
+                body: fileData
+              }
+            );
             return await response.json();
           }
           
           async function publishDeposition(depositionId) {
-            const response = await fetch(`${ZENODO_API_URL}/deposit/depositions/${depositionId}/actions/publish`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${ZENODO_TOKEN}`
+            const response = await fetchWithRetry(
+              `${ZENODO_API_URL}/deposit/depositions/${depositionId}/actions/publish`,
+              {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${ZENODO_TOKEN}`
+                }
+              }
+            );
+            return await response.json();
+          }
+          
+          // Função para varrer arquivos recursivamente (ignorando .git/, node_modules/, etc.)
+          function getAllFiles(dir, fileList = []) {
+            const files = fs.readdirSync(dir);
+            files.forEach(file => {
+              const filePath = path.join(dir, file);
+              const stat = fs.statSync(filePath);
+              
+              if (stat.isDirectory()) {
+                // Ignorar diretórios desnecessários
+                if (!['.git', 'node_modules', '.github', '.vscode'].includes(file)) {
+                  getAllFiles(filePath, fileList);
+                }
+              } else if (stat.isFile()) {
+                // Ignorar arquivos temporários e logs
+                if (!filePath.includes('.git/') && !filePath.endsWith('.log')) {
+                  fileList.push(filePath);
+                }
               }
             });
-            
-            if (!response.ok) {
-              throw new Error(`Erro ao publicar depósito: ${response.status} - ${response.statusText}`);
-            }
-            
-            return await response.json();
+            return fileList;
           }
           
           async function main() {
@@ -106,15 +140,22 @@ jobs:
               const depositionId = deposition.id;
               console.log(`✅ Depósito criado: ${depositionId}`);
               
+              // Obter todos os arquivos (recursivamente)
+              const allFiles = getAllFiles(process.cwd());
+              console.log(`📁 Total de arquivos a enviar: ${allFiles.length}`);
+              
               // Fazer upload de todos os arquivos
-              const files = fs.readdirSync(process.cwd());
-              for (const file of files) {
-                const filePath = path.join(process.cwd(), file);
-                if (fs.statSync(filePath).isFile() && !file.endsWith('.git')) {
-                  console.log(`📤 Enviando arquivo: ${file}`);
-                  await uploadFile(depositionId, filePath, file);
+              let uploadedCount = 0;
+              for (const filePath of allFiles) {
+                try {
+                  await uploadFile(depositionId, filePath);
+                  uploadedCount++;
+                } catch (error) {
+                  console.error(`❌ Falha ao enviar ${filePath}:`, error.message);
                 }
               }
+              
+              console.log(`✅ ${uploadedCount}/${allFiles.length} arquivos enviados`);
               
               // Publicar depósito
               console.log('🚀 Publicando depósito...');
@@ -139,6 +180,7 @@ jobs:
               
             } catch (error) {
               console.error('❌ Erro:', error.message);
+              console.error('Stack:', error.stack);
               process.exit(1);
             }
           }
