@@ -1,5 +1,11 @@
 # Atlas Vivo - Datasets
 
+[![CI](https://github.com/milkivc/atlas-datasets/actions/workflows/ci.yml/badge.svg)](https://github.com/milkivc/atlas-datasets/actions/workflows/ci.yml)
+[![License: EUPL-1.2](https://img.shields.io/badge/License-EUPL--1.2-blue.svg)](https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12)
+[![Last Commit](https://img.shields.io/github/last-commit/milkivc/atlas-datasets)](https://github.com/milkivc/atlas-datasets/commits/master)
+[![ORCID Nuno](https://img.shields.io/badge/ORCID-0009--0009--1781--4020-green?logo=orcid)](https://orcid.org/0009-0009-1781-4020)
+[![ORCID Eduardo](https://img.shields.io/badge/ORCID-0009--0007--6892--6570-green?logo=orcid)](https://orcid.org/0009-0007-6892-6570)
+
 Associacao MILK - Movimento de Intervencoes e Linguagens Kulturais e Arte
 NIPC: 518706451
 Repositorio Canonico: Codeberg | Mirror: GitHub
@@ -63,7 +69,7 @@ atlas-datasets/
 
 ## Identificadores Persistentes
 
-- ORCID Nuno: 0009-0004-9132-2925
+- ORCID Nuno: 0009-0009-1781-4020
 - ORCID Eduardo: 0009-0007-6892-6570
 - Codeberg: milkivc/associacao-milk-marco-zero (Canonico)
 - GitHub: milkivc/atlas-datasets (Mirror)

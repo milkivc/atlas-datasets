@@ -53,7 +53,7 @@ This document outlines the governance structure and decision-making processes fo
   - Role: Technical architecture, data management, integration
 
 - Nuno Filipe Fernandes Vieira Cabral e Araujo (Curatorial Lead)
-  - ORCID: 0009-0004-9132-2925
+  - ORCID: 0009-0009-1781-4020
   - Email: nuno@associacaomilk.pt
   - Role: Methodology, curation, cultural heritage
 
