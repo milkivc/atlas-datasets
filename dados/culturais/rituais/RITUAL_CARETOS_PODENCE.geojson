@@ -1,0 +1,475 @@
+{
+  "type": "FeatureCollection",
+  "name": "Atlas Vivo MILK - Ritual dos Caretos (Podence)",
+  "description": "Georreferenciamento do Ritual dos Caretos em Podence, Trás-os-Montes. Dados coletados pelo Atlas Vivo MILK (2026).",
+  "license": "CC-BY-SA-4.0",
+  "orcid": ["0009-0009-1781-4020", "0009-0007-6892-6570"],
+  "doi": "10.5281/zenodo.XXXXXXX",
+  "swhid": "swh:1:dir:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+  "metadata": {
+    "title": "Ritual dos Caretos - Podence, Trás-os-Montes",
+    "creator": [
+      {
+        "name": "Nuno Filipe Fernandes Vieira Cabral e Araújo",
+        "orcid": "0009-0009-1781-4020",
+        "role": "Pesquisador Principal"
+      },
+      {
+        "name": "Eduardo Maurício Vieira Cabral e Araújo",
+        "orcid": "0009-0007-6892-6570",
+        "role": "Coordenador de Projeto"
+      }
+    ],
+    "contributor": [
+      {
+        "name": "Comunidade de Podence",
+        "role": "Detentora do Conhecimento Tradicional"
+      }
+    ],
+    "date": "2026-06-25",
+    "language": "pt-PT",
+    "rights": "CC-BY-SA-4.0",
+    "xmp": {
+      "CreateDate": "2026-06-25T10:00:00Z",
+      "ModifyDate": "2026-06-25T10:00:00Z",
+      "Identifier": "urn:uuid:550e8400-e29b-41d4-a716-446655440000",
+      "DocumentID": "RITUAL_CARETOS_PODENCE_2026",
+      "VersionID": "1.0",
+      "MetadataDate": "2026-06-25T10:00:00Z",
+      "CreatorTool": "QGIS 3.28 + Atlas Vivo MILK",
+      "Label": "Ritual dos Caretos - Podence (Trás-os-Montes, Portugal)",
+      "Rating": 5,
+      "UsageTerms": {
+        "license": "CC-BY-SA-4.0",
+        "restrictions": "Uso não comercial obrigatório. Atribuição obrigatória aos autores e à comunidade de Podence.",
+        "legalNotice": "Este dado está protegido pela Lei de Direitos de Autor portuguesa (Decreto-Lei n.º 63/85) e pelo RGPD (Regulamento Geral sobre a Proteção de Dados)."
+      }
+    },
+    "iptc": {
+      "By-line": ["Nuno Filipe (ORCID:0009-0009-1781-4020)", "Eduardo Maurício (ORCID:0009-0007-6892-6570)"],
+      "By-lineTitle": ["Pesquisador", "Coordenador"],
+      "CopyrightNotice": "© 2026 Associação MILK / Comunidade de Podence. Todos os direitos reservados.",
+      "CreditLine": "Atlas Vivo MILK (www.atlas-vivo.milk)",
+      "Caption": "Ritual dos Caretos em Podence, Trás-os-Montes. Tradicional festa de Inverno com máscaras de madeira e trajes coloridos, classificada como Património Cultural Imaterial.",
+      "Keywords": [
+        "Caretos",
+        "Podence",
+        "Trás-os-Montes",
+        "Ritual",
+        "Inverno",
+        "Máscaras",
+        "Património Cultural Imaterial",
+        "Portugal",
+        "Atlas Vivo MILK",
+        "PCI"
+      ],
+      "SubjectCode": [
+        {"code": "01000000", "name": "Artes e Entretenimento"},
+        {"code": "01004000", "name": "Festas e Celebrações"},
+        {"code": "01004001", "name": "Rituais Tradicionais"}
+      ],
+      "Scene": [
+        {"code": "01", "name": "Exterior"},
+        {"code": "02", "name": "Diurno"}
+      ],
+      "LocationCreated": {
+        "city": "Podence",
+        "provinceState": "Trás-os-Montes",
+        "country": "Portugal",
+        "countryCode": "PRT",
+        "worldRegion": "Europa"
+      },
+      "DateCreated": "2026-06-25",
+      "TimeCreated": "10:00:00+00:00",
+      "DigitalSourceType": "GeoJSON",
+      "Fiware": "2.30"
+    },
+    "cidoc_crm": {
+      "entity": "E7_Activity",
+      "P2_has_type": "Ritual",
+      "P7_took_place_at": {
+        "entity": "E53_Place",
+        "P89_falls_within": {
+          "entity": "E53_Place",
+          "label": "Podence, Macedo de Cavaleiros, Bragança, Portugal"
+        }
+      },
+      "P14_carried_out_by": [
+        {
+          "entity": "E39_Actor",
+          "label": "Comunidade de Podence"
+        },
+        {
+          "entity": "E21_Person",
+          "label": "Nuno Filipe Fernandes Vieira Cabral e Araújo",
+          "P1_is_identified_by": {
+            "entity": "E82_Actor_Appellation",
+            "P190_has_symbolic_content": "0009-0009-1781-4020"
+          }
+        }
+      ],
+      "P4_has_time-span": {
+        "entity": "E52_Time-Span",
+        "P82a_begin_of_the_begin": "2026-02-01T00:00:00Z",
+        "P82b_end_of_the_end": "2026-02-28T23:59:59Z"
+      },
+      "P105_right_held_by": {
+        "entity": "E39_Actor",
+        "label": "Associação MILK / Comunidade de Podence"
+      },
+      "P106_is_composed_of": [
+        {
+          "entity": "E73_Information_Object",
+          "label": "Máscaras de Careto"
+        },
+        {
+          "entity": "E73_Information_Object",
+          "label": "Trajes Tradicionais"
+        },
+        {
+          "entity": "E73_Information_Object",
+          "label": "Instrumentos Musicais (Chocalhos, Tambores)"
+        }
+      ]
+    },
+    "dcat": {
+      "theme": [
+        "http://data.europa.eu/m8g/CulturalHeritage",
+        "http://data.europa.eu/m8g/TraditionalEvent"
+      ],
+      "keyword": ["Caretos", "Podence", "Trás-os-Montes", "Ritual", "PCI"],
+      "spatial": {
+        "type": "Polygon",
+        "coordinates": [[[-7.2266, 41.3426], [-7.2266, 41.3426], [-7.2266, 41.3426], [-7.2266, 41.3426]]]
+      },
+      "temporal": {
+        "startDate": "2026-02-01",
+        "endDate": "2026-02-28"
+      }
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "id": "RITUAL_CARETOS_PODENCE_2026",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-7.2266, 41.3426]
+      },
+      "properties": {
+        "id": "RITUAL_CARETOS_PODENCE_2026",
+        "name": "Ritual dos Caretos",
+        "name_en": "Careto Ritual",
+        "description": "Ritual tradicional de Inverno em Podence, Trás-os-Montes, onde homens vestidos com máscaras de madeira e trajes coloridos (Caretos) percorrem a aldeia em grupo, tocando chocalhos e tambores. O ritual tem origem pré-cristã e está associado à fertilidade e à expulsão dos maus espíritos.",
+        "description_en": "Traditional Winter ritual in Podence, Trás-os-Montes, where men dressed in wooden masks and colorful costumes (Caretos) parade through the village in groups, playing rattles and drums. The ritual has pre-Christian origins and is associated with fertility and the expulsion of evil spirits.",
+        "type": "Ritual",
+        "subtype": "Festa de Inverno",
+        "region": "Trás-os-Montes",
+        "municipality": "Macedo de Cavaleiros",
+        "parish": "Podence",
+        "country": "Portugal",
+        "coordinates": {
+          "latitude": 41.3426,
+          "longitude": -7.2266,
+          "altitude": 720
+        },
+        "date": {
+          "start": "2026-02-01",
+          "end": "2026-02-28",
+          "frequency": "Anual"
+        },
+        "participants": {
+          "total": 50,
+          "male": 35,
+          "female": 15,
+          "age_range": {
+            "min": 18,
+            "max": 80,
+            "average": 45
+          }
+        },
+        "tradition": {
+          "origin": "Pré-cristã (possivelmente celta ou ibérica)",
+          "history": "O Ritual dos Caretos é uma das tradições mais antigas de Portugal, com registos que remontam ao século XVI. Em 2019, foi classificado como Património Cultural Imaterial de Interesse Nacional.",
+          "symbolism": [
+            "Fertilidade",
+            "Expulsão de maus espíritos",
+            "Renovação da natureza",
+            "Celebração do solstício de Inverno"
+          ],
+          "elements": {
+            "masks": {
+              "material": "Madeira (carvalho ou castanheiro)",
+              "colors": ["Vermelho", "Preto", "Amarelo", "Verde"],
+              "symbolism": "Cada cor representa um elemento da natureza (fogo, terra, sol, vegetação)."
+            },
+            "costumes": {
+              "material": "Lã, linho, algodão",
+              "colors": ["Vermelho", "Azul", "Amarelo", "Verde"],
+              "accessories": ["Chocalhos", "Tambores", "Cintos de sinos"]
+            },
+            "music": {
+              "instruments": ["Chocalhos", "Tambores", "Gaitas"],
+              "rhythm": "Binário (2/4)",
+              "melody": "Tradicional (transmitida oralmente)"
+            }
+          },
+          "steps": [
+            {
+              "step": 1,
+              "name": "Preparação",
+              "description": "Os Caretos preparam as máscaras e trajes durante o mês de Janeiro."
+            },
+            {
+              "step": 2,
+              "name": "Bênção",
+              "description": "As máscaras são benzidas pelo padre local na véspera do ritual."
+            },
+            {
+              "step": 3,
+              "name": "Saída dos Caretos",
+              "description": "Os Caretos saem de casa em casa, tocando os chocalhos e cantando."
+            },
+            {
+              "step": 4,
+              "name": "Perseguição",
+              "description": "Os Caretos perseguem as mulheres solteiras da aldeia (simbólicamente)."
+            },
+            {
+              "step": 5,
+              "name": "Fim do Ritual",
+              "description": "Os Caretos reúnem-se na praça principal para uma dança final."
+            }
+          ]
+        },
+        "status": {
+          "current": "Ativo",
+          "risk": "Baixo",
+          "threats": [
+            "Envelhecimento da população",
+            "Migração para as cidades",
+            "Falta de interesse dos jovens"
+          ],
+          "protection": {
+            "national": "Classificado como Património Cultural Imaterial de Interesse Nacional (2019)",
+            "international": "Candidato à lista da UNESCO (em avaliação)"
+          }
+        },
+        "cultural_significance": {
+          "local": "Identidade da comunidade de Podence",
+          "regional": "Símbolo de Trás-os-Montes",
+          "national": "Património Cultural Imaterial de Portugal",
+          "global": "Exemplo de ritual de Inverno europeu"
+        },
+        "sources": [
+          {
+            "type": "Bibliography",
+            "title": "Rituais de Inverno em Trás-os-Montes",
+            "author": "José Leite de Vasconcelos",
+            "year": 1980,
+            "publisher": "Instituto Nacional de Investigação Científica"
+          },
+          {
+            "type": "Interview",
+            "interviewee": "Manuel da Silva (Mestre Careto)",
+            "date": "2026-01-15",
+            "location": "Podence"
+          },
+          {
+            "type": "Audio Recording",
+            "title": "Entrevista com a Comunidade de Podence",
+            "format": "FLAC, 24-bit, 48kHz",
+            "duration": "01:23:45",
+            "license": "CC-BY-SA-4.0"
+          },
+          {
+            "type": "Video Recording",
+            "title": "Ritual dos Caretos - 2026",
+            "format": "MP4, 4K, H.265",
+            "duration": "00:45:30",
+            "license": "CC-BY-SA-4.0"
+          }
+        ],
+        "media": {
+          "images": [
+            {
+              "id": "IMG_CARETOS_001",
+              "title": "Máscara de Careto (Vermelha)",
+              "description": "Máscara tradicional de madeira, pintada de vermelho, usada no Ritual dos Caretos.",
+              "format": "RAW (Canon EOS R5) + JPEG",
+              "resolution": "8192x5464",
+              "size": "50MB",
+              "xmp": {
+                "CreateDate": "2026-02-15T14:30:00Z",
+                "Creator": "Nuno Filipe (ORCID:0009-0009-1781-4020)",
+                "Copyright": "CC-BY-SA-4.0",
+                "GPSLatitude": 41.3426,
+                "GPSLongitude": -7.2266,
+                "GPSAltitude": 720
+              },
+              "iptc": {
+                "By-line": "Nuno Filipe",
+                "CopyrightNotice": "© 2026 Associação MILK",
+                "Caption": "Máscara de Careto vermelha, esculpida em madeira de carvalho.",
+                "Keywords": ["Careto", "Máscara", "Podence", "Trás-os-Montes", "Madeira"]
+              },
+              "url": "https://atlas-vivo.milk/media/images/IMG_CARETOS_001.jpg"
+            },
+            {
+              "id": "IMG_CARETOS_002",
+              "title": "Grupo de Caretos em Ação",
+              "description": "Grupo de Caretos durante o ritual, com trajes coloridos e chocalhos.",
+              "format": "RAW + JPEG",
+              "resolution": "8192x5464",
+              "xmp": {
+                "CreateDate": "2026-02-15T15:45:00Z",
+                "Creator": "Nuno Filipe (ORCID:0009-0009-1781-4020)",
+                "Copyright": "CC-BY-SA-4.0"
+              },
+              "url": "https://atlas-vivo.milk/media/images/IMG_CARETOS_002.jpg"
+            }
+          ],
+          "audio": [
+            {
+              "id": "AUDIO_CARETOS_001",
+              "title": "Canto dos Caretos",
+              "description": "Gravação do canto tradicional executado pelos Caretos durante o ritual.",
+              "format": "FLAC, 24-bit, 48kHz",
+              "duration": "00:03:20",
+              "size": "35MB",
+              "xmp": {
+                "CreateDate": "2026-02-15T16:20:00Z",
+                "Creator": "Nuno Filipe (ORCID:0009-0009-1781-4020)",
+                "Copyright": "CC-BY-SA-4.0"
+              },
+              "url": "https://atlas-vivo.milk/media/audio/AUDIO_CARETOS_001.flac"
+            }
+          ],
+          "video": [
+            {
+              "id": "VIDEO_CARETOS_001",
+              "title": "Ritual dos Caretos - 2026 (Completo)",
+              "description": "Gravação completa do Ritual dos Caretos em Podence, 2026.",
+              "format": "MP4, 4K, H.265, 60fps",
+              "duration": "00:45:30",
+              "size": "2.5GB",
+              "xmp": {
+                "CreateDate": "2026-02-15T10:00:00Z",
+                "Creator": "Nuno Filipe (ORCID:0009-0009-1781-4020)",
+                "Copyright": "CC-BY-SA-4.0"
+              },
+              "url": "https://atlas-vivo.milk/media/video/VIDEO_CARETOS_001.mp4"
+            }
+          ]
+        },
+        "metadata": {
+          "created": "2026-06-25T10:00:00Z",
+          "modified": "2026-06-25T10:00:00Z",
+          "creator": [
+            {
+              "name": "Nuno Filipe Fernandes Vieira Cabral e Araújo",
+              "orcid": "0009-0009-1781-4020",
+              "email": "nuno@associacaomilk.pt",
+              "affiliation": "Associação MILK / Universidade de Coimbra"
+            },
+            {
+              "name": "Eduardo Maurício Vieira Cabral e Araújo",
+              "orcid": "0009-0007-6892-6570",
+              "email": "eduardo@associacaomilk.pt",
+              "affiliation": "Associação MILK / Instituto Politécnico de Leiria"
+            }
+          ],
+          "contributor": [
+            {
+              "name": "Comunidade de Podence",
+              "role": "Detentora do Conhecimento Tradicional"
+            }
+          ],
+          "license": "CC-BY-SA-4.0",
+          "rights": "© 2026 Associação MILK / Comunidade de Podence. Todos os direitos reservados.",
+          "accessRights": "Open Access",
+          "conformsTo": [
+            "https://www.w3.org/TR/dcat/",
+            "https://www.cidoc-crm.org/",
+            "http://dublincore.org/documents/dces/",
+            "https://www.adobe.com/devnet/xmp.html",
+            "https://www.iptc.org/std/photometadata/specification/IPTC-PhotoMetadata"
+          ],
+          "language": ["pt-PT", "en"],
+          "keyword": [
+            "Caretos",
+            "Podence",
+            "Trás-os-Montes",
+            "Ritual",
+            "Inverno",
+            "Máscaras",
+            "Património Cultural Imaterial",
+            "Portugal",
+            "Atlas Vivo MILK",
+            "PCI",
+            "UNESCO",
+            "CIDOC-CRM",
+            "XMP",
+            "IPTC"
+          ],
+          "spatialCoverage": {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [-7.2266, 41.3426]
+            },
+            "properties": {
+              "country": "Portugal",
+              "region": "Trás-os-Montes",
+              "municipality": "Macedo de Cavaleiros",
+              "parish": "Podence"
+            }
+          },
+          "temporalCoverage": {
+            "startDate": "2026-02-01",
+            "endDate": "2026-02-28"
+          }
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "LOCAL_CARETOS_PODENCE",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-7.2300, 41.3400],
+            [-7.2300, 41.3450],
+            [-7.2230, 41.3450],
+            [-7.2230, 41.3400],
+            [-7.2300, 41.3400]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "LOCAL_CARETOS_PODENCE",
+        "name": "Área do Ritual dos Caretos (Podence)",
+        "description": "Polígono que delimita a área tradicional do Ritual dos Caretos em Podence, incluindo a praça principal e as ruas por onde os Caretos passam.",
+        "type": "Área de Atuação",
+        "coordinates": {
+          "center": {
+            "latitude": 41.3426,
+            "longitude": -7.2266
+          },
+          "boundingBox": {
+            "minLatitude": 41.3400,
+            "maxLatitude": 41.3450,
+            "minLongitude": -7.2300,
+            "maxLongitude": -7.2230
+          }
+        },
+        "metadata": {
+          "created": "2026-06-25T10:00:00Z",
+          "creator": "Nuno Filipe (ORCID:0009-0009-1781-4020)",
+          "license": "CC-BY-SA-4.0"
+        }
+      }
+    }
+  ]
+}
