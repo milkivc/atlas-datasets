@@ -1,0 +1,32 @@
+name: Sync with Codeberg
+
+on:
+  push:
+    branches:
+      - master
+      - main
+
+jobs:
+  sync-codeberg:
+    name: Mirror repository to Codeberg
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Sync to Codeberg
+        env:
+          CODEBERG_TOKEN: ${{ secrets.CODEBERG_TOKEN }}
+          CODEBERG_USER: ${{ secrets.CODEBERG_USER }}
+          CODEBERG_REPO: ${{ secrets.CODEBERG_REPO }}
+        run: |
+          # Configurar remote do Codeberg
+          git remote add codeberg https://${{ secrets.CODEBERG_USER }}:${{ secrets.CODEBERG_TOKEN }}@codeberg.org/${{ secrets.CODEBERG_USER }}/${{ secrets.CODEBERG_REPO }}.git
+          
+          # Fazer push para o Codeberg (mirror)
+          git push --mirror codeberg
+          
+          echo "✅ Sincronização com Codeberg concluída!"
+          echo "🔗 Repositório no Codeberg: https://codeberg.org/${{ secrets.CODEBERG_USER }}/${{ secrets.CODEBERG_REPO }}"
