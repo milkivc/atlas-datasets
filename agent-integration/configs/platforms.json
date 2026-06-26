@@ -1,0 +1,160 @@
+{
+  "platforms": {
+    "zenodo": {
+      "name": "Zenodo",
+      "type": "repository",
+      "api_url": "https://zenodo.org/api",
+      "deposit_endpoint": "/deposit/depositions",
+      "publish_endpoint": "/deposit/depositions/{id}/actions/publish",
+      "files_endpoint": "/deposit/depositions/{id}/files",
+      "token_required": true,
+      "token_env": "ZENODO_TOKEN",
+      "community": "milkivc",
+      "access_right": "open",
+      "license_default": "EUPL-1.2",
+      "metadata_standard": "DataCite 4.4",
+      "doi_prefix": "10.5281/zenodo",
+      "enabled": true,
+      "priority": 1,
+      "features": [
+        "doi_minting",
+        "metadata_preservation",
+        "file_storage",
+        "versioning",
+        "community_support"
+      ]
+    },
+    "orcid": {
+      "name": "ORCID",
+      "type": "researcher_id",
+      "api_url": "https://api.orcid.org/v3.0",
+      "sandbox_api_url": "https://api.sandbox.orcid.org/v3.0",
+      "record_endpoint": "/{orcid}/record",
+      "works_endpoint": "/{orcid}/works",
+      "token_required": true,
+      "token_env": "ORCID_TOKEN",
+      "client_id_env": "ORCID_CLIENT_ID",
+      "client_secret_env": "ORCID_CLIENT_SECRET",
+      "scope": "/read-limited /activities/update /person/update",
+      "enabled": true,
+      "priority": 2,
+      "features": [
+        "researcher_identification",
+        "publication_linking",
+        "affiliation_management",
+        "funding_linking"
+      ]
+    },
+    "forgero": {
+      "name": "Forgero",
+      "type": "forge",
+      "api_url": "https://forgero.eu/api/v1",
+      "repositories_endpoint": "/repositories",
+      "token_required": true,
+      "token_env": "FORGERO_TOKEN",
+      "enabled": false,
+      "priority": 3,
+      "features": [
+        "european_hosting",
+        "git_repositories",
+        "issue_tracking",
+        "ci_cd_integration"
+      ],
+      "note": "Integração pendente de token de API. Forgero é parte do European Open Science Cloud."
+    },
+    "codeberg": {
+      "name": "Codeberg",
+      "type": "repository",
+      "api_url": "https://codeberg.org/api/v1",
+      "repos_endpoint": "/repos",
+      "token_required": true,
+      "token_env": "CODEBERG_TOKEN",
+      "canonical": true,
+      "enabled": true,
+      "priority": 4,
+      "features": [
+        "git_hosting",
+        "issue_tracking",
+        "pull_requests",
+        "wiki",
+        "european_hosting"
+      ]
+    },
+    "github": {
+      "name": "GitHub",
+      "type": "repository",
+      "api_url": "https://api.github.com",
+      "repos_endpoint": "/repos",
+      "token_required": true,
+      "token_env": "GITHUB_TOKEN",
+      "mirror": true,
+      "enabled": true,
+      "priority": 5,
+      "features": [
+        "git_hosting",
+        "actions",
+        "pages",
+        "packages",
+        "discussions"
+      ]
+    },
+    "datacite": {
+      "name": "DataCite",
+      "type": "doi_registry",
+      "api_url": "https://api.datacite.org",
+      "doi_endpoint": "/dois",
+      "token_required": true,
+      "token_env": "DATACITE_TOKEN",
+      "enabled": false,
+      "priority": 6,
+      "features": [
+        "doi_minting",
+        "metadata_registration",
+        "resolution"
+      ],
+      "note": "Integração direta com DataCite para registro de DOI alternativo."
+    }
+  },
+  "repositories": {
+    "atlas-datasets": {
+      "name": "Atlas Vivo - Datasets",
+      "description": "Repositorio central de datasets geospaciais e culturais",
+      "github_url": "https://github.com/milkivc/atlas-datasets",
+      "codeberg_url": "https://codeberg.org/milkivc/associacao-milk-marco-zero",
+      "type": "dataset",
+      "primary": true,
+      "sync_enabled": true,
+      "platforms": ["zenodo", "codeberg", "github"],
+      "metadata_files": ["metadata.json", "codemeta.json", ".zenodo.json", "CITATION.cff"]
+    },
+    "atlas-docs": {
+      "name": "Atlas Vivo MILK - Documentação",
+      "description": "Documentacao tecnica, legal e financeira",
+      "github_url": "https://github.com/milkivc/atlas-docs",
+      "type": "documentation",
+      "sync_enabled": true,
+      "platforms": ["zenodo", "github"],
+      "metadata_files": ["metadata.json", ".zenodo.json", "CITATION.cff"]
+    },
+    "atlas-vivo-milk": {
+      "name": "Atlas Vivo MILK",
+      "description": "Plataforma Web para preservacao e mapeamento do patrimonio imaterial",
+      "github_url": "https://github.com/milkivc/atlas-vivo-milk",
+      "type": "software",
+      "sync_enabled": true,
+      "platforms": ["zenodo", "github"],
+      "metadata_files": ["metadata.json", ".zenodo.json", "CITATION.cff"]
+    }
+  },
+  "sync_settings": {
+    "auto_sync_on_push": true,
+    "auto_sync_on_release": true,
+    "auto_sync_on_schedule": true,
+    "sync_schedule": "0 2 * * *",
+    "validate_before_sync": true,
+    "create_doi_on_publish": true,
+    "link_orcids": true,
+    "update_cross_references": true,
+    "notify_on_failure": true
+  }
+}

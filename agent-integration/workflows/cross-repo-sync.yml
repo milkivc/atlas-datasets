@@ -1,0 +1,440 @@
+name: 🔗 Cross-Repository Sync - Sincronizacao entre Repositorios
+
+# Workflow para sincronizacao de metadados entre todos os repositorios do Atlas Vivo
+# Garante consistencia de versoes, links e referencias cruzadas
+
+on:
+  push:
+    branches: [ master, main ]
+    paths:
+      - 'metadata.json'
+      - '.zenodo.json'
+      - 'codemeta.json'
+      - 'CITATION.cff'
+  
+  workflow_dispatch:
+    inputs:
+      force_sync:
+        description: 'Forcar sincronizacao completa'
+        required: false
+        default: 'false'
+      dry_run:
+        description: 'Modo dry-run (simulacao)'
+        required: false
+        default: 'false'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  # Job 1: Identificar repositorios a sincronizar
+  identify-repos:
+    name: Identificacao de Repositorios
+    runs-on: ubuntu-latest
+    outputs:
+      repos: ${{ steps.identify.outputs.repos }}
+      current_repo: ${{ steps.identify.outputs.current_repo }}
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Identify repositories
+        id: identify
+        run: |
+          python3 << 'EOF'
+          import json
+          from pathlib import Path
+          
+          # Carregar configuracao
+          config_path = Path('agent-integration/configs/platforms.json')
+          if config_path.exists():
+              with open(config_path) as f:
+                  config = json.load(f)
+          else:
+              config = {'repositories': {}}
+          
+          # Obter lista de repositorios
+          repos = list(config.get('repositories', {}).keys())
+          
+          # Repositorio atual
+          import os
+          current_repo = os.environ.get('GITHUB_REPOSITORY', 'milkivc/atlas-datasets')
+          
+          print(f"Repositorios a sincronizar: {', '.join(repos)}")
+          print(f"Repositorio atual: {current_repo}")
+          
+          # Output
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f"repos={','.join(repos)}\n")
+              f.write(f"current_repo={current_repo}\n")
+          EOF
+
+  # Job 2: Sincronizar metadados entre repositorios
+  sync-metadata:
+    name: Sincronizacao de Metadados
+    runs-on: ubuntu-latest
+    needs: identify-repos
+    strategy:
+      matrix:
+        repo: ${{ fromJson(needs.identify-repos.outputs.repos) }}
+    
+    steps:
+      - name: Checkout current repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: pip install requests pyyaml
+      
+      - name: Sync metadata with ${{ matrix.repo }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
+          CURRENT_REPO: ${{ needs.identify-repos.outputs.current_repo }}
+          TARGET_REPO: ${{ matrix.repo }}
+        run: |
+          python3 << 'EOF'
+          import os
+          import json
+          import requests
+          from pathlib import Path
+          
+          dry_run = os.environ.get('DRY_RUN', 'false').lower() == 'true'
+          current_repo = os.environ.get('CURRENT_REPO')
+          target_repo = os.environ.get('TARGET_REPO')
+          token = os.environ.get('GITHUB_TOKEN')
+          
+          # Pular se for o mesmo repositorio
+          if current_repo.endswith(f"/{target_repo}") or current_repo == target_repo:
+              print(f"⏭️  Pulando sincronizacao (mesmo repositorio: {target_repo})")
+              exit(0)
+          
+          print(f"🔄 Sincronizando metadados com {target_repo}...")
+          
+          # Carregar configuracao
+          config_path = Path('agent-integration/configs/platforms.json')
+          if config_path.exists():
+              with open(config_path) as f:
+                  config = json.load(f)
+          else:
+              config = {'repositories': {}}
+          
+          target_config = config.get('repositories', {}).get(target_repo)
+          if not target_config:
+              print(f"⚠️  Configuracao para {target_repo} nao encontrada")
+              exit(0)
+          
+          # Obter metadados do repositorio atual
+          metadata_files = ['metadata.json', '.zenodo.json', 'codemeta.json', 'CITATION.cff']
+          current_metadata = {}
+          
+          for file in metadata_files:
+              file_path = Path(file)
+              if file_path.exists():
+                  try:
+                      with open(file_path) as f:
+                          data = json.load(f)
+                      current_metadata[file] = data
+                  except:
+                      pass
+          
+          if not current_metadata:
+              print(f"⚠️  Nenhum arquivo de metadados encontrado")
+              exit(0)
+          
+          # Obter metadados do repositorio alvo
+          target_url = f"https://api.github.com/repos/milkivc/{target_repo}/contents"
+          headers = {"Authorization": f"token {token}"}
+          
+          try:
+              response = requests.get(f"{target_url}/metadata.json", headers=headers)
+              if response.status_code == 200:
+                  import base64
+                  target_metadata = json.loads(base64.b64decode(response.json()['content']).decode())
+              else:
+                  target_metadata = {}
+          except Exception as e:
+              print(f"⚠️  Erro ao obter metadados de {target_repo}: {e}")
+              target_metadata = {}
+          
+          # Atualizar referencias cruzadas
+          print(f"  🔗 Atualizando referencias cruzadas...")
+          
+          for file, metadata in current_metadata.items():
+              if isinstance(metadata, dict):
+                  # Adicionar link para o repositorio alvo
+                  related_links = metadata.get('relatedLink', [])
+                  
+                  link = {
+                      '@type': 'Link',
+                      'name': target_config.get('name', target_repo),
+                      'url': target_config.get('github_url', f'https://github.com/milkivc/{target_repo}')
+                  }
+                  
+                  if link not in related_links:
+                      related_links.append(link)
+                      metadata['relatedLink'] = related_links
+                      
+                      if dry_run:
+                          print(f"    🔸 [DRY RUN] Adicionaria link para {target_repo} em {file}")
+                      else:
+                          # Atualizar arquivo localmente
+                          with open(file, 'w') as f:
+                              json.dump(metadata, f, indent=2)
+                          print(f"    ✅ {file} atualizado com link para {target_repo}")
+          
+          # Commit das alteracoes
+          if not dry_run and current_metadata:
+              import subprocess
+              subprocess.run(['git', 'config', '--global', 'user.name', 'GitHub Actions'])
+              subprocess.run(['git', 'config', '--global', 'user.email', 'actions@github.com'])
+              subprocess.run(['git', 'add'] + list(current_metadata.keys()))
+              subprocess.run(['git', 'commit', '-m', f'chore: add cross-reference to {target_repo}'])
+              subprocess.run(['git', 'push', 'origin', 'HEAD:master'])
+              print(f"  ✅ Alteracoes commitadas")
+          
+          print(f"✅ Sincronizacao com {target_repo} concluida")
+          EOF
+
+  # Job 3: Sincronizar versoes
+  sync-versions:
+    name: Sincronizacao de Versoes
+    runs-on: ubuntu-latest
+    needs: identify-repos
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Sync versions across repositories
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
+        run: |
+          python3 << 'EOF'
+          import os
+          import json
+          import requests
+          from pathlib import Path
+          
+          dry_run = os.environ.get('DRY_RUN', 'false').lower() == 'true'
+          token = os.environ.get('GITHUB_TOKEN')
+          
+          print("🔢 Sincronizando versoes entre repositorios...")
+          
+          # Carregar configuracao
+          config_path = Path('agent-integration/configs/platforms.json')
+          if config_path.exists():
+              with open(config_path) as f:
+                  config = json.load(f)
+          else:
+              config = {'repositories': {}}
+          
+          repos = list(config.get('repositories', {}).keys())
+          
+          # Obter versoes atuais
+          versions = {}
+          for repo in repos:
+              try:
+                  # Tentar obter versao do metadata.json
+                  if Path('metadata.json').exists():
+                      with open('metadata.json') as f:
+                          data = json.load(f)
+                      versions[repo] = data.get('version', 'unknown')
+                  else:
+                      versions[repo] = 'unknown'
+              except:
+                  versions[repo] = 'unknown'
+          
+          print(f"  Versoes atuais: {versions}")
+          
+          # Determinar versao mais recente
+          latest_version = max(versions.values())
+          print(f"  Versao mais recente: {latest_version}")
+          
+          # Atualizar todos os repositorios para a versao mais recente
+          for repo in repos:
+              if versions[repo] != latest_version:
+                  print(f"  🔄 Atualizando {repo} de {versions[repo]} para {latest_version}")
+                  
+                  if dry_run:
+                      print(f"    🔸 [DRY RUN] Atualizaria versao")
+                  else:
+                      # Atualizar metadata.json
+                      if Path('metadata.json').exists():
+                          with open('metadata.json') as f:
+                              data = json.load(f)
+                          data['version'] = latest_version
+                          with open('metadata.json', 'w') as f:
+                              json.dump(data, f, indent=2)
+                          print(f"    ✅ metadata.json atualizado")
+                      
+                      # Atualizar .zenodo.json
+                      if Path('.zenodo.json').exists():
+                          with open('.zenodo.json') as f:
+                              data = json.load(f)
+                          if 'metadata' in data:
+                              data['metadata']['version'] = latest_version
+                          else:
+                              data['version'] = latest_version
+                          with open('.zenodo.json', 'w') as f:
+                              json.dump(data, f, indent=2)
+                          print(f"    ✅ .zenodo.json atualizado")
+                      
+                      # Atualizar codemeta.json
+                      if Path('codemeta.json').exists():
+                          with open('codemeta.json') as f:
+                              data = json.load(f)
+                          data['version'] = latest_version
+                          with open('codemeta.json', 'w') as f:
+                              json.dump(data, f, indent=2)
+                          print(f"    ✅ codemeta.json atualizado")
+                      
+                      # Commit
+                      import subprocess
+                      subprocess.run(['git', 'config', '--global', 'user.name', 'GitHub Actions'])
+                      subprocess.run(['git', 'config', '--global', 'user.email', 'actions@github.com'])
+                      subprocess.run(['git', 'add', 'metadata.json', '.zenodo.json', 'codemeta.json'])
+                      subprocess.run(['git', 'commit', '-m', f'chore: sync version to {latest_version}'])
+                      subprocess.run(['git', 'push', 'origin', 'HEAD:master'])
+          
+          print("✅ Sincronizacao de versoes concluida")
+          EOF
+
+  # Job 4: Validacao de consistencia
+  validate-consistency:
+    name: Validacao de Consistencia
+    runs-on: ubuntu-latest
+    needs: [sync-metadata, sync-versions]
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Validate cross-repository consistency
+        run: |
+          python3 << 'EOF'
+          import json
+          from pathlib import Path
+          
+          print("✅ Validando consistencia entre repositorios...")
+          
+          # Carregar configuracao
+          config_path = Path('agent-integration/configs/platforms.json')
+          if config_path.exists():
+              with open(config_path) as f:
+                  config = json.load(f)
+          else:
+              config = {'repositories': {}}
+          
+          repos = list(config.get('repositories', {}).keys())
+          
+          # Verificar se todos os repositorios tem links para os outros
+          all_consistent = True
+          
+          for repo in repos:
+              print(f"\n  Verificando {repo}...")
+              
+              # Verificar metadata.json
+              if Path('metadata.json').exists():
+                  with open('metadata.json') as f:
+                      metadata = json.load(f)
+                  
+                  related_links = metadata.get('relatedLink', [])
+                  repo_urls = [link.get('url', '') for link in related_links]
+                  
+                  for other_repo in repos:
+                      if other_repo != repo:
+                          expected_url = f'https://github.com/milkivc/{other_repo}'
+                          if expected_url not in repo_urls:
+                              print(f"    ⚠️  Link para {other_repo} nao encontrado")
+                              all_consistent = False
+                          else:
+                              print(f"    ✅ Link para {other_repo} encontrado")
+              else:
+                  print(f"    ⚠️  metadata.json nao encontrado")
+                  all_consistent = False
+          
+          if all_consistent:
+              print("\n✅ TODOS OS REPOSITORIOS ESTAO CONSISTENTES!")
+          else:
+              print("\n⚠️  INCONSISTENCIAS ENCONTRADAS")
+          
+          # Sair com codigo apropriado
+          import sys
+          sys.exit(0 if all_consistent else 1)
+          EOF
+
+  # Job 5: Geracao de relatorio
+  generate-report:
+    name: Geracao de Relatorio
+    runs-on: ubuntu-latest
+    needs: [identify-repos, sync-metadata, sync-versions, validate-consistency]
+    if: always()
+    
+    steps:
+      - name: Generate cross-repo sync report
+        run: |
+          echo ""
+          echo "=" | tr '=' '-' | head -c 80
+          echo ""
+          echo "📊 RELATORIO DE SINCRONIZACAO ENTRE REPOSITORIOS"
+          echo "=" | tr '=' '-' | head -c 80
+          echo ""
+          echo "📅 Data: $(date)"
+          echo "🏷️  Workflow: $GITHUB_WORKFLOW"
+          echo "🔢 Run ID: $GITHUB_RUN_ID"
+          echo ""
+          
+          echo "📈 Status:"
+          echo "  Identificacao: ${{ needs.identify-repos.result }}"
+          echo "  Sincronizacao de Metadados: ${{ needs.sync-metadata.result }}"
+          echo "  Sincronizacao de Versoes: ${{ needs.sync-versions.result }}"
+          echo "  Validacao de Consistencia: ${{ needs.validate-consistency.result }}"
+          echo ""
+          
+          ALL_SUCCESS=$(
+            [[ "${{ needs.identify-repos.result }}" == "success" ]] && \
+            [[ "${{ needs.sync-metadata.result }}" == "success" ]] && \
+            [[ "${{ needs.sync-versions.result }}" == "success" ]] && \
+            [[ "${{ needs.validate-consistency.result }}" == "success" ]] && \
+            echo "true" || echo "false"
+          )
+          
+          if [ "$ALL_SUCCESS" = "true" ]; then
+            echo "✅ SINCRONIZACAO ENTRE REPOSITORIOS CONCLUIDA COM SUCESSO!"
+          else
+            echo "⚠️  ALGUMAS ETAPAS FALHARAM"
+          fi
+          
+          echo ""
+          echo "=" | tr '=' '-' | head -c 80
+          echo ""
+      
+      - name: Upload report as artifact
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: cross-repo-sync-report
+          path: |
+            echo "Cross-repo sync report" > cross-repo-sync-report.txt
+            echo "Date: $(date)" >> cross-repo-sync-report.txt
+            echo "Status: ${{ needs.validate-consistency.result }}" >> cross-repo-sync-report.txt
+          retention-days: 30

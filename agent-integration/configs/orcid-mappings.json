@@ -1,0 +1,107 @@
+{
+  "collaborators": [
+    {
+      "id": "nuno-filipe",
+      "name": "Nuno Filipe Fernandes Vieira Cabral e Araujo",
+      "orcid": "0009-0009-1781-4020",
+      "orcid_url": "https://orcid.org/0009-0009-1781-4020",
+      "email": "nuno@associacaomilk.pt",
+      "affiliation": "Associacao MILK - Movimento de Intervencoes e Linguagens Kulturais e Arte",
+      "affiliation_ror": "https://ror.org/05ma71t58",
+      "roles": [
+        "Curatorial Lead",
+        "Researcher",
+        "Data Curator",
+        "Project Member"
+      ],
+      "alternative_orcids": ["0009-0004-9132-2925"],
+      "verified": true,
+      "verification_date": "2026-06-25",
+      "api_access": true,
+      "works_linking_enabled": true,
+      "funding_linking_enabled": true,
+      "preferred": true
+    },
+    {
+      "id": "eduardo-mauricio",
+      "name": "Eduardo Mauricio Vieira Cabral e Araujo",
+      "orcid": "0009-0007-6892-6570",
+      "orcid_url": "https://orcid.org/0009-0007-6892-6570",
+      "email": "eduardo@associacaomilk.pt",
+      "affiliation": "Associacao MILK - Movimento de Intervencoes e Linguagens Kulturais e Arte",
+      "affiliation_ror": "https://ror.org/05ma71t58",
+      "roles": [
+        "Technical Lead",
+        "Developer",
+        "Data Manager",
+        "Project Member"
+      ],
+      "alternative_orcids": ["0009-0004-9132-2925"],
+      "verified": true,
+      "verification_date": "2026-06-25",
+      "api_access": true,
+      "works_linking_enabled": true,
+      "funding_linking_enabled": true,
+      "preferred": true
+    }
+  ],
+  "organization": {
+    "name": "Associacao MILK - Movimento de Intervencoes e Linguagens Kulturais e Arte",
+    "ror_id": "https://ror.org/05ma71t58",
+    "website": "https://github.com/milkivc",
+    "email": "milk@associacaomilk.pt",
+    "nipc": "518706451",
+    "country": "PT",
+    "type": "Non-profit Organization",
+    "description": "Associacao sem fins lucrativos dedicada a preservacao e promocao do patrimonio cultural imaterial portugueses"
+  },
+  "orcid_api": {
+    "production": {
+      "base_url": "https://api.orcid.org/v3.0",
+      "oauth_url": "https://orcid.org/oauth",
+      "token_url": "https://orcid.org/oauth/token",
+      "authorize_url": "https://orcid.org/oauth/authorize"
+    },
+    "sandbox": {
+      "base_url": "https://api.sandbox.orcid.org/v3.0",
+      "oauth_url": "https://sandbox.orcid.org/oauth",
+      "token_url": "https://sandbox.orcid.org/oauth/token",
+      "authorize_url": "https://sandbox.orcid.org/oauth/authorize"
+    },
+    "scopes": {
+      "read_public": "/read-public",
+      "read_limited": "/read-limited",
+      "activities_update": "/activities/update",
+      "person_update": "/person/update",
+      "funding_update": "/funding/update"
+    },
+    "required_scopes": [
+      "/read-limited",
+      "/activities/update",
+      "/person/update"
+    ]
+  },
+  "work_types": {
+    "dataset": {
+      "type": "data-set",
+      "subtypes": ["collection", "geospatial", "cultural-heritage"]
+    },
+    "software": {
+      "type": "software",
+      "subtypes": ["application", "web-application", "library"]
+    },
+    "publication": {
+      "type": "publication",
+      "subtypes": ["report", "technical-report", "documentation"]
+    }
+  },
+  "linking_rules": {
+    "auto_link_on_publish": true,
+    "auto_link_on_doi_minting": true,
+    "include_affiliation": true,
+    "include_funding": true,
+    "include_related_works": true,
+    "visibility": "public",
+    "put_code": "0000-0003-4923-1987"  // Put code da Associacao MILK (a ser obtido)
+  }
+}

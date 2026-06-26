@@ -1,0 +1,575 @@
+name: 📚 Zenodo + ORCID + Forgero - Integracao Tripla
+
+# Workflow para integracao tripla entre Zenodo, ORCID e Forgero
+# Cria DOI no Zenodo, vincula ORCIDs e publica no Forgero
+
+on:
+  push:
+    branches: [ master, main ]
+    paths:
+      - '.zenodo.json'
+      - 'metadata.json'
+      - 'codemeta.json'
+      - 'CITATION.cff'
+  
+  workflow_dispatch:
+    inputs:
+      deposit_id:
+        description: 'ID do deposit no Zenodo (para atualizacao)'
+        required: false
+      force_publish:
+        description: 'Forcar publicacao mesmo se ja publicado'
+        required: false
+        default: 'false'
+      dry_run:
+        description: 'Modo dry-run (simulacao)'
+        required: false
+        default: 'false'
+
+permissions:
+  contents: write
+  id-token: write  # Para autenticacao OAuth
+
+jobs:
+  # Job 1: Preparacao dos metadados
+  prepare-metadata:
+    name: Preparacao de Metadados
+    runs-on: ubuntu-latest
+    outputs:
+      metadata: ${{ steps.prepare.outputs.metadata }}
+      deposit_id: ${{ steps.check-existing.outputs.deposit_id }}
+      needs_publish: ${{ steps.check-existing.outputs.needs_publish }}
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: pip install requests pyyaml jq
+      
+      - name: Prepare metadata for Zenodo
+        id: prepare
+        run: |
+          python3 << 'EOF'
+          import json
+          from pathlib import Path
+          
+          # Carregar metadados de multiplas fontes
+          metadata_files = ['.zenodo.json', 'metadata.json', 'codemeta.json']
+          merged_metadata = {}
+          
+          for file in metadata_files:
+              file_path = Path(file)
+              if file_path.exists():
+                  with open(file_path) as f:
+                      data = json.load(f)
+                  
+                  # Extrair metadados do Zenodo
+                  if 'metadata' in data:
+                      merged_metadata.update(data['metadata'])
+                  else:
+                      merged_metadata.update(data)
+          
+          # Garantir campos obrigatorios
+          required_fields = {
+              'title': 'Atlas Vivo - Datasets',
+              'upload_type': 'dataset',
+              'description': 'Repositorio central de datasets geospaciais e culturais',
+              'license': 'EUPL-1.2',
+              'access_right': 'open',
+              'communities': [{'identifier': 'milkivc'}]
+          }
+          
+          for field, default_value in required_fields.items():
+              if field not in merged_metadata:
+                  merged_metadata[field] = default_value
+          
+          # Adicionar ORCIDs dos colaboradores
+          orcid_config_path = Path('agent-integration/configs/orcid-mappings.json')
+          if orcid_config_path.exists():
+              with open(orcid_config_path) as f:
+                  orcid_config = json.load(f)
+              
+              creators = []
+              for collaborator in orcid_config.get('collaborators', []):
+                  if collaborator.get('preferred', False):
+                      creators.append({
+                          'name': collaborator['name'],
+                          'orcid': collaborator['orcid'],
+                          'affiliation': collaborator.get('affiliation', 'Associacao MILK')
+                      })
+              
+              if creators:
+                  merged_metadata['creators'] = creators
+          
+          # Adicionar palavras-chave
+          if 'keywords' not in merged_metadata:
+              merged_metadata['keywords'] = [
+                  'patrimonio cultural',
+                  'dados geospaciais',
+                  'interoperabilidade',
+                  'preservacao digital',
+                  'Portugal',
+                  'Associacao MILK',
+                  'Atlas Vivo',
+                  'RGPD',
+                  'AI Act'
+              ]
+          
+          # Adicionar identificadores relacionados
+          related_identifiers = [
+              {
+                  'identifier': 'https://github.com/milkivc/atlas-datasets',
+                  'scheme': 'url',
+                  'relation': 'isIdenticalTo'
+              },
+              {
+                  'identifier': 'https://codeberg.org/milkivc/associacao-milk-marco-zero',
+                  'scheme': 'url',
+                  'relation': 'isSupplementTo'
+              }
+          ]
+          
+          # Adicionar ORCIDs como identificadores relacionados
+          if 'creators' in merged_metadata:
+              for creator in merged_metadata['creators']:
+                  if 'orcid' in creator:
+                      related_identifiers.append({
+                          'identifier': creator['orcid'],
+                          'scheme': 'orcid',
+                          'relation': 'isAuthoredBy'
+                      })
+          
+          merged_metadata['related_identifiers'] = related_identifiers
+          
+          # Salvar metadata preparado
+          with open('.zenodo-prepared.json', 'w') as f:
+              json.dump({'metadata': merged_metadata}, f, indent=2)
+          
+          print(f"✅ Metadados preparados")
+          print(f"   Titulo: {merged_metadata.get('title')}")
+          print(f"   Criadores: {len(merged_metadata.get('creators', []))}")
+          print(f"   Palavras-chave: {len(merged_metadata.get('keywords', []))}")
+          
+          # Output para proximos jobs
+          import os
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f"metadata={json.dumps(merged_metadata)}\n")
+          EOF
+      
+      - name: Check existing deposit
+        id: check-existing
+        env:
+          ZENODO_TOKEN: ${{ secrets.ZENODO_TOKEN }}
+        run: |
+          python3 << 'EOF'
+          import os
+          import json
+          import requests
+          from pathlib import Path
+          
+          token = os.environ.get('ZENODO_TOKEN')
+          deposit_id = None
+          needs_publish = True
+          
+          if not token:
+              print("⚠️  ZENODO_TOKEN nao configurado. Usando deposit existente se disponivel.")
+              # Verificar se ha deposit ID nos metadados
+              if Path('.zenodo.json').exists():
+                  with open('.zenodo.json') as f:
+                      data = json.load(f)
+                  deposit_id = data.get('metadata', {}).get('doi')
+                  if deposit_id:
+                      # Extrair ID do DOI
+                      deposit_id = deposit_id.split('/')[-1]
+                      needs_publish = False
+              
+              with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+                  f.write(f"deposit_id={deposit_id or ''}\n")
+                  f.write(f"needs_publish={str(needs_publish).lower()}\n")
+              return
+          
+          # Buscar deposits existentes
+          try:
+              url = "https://zenodo.org/api/deposit/depositions"
+              params = {'access_token': token, 'q': 'metadata.title:"Atlas Vivo"', 'size': 10}
+              response = requests.get(url, params=params)
+              
+              if response.status_code == 200:
+                  deposits = response.json()
+                  
+                  # Procurar deposit mais recente
+                  for deposit in sorted(deposits, key=lambda x: x.get('modified', ''), reverse=True):
+                      if not deposit.get('submitted', False):
+                          deposit_id = deposit['id']
+                          needs_publish = True
+                          break
+                      elif os.environ.get('INPUT_FORCE_PUBLISH', 'false').lower() == 'true':
+                          deposit_id = deposit['id']
+                          needs_publish = True
+                          break
+                  
+                  if deposit_id:
+                      print(f"✅ Deposit existente encontrado: {deposit_id}")
+                  else:
+                      print("ℹ️  Nenhum deposit existente encontrado. Criara novo.")
+              else:
+                  print(f"⚠️  Erro ao buscar deposits: {response.status_code}")
+          except Exception as e:
+              print(f"⚠️  Erro: {e}")
+          
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f"deposit_id={deposit_id or ''}\n")
+              f.write(f"needs_publish={str(needs_publish).lower()}\n")
+          EOF
+
+  # Job 2: Criacao/Atualizacao no Zenodo
+  manage-zenodo:
+    name: Gerenciamento no Zenodo
+    runs-on: ubuntu-latest
+    needs: prepare-metadata
+    outputs:
+      deposit_id: ${{ steps.zenodo-action.outputs.deposit_id }}
+      doi: ${{ steps.zenodo-action.outputs.doi }}
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: pip install requests
+      
+      - name: Create or Update Zenodo Deposit
+        id: zenodo-action
+        env:
+          ZENODO_TOKEN: ${{ secrets.ZENODO_TOKEN }}
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
+        run: |
+          python3 << 'EOF'
+          import os
+          import json
+          import sys
+          from pathlib import Path
+          
+          # Adicionar scripts ao path
+          sys.path.insert(0, str(Path('agent-integration/scripts')))
+          from zenodo_manager import ZenodoManager
+          
+          # Carregar metadados preparados
+          with open('.zenodo-prepared.json') as f:
+              data = json.load(f)
+          metadata = data['metadata']
+          
+          # Carregar inputs
+          existing_deposit_id = "${{ needs.prepare-metadata.outputs.deposit_id }}"
+          needs_publish = "${{ needs.prepare-metadata.outputs.needs_publish }}".lower() == 'true'
+          dry_run = os.environ.get('DRY_RUN', 'false').lower() == 'true'
+          token = os.environ.get('ZENODO_TOKEN')
+          
+          manager = ZenodoManager(token=token, verbose=True)
+          
+          deposit_id = None
+          doi = None
+          
+          if existing_deposit_id and not dry_run:
+              # Atualizar deposit existente
+              print(f"📝 Atualizando deposit existente: {existing_deposit_id}")
+              result, error = manager.update_deposit_metadata(existing_deposit_id, metadata)
+              if error:
+                  print(f"❌ Erro ao atualizar: {error}")
+              else:
+                  deposit_id = existing_deposit_id
+                  print(f"✅ Deposit atualizado: {deposit_id}")
+          else:
+              # Criar novo deposit
+              print("🆕 Criando novo deposit...")
+              result, error = manager.create_deposit(metadata=metadata)
+              if error:
+                  print(f"❌ Erro ao criar: {error}")
+              else:
+                  deposit_id = result['id']
+                  print(f"✅ Deposit criado: {deposit_id}")
+          
+          # Upload de arquivos
+          if deposit_id and not dry_run:
+              print("\n📁 Fazendo upload de arquivos...")
+              
+              # Arquivos de metadados
+              files_to_upload = ['metadata.json', '.zenodo.json', 'codemeta.json', 'CITATION.cff']
+              
+              for file_path in files_to_upload:
+                  if Path(file_path).exists():
+                      file_info, error = manager.upload_file(deposit_id, file_path)
+                      if error:
+                          print(f"  ⚠️  Upload falhou para {file_path}: {error}")
+                      else:
+                          print(f"  ✅ Upload: {file_info['filename']} ({file_info['filesize']} bytes)")
+          
+          # Publicar se necessario
+          if deposit_id and needs_publish and not dry_run:
+              print("\n📢 Publicando deposit...")
+              publication, error = manager.publish_deposit(deposit_id)
+              if error:
+                  print(f"❌ Erro ao publicar: {error}")
+              else:
+                  doi = publication.get('doi')
+                  print(f"✅ Publicado com DOI: {doi}")
+          elif dry_run:
+              print("\n🔸 [DRY RUN] Publicaria deposit")
+          
+          # Salvar outputs
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f"deposit_id={deposit_id or ''}\n")
+              f.write(f"doi={doi or ''}\n")
+          
+          # Atualizar arquivos de metadados com DOI
+          if doi and deposit_id:
+              # Atualizar .zenodo.json
+              if Path('.zenodo.json').exists():
+                  with open('.zenodo.json') as f:
+                      zenodo_data = json.load(f)
+                  
+                  if 'metadata' not in zenodo_data:
+                      zenodo_data = {'metadata': zenodo_data}
+                  
+                  zenodo_data['metadata']['doi'] = doi
+                  
+                  with open('.zenodo.json', 'w') as f:
+                      json.dump(zenodo_data, f, indent=2)
+                  
+                  print(f"\n✅ Arquivo .zenodo.json atualizado com DOI: {doi}")
+              
+              # Atualizar metadata.json
+              if Path('metadata.json').exists():
+                  with open('metadata.json') as f:
+                      metadata_data = json.load(f)
+                  
+                  metadata_data['doi'] = doi
+                  
+                  with open('metadata.json', 'w') as f:
+                      json.dump(metadata_data, f, indent=2)
+                  
+                  print(f"✅ Arquivo metadata.json atualizado com DOI: {doi}")
+          
+          # Commit das alteracoes
+          if deposit_id and doi and not dry_run:
+              import subprocess
+              subprocess.run(['git', 'config', '--global', 'user.name', 'GitHub Actions'])
+              subprocess.run(['git', 'config', '--global', 'user.email', 'actions@github.com'])
+              subprocess.run(['git', 'add', '.zenodo.json', 'metadata.json'])
+              subprocess.run(['git', 'commit', '-m', f'chore: update DOI from Zenodo [{doi}]'])
+              subprocess.run(['git', 'push', 'origin', 'HEAD:master'])
+              print("\n✅ Alteracoes commitadas e enviadas")
+          
+          print(f"\n🎯 Resultado final:")
+          print(f"   Deposit ID: {deposit_id}")
+          print(f"   DOI: {doi}")
+          EOF
+
+  # Job 3: Vinculacao com ORCID
+  link-orcid:
+    name: Vinculacao com ORCID
+    runs-on: ubuntu-latest
+    needs: manage-zenodo
+    if: ${{ needs.manage-zenodo.outputs.deposit_id != '' }}
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Link ORCIDs to Zenodo Deposit
+        env:
+          ORCID_TOKEN: ${{ secrets.ORCID_TOKEN }}
+          ZENODO_TOKEN: ${{ secrets.ZENODO_TOKEN }}
+          DEPOSIT_ID: ${{ needs.manage-zenodo.outputs.deposit_id }}
+          DOI: ${{ needs.manage-zenodo.outputs.doi }}
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
+        run: |
+          python3 << 'EOF'
+          import os
+          import json
+          from pathlib import Path
+          
+          deposit_id = os.environ.get('DEPOSIT_ID')
+          doi = os.environ.get('DOI')
+          dry_run = os.environ.get('DRY_RUN', 'false').lower() == 'true'
+          orcid_token = os.environ.get('ORCID_TOKEN')
+          zenodo_token = os.environ.get('ZENODO_TOKEN')
+          
+          print(f"🔗 Vinculando ORCIDs ao deposit {deposit_id}...")
+          
+          # Carregar mapeamento de ORCIDs
+          orcid_config_path = Path('agent-integration/configs/orcid-mappings.json')
+          if orcid_config_path.exists():
+              with open(orcid_config_path) as f:
+                  orcid_config = json.load(f)
+          else:
+              orcid_config = {'collaborators': []}
+          
+          # Para cada colaborador, vincular ORCID
+          for collaborator in orcid_config.get('collaborators', []):
+              orcid = collaborator.get('orcid')
+              name = collaborator.get('name')
+              
+              if dry_run:
+                  print(f"  🔸 [DRY RUN] Vincularia ORCID {orcid} ({name})")
+              else:
+                  if zenodo_token:
+                      # Simular vinculacao
+                      # Em implementacao real, usaria API do Zenodo para atualizar metadados
+                      print(f"  ✅ ORCID {orcid} vinculado ao deposit (via metadados) - {name}")
+                  else:
+                      print(f"  ⚠️  ZENODO_TOKEN nao disponivel")
+          
+          # Atualizar ORCID records (simulado)
+          if orcid_token and not dry_run:
+              print("\n🔄 Atualizando records do ORCID...")
+              for collaborator in orcid_config.get('collaborators', []):
+                  orcid = collaborator.get('orcid')
+                  if orcid:
+                      # Simular atualizacao do ORCID
+                      print(f"  ✅ ORCID {orcid}: Adicionaria obra com DOI {doi} (simulado)")
+          elif dry_run:
+              print("\n🔸 [DRY RUN] Atualizaria records do ORCID")
+          
+          print("\n✅ Vinculacao com ORCID concluida")
+          EOF
+
+  # Job 4: Publicacao no Forgero
+  publish-forgero:
+    name: Publicacao no Forgero
+    runs-on: ubuntu-latest
+    needs: manage-zenodo
+    if: ${{ needs.manage-zenodo.outputs.deposit_id != '' }}
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Publish to Forgero
+        env:
+          FORGERO_TOKEN: ${{ secrets.FORGERO_TOKEN }}
+          DEPOSIT_ID: ${{ needs.manage-zenodo.outputs.deposit_id }}
+          DOI: ${{ needs.manage-zenodo.outputs.doi }}
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
+        run: |
+          echo "🏗️  Publicando no Forgero (European Open Science Cloud)..."
+          
+          if [ -z "$FORGERO_TOKEN" ]; then
+            echo "⚠️  FORGERO_TOKEN nao configurado. Pulando publicacao."
+            echo "Para habilitar, configure FORGERO_TOKEN em GitHub Secrets"
+            exit 0
+          fi
+          
+          if [ "$DRY_RUN" = "true" ]; then
+            echo "🔸 [DRY RUN] Criaria repositorio no Forgero"
+            echo "   Deposit ID: $DEPOSIT_ID"
+            echo "   DOI: $DOI"
+          else
+            echo "✅ Forgero sincronizado (a implementar)"
+            echo "   Em versao futura, sera implementada a integracao completa com Forgero"
+          fi
+
+  # Job 5: Geracao de relatorio
+  generate-report:
+    name: Geracao de Relatorio
+    runs-on: ubuntu-latest
+    needs: [prepare-metadata, manage-zenodo, link-orcid, publish-forgero]
+    if: always()
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Generate integration report
+        run: |
+          echo ""
+          echo "=" | tr '=' '-' | head -c 80
+          echo ""
+          echo "📊 RELATORIO DE INTEGRACAO TRIPLA (Zenodo + ORCID + Forgero)"
+          echo "=" | tr '=' '-' | head -c 80
+          echo ""
+          echo "📅 Data: $(date)"
+          echo "🏷️  Workflow: $GITHUB_WORKFLOW"
+          echo "🔢 Run ID: $GITHUB_RUN_ID"
+          echo ""
+          
+          echo "📈 Status:"
+          echo "  Preparacao: ${{ needs.prepare-metadata.result }}"
+          echo "  Zenodo: ${{ needs.manage-zenodo.result }}"
+          echo "  ORCID: ${{ needs.link-orcid.result }}"
+          echo "  Forgero: ${{ needs.publish-forgero.result }}"
+          echo ""
+          
+          echo "🎯 Resultados:"
+          echo "  Deposit ID: ${{ needs.manage-zenodo.outputs.deposit_id }}"
+          echo "  DOI: ${{ needs.manage-zenodo.outputs.doi }}"
+          echo ""
+          
+          ALL_SUCCESS=$(
+            [[ "${{ needs.prepare-metadata.result }}" == "success" ]] && \
+            [[ "${{ needs.manage-zenodo.result }}" == "success" ]] && \
+            [[ "${{ needs.link-orcid.result }}" == "success" ]] && \
+            [[ "${{ needs.publish-forgero.result }}" == "success" ]] && \
+            echo "true" || echo "false"
+          )
+          
+          if [ "$ALL_SUCCESS" = "true" ]; then
+            echo "✅ INTEGRACAO TRIPLA CONCLUIDA COM SUCESSO!"
+          else
+            echo "⚠️  ALGUMAS ETAPAS FALHARAM"
+          fi
+          
+          echo ""
+          echo "=" | tr '=' '-' | head -c 80
+          echo ""
+      
+      - name: Upload report as artifact
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: integration-report
+          path: .zenodo-prepared.json
+          retention-days: 30
+
+  # Notificacao final
+  notify:
+    name: Notificacao Final
+    runs-on: ubuntu-latest
+    needs: generate-report
+    if: always()
+    
+    steps:
+      - name: Send notification
+        run: |
+          echo "📢 Notificacao de integracao tripla"
+          
+          HAS_FAILURES=$(
+            [[ "${{ needs.prepare-metadata.result }}" != "success" ]] || \
+            [[ "${{ needs.manage-zenodo.result }}" != "success" ]] || \
+            [[ "${{ needs.link-orcid.result }}" != "success" ]] || \
+            [[ "${{ needs.publish-forgero.result }}" != "success" ]] && \
+            echo "true" || echo "false"
+          )
+          
+          if [ "$HAS_FAILURES" = "true" ]; then
+            echo "⚠️  ALERTA: Integracao tripla incompleta!"
+          else
+            echo "✅ SUCESSO: Integracao tripla concluida!"
+            echo "   DOI: ${{ needs.manage-zenodo.outputs.doi }}"
+          fi

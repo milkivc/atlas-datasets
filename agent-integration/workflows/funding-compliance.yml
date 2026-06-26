@@ -1,0 +1,381 @@
+name: 💰 Funding Compliance Checker - Verificacao de Conformidade para Financiamento
+
+# Workflow para verificacao automatica de conformidade com programas de financiamento
+# Executa verificacoes periodicas e gera relatorios
+
+on:
+  push:
+    branches: [ master, main ]
+    paths:
+      - 'legal/**'
+      - 'metadata.json'
+      - '.zenodo.json'
+      - 'codemeta.json'
+      - 'CITATION.cff'
+      - 'agent-integration/**'
+  
+  schedule:
+    # Verificacao semanal as 3h UTC (segunda-feira)
+    - cron: '0 3 * * 1'
+  
+  workflow_dispatch:
+    inputs:
+      program:
+        description: 'ID do programa especifico a verificar'
+        required: false
+      generate_report:
+        description: 'Gerar relatorio completo'
+        required: false
+        default: 'true'
+      dry_run:
+        description: 'Modo dry-run (simulacao)'
+        required: false
+        default: 'false'
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  # Job 1: Verificacao de conformidade
+  check-compliance:
+    name: Verificacao de Conformidade
+    runs-on: ubuntu-latest
+    outputs:
+      report: ${{ steps.generate-report.outputs.report }}
+      eligible_count: ${{ steps.count-eligible.outputs.count }}
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: pip install requests pyyaml
+      
+      - name: Check compliance with all programs
+        id: check-compliance
+        env:
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
+        run: |
+          python3 << 'EOF'
+          import json
+          import os
+          from pathlib import Path
+          
+          # Adicionar scripts ao path
+          import sys
+          sys.path.insert(0, str(Path('agent-integration/scripts')))
+          from funding_checker import FundingChecker
+          
+          dry_run = os.environ.get('DRY_RUN', 'false').lower() == 'true'
+          program_id = os.environ.get('INPUT_PROGRAM')
+          
+          checker = FundingChecker(verbose=True)
+          
+          if program_id:
+              # Verificar programa especifico
+              result = checker.check_program(program_id)
+              results = {program_id: result}
+          else:
+              # Verificar todos os programas
+              results = checker.check_all_programs()
+          
+          # Gerar relatorio
+          report = {
+              'timestamp': checker.generate_report(program_id)['timestamp'],
+              'results': results
+          }
+          
+          # Salvar relatorio temporario
+          with open('compliance-report.json', 'w') as f:
+              json.dump(report, f, indent=2)
+          
+          # Exibir resumo
+          print("\n📊 Resumo de Conformidade:")
+          print("-"*60)
+          
+          eligible_count = 0
+          for program_id, result in results.items():
+              if result.get('eligible', False):
+                  eligible_count += 1
+              
+              status = "✅" if result.get('eligible') else "❌"
+              print(f"{status} {result.get('program_name')}: {result.get('compliance_rate'):.1f}%")
+          
+          print("-"*60)
+          print(f"Total: {len(results)} programas")
+          print(f"Elegiveis: {eligible_count}")
+          
+          # Salvar outputs
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f"report={json.dumps(report)}\n")
+              f.write(f"count={eligible_count}\n")
+          EOF
+      
+      - name: Generate full report
+        id: generate-report
+        if: ${{ inputs.generate_report == 'true' }}
+        run: |
+          python3 << 'EOF'
+          import json
+          from pathlib import Path
+          
+          # Adicionar scripts ao path
+          import sys
+          sys.path.insert(0, str(Path('agent-integration/scripts')))
+          from funding_checker import FundingChecker
+          
+          checker = FundingChecker(verbose=False)
+          
+          # Gerar relatorio completo
+          report = checker.generate_report()
+          
+          # Salvar relatorio
+          with open('full-compliance-report.json', 'w') as f:
+              json.dump(report, f, indent=2, ensure_ascii=False)
+          
+          # Exibir relatorio
+          checker.print_report(report)
+          
+          # Salvar output
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f"report={json.dumps(report)}\n")
+          EOF
+      
+      - name: Count eligible programs
+        id: count-eligible
+        run: |
+          import json
+          
+          with open('compliance-report.json') as f:
+              report = json.load(f)
+          
+          count = sum(1 for r in report['results'].values() if r.get('eligible', False))
+          
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f"count={count}\n")
+
+  # Job 2: Criar Issue com resultados (se houver problemas)
+  create-issue:
+    name: Criar Issue de Conformidade
+    runs-on: ubuntu-latest
+    needs: check-compliance
+    if: ${{ needs.check-compliance.outputs.eligible_count < 3 }}  # Menos de 3 programas elegiveis
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Create compliance issue
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            
+            // Carregar relatorio
+            let report;
+            try {
+                const data = fs.readFileSync('compliance-report.json', 'utf8');
+                report = JSON.parse(data);
+            } catch (e) {
+                report = { results: {} };
+            }
+            
+            // Contar programas nao elegiveis
+            const nonEligible = [];
+            for (const [id, result] of Object.entries(report.results)) {
+                if (!result.eligible) {
+                    nonEligible.push({
+                        name: result.program_name,
+                        compliance: result.compliance_rate,
+                        failed: result.failed_requirements
+                    });
+                }
+            }
+            
+            if (nonEligible.length === 0) {
+                console.log('Nenhum problema de conformidade encontrado');
+                return;
+            }
+            
+            // Criar issue
+            const issueTitle = `⚠️  Problemas de Conformidade para Financiamento (${nonEligible.length} programas)`;
+            
+            let issueBody = `## 📋 Relatorio de Conformidade\n\n`;
+            issueBody += `**Data**: ${new Date().toISOString()}\n\n`;
+            issueBody += `**Programas nao elegiveis**: ${nonEligible.length}\n\n`;
+            
+            issueBody += `## 📊 Detalhes\n\n`;
+            
+            for (const program of nonEligible) {
+                issueBody += `### ${program.name}\n`;
+                issueBody += `- Conformidade: ${program.compliance}%\n`;
+                issueBody += `- Requisitos nao atendidos:\n`;
+                for (const req of program.failed) {
+                    issueBody += `  - ❌ ${req}\n`;
+                }
+                issueBody += `\n`;
+            }
+            
+            issueBody += `## 💡 Acoes Recomendadas\n\n`;
+            issueBody += `- [ ] Revisar documentacao legal\n`;
+            issueBody += `- [ ] Atualizar metadados\n`;
+            issueBody += `- [ ] Verificar conformidade com RGPD, AI Act e NIS2\n`;
+            
+            await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: issueTitle,
+                body: issueBody,
+                labels: ['compliance', 'funding', 'enhancement']
+            });
+            
+            console.log('Issue criada com sucesso');
+
+  # Job 3: Atualizar badge de conformidade
+  update-badge:
+    name: Atualizar Badge de Conformidade
+    runs-on: ubuntu-latest
+    needs: check-compliance
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Update compliance badge
+        run: |
+          # Calcular porcentagem media de conformidade
+          python3 << 'EOF'
+          import json
+          
+          with open('compliance-report.json') as f:
+              report = json.load(f)
+          
+          total_compliance = sum(r.get('compliance_rate', 0) for r in report['results'].values())
+          avg_compliance = total_compliance / len(report['results']) if report['results'] else 0
+          
+          # Criar badge SVG
+          color = 'brightgreen' if avg_compliance >= 80 else 'orange' if avg_compliance >= 60 else 'red'
+          
+          badge_svg = f'''<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="20">
+  <linearGradient id="b" x2="0" y2="0">
+    <stop offset="0" stop-color="#555"/>
+    <stop offset="1" stop-color="#555"/>
+  </linearGradient>
+  <linearGradient id="a" x2="0" y2="0">
+    <stop offset="0" stop-color="#{color}"/>
+    <stop offset="1" stop-color="#{color}"/>
+  </linearGradient>
+  <path fill="url(#b)" d="M0 0h120v20H0z"/>
+  <path fill="url(#a)" d="M0 0h60v20H0z"/>
+  <g fill="#fff" text-anchor="middle" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11">
+    <text x="30" y="14" fill="#010101">Funding</text>
+    <text x="90" y="14" fill="#010101">{avg_compliance:.0f}%</text>
+  </g>
+</svg>'''
+          
+          with open('docs/badges/funding-compliance.svg', 'w') as f:
+              f.write(badge_svg)
+          
+          print(f"✅ Badge de conformidade atualizado: {avg_compliance:.0f}%")
+          
+          # Commit das alteracoes
+          import subprocess
+          subprocess.run(['git', 'config', '--global', 'user.name', 'GitHub Actions'])
+          subprocess.run(['git', 'config', '--global', 'user.email', 'actions@github.com'])
+          subprocess.run(['git', 'add', 'docs/badges/funding-compliance.svg'])
+          subprocess.run(['git', 'commit', '-m', f'chore: update funding compliance badge [{avg_compliance:.0f}%]'])
+          subprocess.run(['git', 'push', 'origin', 'HEAD:master'])
+          EOF
+
+  # Job 4: Geracao de relatorio final
+  generate-final-report:
+    name: Geracao de Relatorio Final
+    runs-on: ubuntu-latest
+    needs: [check-compliance, create-issue, update-badge]
+    if: always()
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Generate final report
+        run: |
+          echo ""
+          echo "=" | tr '=' '-' | head -c 80
+          echo ""
+          echo "💰 RELATORIO FINAL DE CONFORMIDADE PARA FINANCIAMENTO"
+          echo "=" | tr '=' '-' | head -c 80
+          echo ""
+          echo "📅 Data: $(date)"
+          echo "🏷️  Workflow: $GITHUB_WORKFLOW"
+          echo "🔢 Run ID: $GITHUB_RUN_ID"
+          echo ""
+          
+          echo "📊 Estatisticas:"
+          echo "  Programas verificados: ${{ fromJson(needs.check-compliance.outputs.report).results | length }}"
+          echo "  Programas elegiveis: ${{ needs.check-compliance.outputs.eligible_count }}"
+          echo ""
+          
+          # Verificar se issue foi criada
+          if [ "${{ needs.create-issue.result }}" == "success" ]; then
+            echo "⚠️  Issue de conformidade criada"
+          else
+            echo "✅ Nenhuma issue necessaria"
+          fi
+          
+          echo ""
+          
+          # Verificar status do badge
+          if [ "${{ needs.update-badge.result }}" == "success" ]; then
+            echo "✅ Badge de conformidade atualizado"
+          else
+            echo "⚠️  Badge nao atualizado"
+          fi
+          
+          echo ""
+          echo "=" | tr '=' '-' | head -c 80
+          echo ""
+      
+      - name: Upload report as artifact
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: funding-compliance-report
+          path: |
+            compliance-report.json
+            full-compliance-report.json
+          retention-days: 90
+
+  # Notificacao final
+  notify:
+    name: Notificacao Final
+    runs-on: ubuntu-latest
+    needs: generate-final-report
+    if: always()
+    
+    steps:
+      - name: Send notification
+        run: |
+          echo "📢 Notificacao de conformidade para financiamento"
+          
+          ELEGIBLE_COUNT=${{ needs.check-compliance.outputs.eligible_count }}
+          
+          if [ "$ELEGIBLE_COUNT" -ge 5 ]; then
+            echo "✅ EXCELENTE: Projeto elegivel para $ELEGIBLE_COUNT programas de financiamento!"
+          elif [ "$ELEGIBLE_COUNT" -ge 3 ]; then
+            echo "✅ BOM: Projeto elegivel para $ELEGIBLE_COUNT programas de financiamento"
+          elif [ "$ELEGIBLE_COUNT" -ge 1 ]; then
+            echo "⚠️  ATENCAO: Projeto elegivel para apenas $ELEGIBLE_COUNT programas"
+          else
+            echo "❌ ALERTA: Projeto nao elegivel para nenhum programa!"
+          fi

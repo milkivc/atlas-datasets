@@ -1,0 +1,164 @@
+{
+  "@context": "https://schema.org/",
+  "@type": "Dataset",
+  
+  "identifier": {
+    "@type": "PropertyValue",
+    "propertyID": "doi",
+    "value": "PENDENTE"
+  },
+  
+  "name": "Atlas Vivo - Datasets",
+  "description": "Repositorio central de datasets geospaciais e culturais do projeto Atlas Vivo, contendo documentacao legal fundacional da Associacao MILK para preservacao do patrimonio cultural imaterial portugues.",
+  
+  "version": "v1.0.0",
+  "datePublished": "2026-06-26",
+  "dateModified": "2026-06-26",
+  
+  "license": "https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12",
+  "url": "https://github.com/milkivc/atlas-datasets",
+  
+  "keywords": [
+    "patrimonio cultural",
+    "dados geospaciais",
+    "interoperabilidade",
+    "preservacao digital",
+    "Portugal",
+    "Associacao MILK",
+    "Atlas Vivo",
+    "RGPD",
+    "AI Act",
+    "DataCite"
+  ],
+  
+  "inLanguage": {
+    "@type": "Language",
+    "name": "Portuguese",
+    "alternateName": "pt"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Associacao MILK - Movimento de Intervencoes e Linguagens Kulturais e Arte",
+    "url": "https://github.com/milkivc",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://github.com/milkivc.png"
+    }
+  },
+  
+  "creator": [
+    {
+      "@type": "Person",
+      "name": "Nuno Filipe Fernandes Vieira Cabral e Araujo",
+      "email": "nuno@associacaomilk.pt",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Associacao MILK - Movimento de Intervencoes e Linguagens Kulturais e Arte"
+      },
+      "sameAs": ["https://orcid.org/0009-0009-1781-4020"]
+    },
+    {
+      "@type": "Person",
+      "name": "Eduardo Mauricio Vieira Cabral e Araujo",
+      "email": "eduardo@associacaomilk.pt",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Associacao MILK - Movimento de Intervencoes e Linguagens Kulturais e Arte"
+      },
+      "sameAs": ["https://orcid.org/0009-0007-6892-6570"]
+    }
+  ],
+  
+  "contributor": [
+    {
+      "@type": "Organization",
+      "name": "Associacao MILK - Movimento de Intervencoes e Linguagens Kulturais e Arte",
+      "url": "https://github.com/milkivc",
+      "roleName": ["maintainer", "copyrightHolder", "funder"]
+    }
+  ],
+  
+  "funder": {
+    "@type": "Organization",
+    "name": "Associacao MILK - Movimento de Intervencoes e Linguagens Kulturais e Arte",
+    "url": "https://github.com/milkivc"
+  },
+  
+  "hasPart": [
+    {
+      "@type": "Dataset",
+      "name": "Marco Zero v1.0.0",
+      "description": "Documentacao legal fundacional da Associacao MILK",
+      "url": "https://github.com/milkivc/atlas-datasets/tree/master/documentacao",
+      "datePublished": "2026-06-25"
+    }
+  ],
+  
+  "isPartOf": {
+    "@type": "CreativeWork",
+    "name": "Atlas Vivo MILK",
+    "url": "https://github.com/milkivc/atlas-vivo-milk"
+  },
+  
+  "relatedLink": [
+    {
+      "@type": "Link",
+      "name": "Codeberg Repository (Canonical)",
+      "url": "https://codeberg.org/milkivc/associacao-milk-marco-zero"
+    },
+    {
+      "@type": "Link",
+      "name": "Associacao MILK Website",
+      "url": "https://github.com/milkivc/site-institucional"
+    },
+    {
+      "@type": "Link",
+      "name": "Atlas Vivo MILK - Documentation",
+      "url": "https://github.com/milkivc/atlas-docs"
+    },
+    {
+      "@type": "Link",
+      "name": "Atlas Vivo MILK - Main Platform",
+      "url": "https://github.com/milkivc/atlas-vivo-milk"
+    }
+  ],
+  
+  "conformsTo": [
+    {
+      "@type": "CreativeWork",
+      "name": "DataCite 4.4",
+      "url": "https://schema.datacite.org/meta/kernel-4.4/"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "INSPIRE",
+      "url": "https://inspire.ec.europa.eu/"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "DCAT-AP",
+      "url": "https://joinup.ec.europa.eu/collection/semantic-interoperability-community/solution/dcat-application-profile-data-portals-europe/release/202"
+    }
+  ],
+  
+  "accessMode": "open",
+  "accessModeSuffix": "All users may access the dataset",
+  
+  "distribution": [
+    {
+      "@type": "DataDownload",
+      "name": "Documentacao Legal",
+      "url": "https://github.com/milkivc/atlas-datasets/tree/master/documentacao",
+      "encodingFormat": "application/pdf",
+      "fileSize": "12MB"
+    },
+    {
+      "@type": "DataDownload",
+      "name": "Metadados",
+      "url": "https://github.com/milkivc/atlas-datasets/blob/master/metadata.json",
+      "encodingFormat": "application/json",
+      "fileSize": "10KB"
+    }
+  ]
+}

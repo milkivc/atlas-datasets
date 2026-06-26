@@ -1,0 +1,418 @@
+{
+  "programs": {
+    "european": [
+      {
+        "id": "portugal-2030",
+        "name": "Portugal 2030",
+        "type": "national",
+        "country": "PT",
+        "funding_body": "Government of Portugal",
+        "website": "https://www.portugal2030.pt",
+        "description": "Programa de financiamento para desenvolvimento económico e social de Portugal 2021-2030",
+        "total_budget": "23.5B EUR",
+        "eligible_entities": ["SMEs", "Non-profits", "Research Institutions", "Public Administration"],
+        "eligible_activities": [
+          "Digital Transformation",
+          "Cultural Heritage Preservation",
+          "Innovation",
+          "Research & Development",
+          "Education & Training"
+        ],
+        "max_funding_rate": 85,
+        "compliance_requirements": [
+          "RGPD Compliance",
+          "Environmental Sustainability",
+          "Digital Accessibility",
+          "Open Data Principles"
+        ],
+        "application_period": "2021-2030",
+        "priority": 1,
+        "relevance_score": 100,
+        "tags": ["digital", "culture", "innovation", "research"]
+      },
+      {
+        "id": "fct",
+        "name": "Fundacao para a Ciencia e a Tecnologia (FCT)",
+        "type": "national",
+        "country": "PT",
+        "funding_body": "FCT - Fundacao para a Ciencia e a Tecnologia",
+        "website": "https://www.fct.pt",
+        "description": "Agencia nacional de financiamento para ciencia, tecnologia e inovacao em Portugal",
+        "total_budget": "1.5B EUR (annual)",
+        "eligible_entities": ["Research Institutions", "Higher Education", "Non-profits", "SMEs"],
+        "eligible_activities": [
+          "Basic Research",
+          "Applied Research",
+          "Technology Development",
+          "Knowledge Transfer",
+          "Scientific Dissemination"
+        ],
+        "max_funding_rate": 100,
+        "compliance_requirements": [
+          "Scientific Excellence",
+          "Open Access Publication",
+          "Data Management Plan",
+          "Ethics Compliance",
+          "RGPD Compliance"
+        ],
+        "application_period": "Continuous",
+        "priority": 2,
+        "relevance_score": 95,
+        "tags": ["research", "science", "technology", "innovation"]
+      },
+      {
+        "id": "dgartes",
+        "name": "DGARTES - Direcao-Geral das Artes",
+        "type": "national",
+        "country": "PT",
+        "funding_body": "Ministry of Culture - Portugal",
+        "website": "https://www.dgartes.gov.pt",
+        "description": "Financiamento para projetos culturais e artisticos em Portugal",
+        "total_budget": "50M EUR (annual)",
+        "eligible_entities": ["Cultural Organizations", "Artists", "Non-profits", "Local Authorities"],
+        "eligible_activities": [
+          "Cultural Heritage Preservation",
+          "Artistic Creation",
+          "Cultural Dissemination",
+          "Digital Culture",
+          "Cultural Education"
+        ],
+        "max_funding_rate": 80,
+        "compliance_requirements": [
+          "Cultural Relevance",
+          "Public Access",
+          "Cultural Diversity",
+          "Sustainability"
+        ],
+        "application_period": "Annual calls",
+        "priority": 3,
+        "relevance_score": 90,
+        "tags": ["culture", "arts", "heritage", "digital"]
+      },
+      {
+        "id": "europa-criativa",
+        "name": "Europa Criativa",
+        "type": "eu",
+        "country": "EU",
+        "funding_body": "European Commission",
+        "website": "https://ec.europa.eu/programmes/creative-europe",
+        "description": "Programa da UE para setores culturais e criativos",
+        "total_budget": "2.44B EUR (2021-2027)",
+        "eligible_entities": [
+          "Cultural Organizations",
+          "Creative SMEs",
+          "Non-profits",
+          "Local Authorities"
+        ],
+        "eligible_activities": [
+          "Cultural Heritage",
+          "Performing Arts",
+          "Visual Arts",
+          "Digital Culture",
+          "Cultural Cooperation"
+        ],
+        "max_funding_rate": 80,
+        "compliance_requirements": [
+          "European Dimension",
+          "Cultural Diversity",
+          "Accessibility",
+          "Sustainability",
+          "Open Data"
+        ],
+        "application_period": "Annual calls",
+        "priority": 4,
+        "relevance_score": 85,
+        "tags": ["culture", "creative", "europe", "heritage"]
+      },
+      {
+        "id": "erasmus-plus",
+        "name": "Erasmus+",
+        "type": "eu",
+        "country": "EU",
+        "funding_body": "European Commission",
+        "website": "https://erasmus-plus.ec.europa.eu",
+        "description": "Programa da UE para educacao, formacao, juventude e desporto",
+        "total_budget": "26.2B EUR (2021-2027)",
+        "eligible_entities": [
+          "Educational Institutions",
+          "Non-profits",
+          "SMEs",
+          "Public Authorities"
+        ],
+        "eligible_activities": [
+          "Education & Training",
+          "Digital Education",
+          "Cultural Heritage Education",
+          "Youth Engagement",
+          "Innovation in Education"
+        ],
+        "max_funding_rate": 100,
+        "compliance_requirements": [
+          "Educational Impact",
+          "Inclusion & Diversity",
+          "Digital Transformation",
+          "Sustainability"
+        ],
+        "application_period": "Annual calls",
+        "priority": 5,
+        "relevance_score": 80,
+        "tags": ["education", "training", "youth", "digital"]
+      },
+      {
+        "id": "cerv",
+        "name": "CERV - Citizens, Equality, Rights and Values",
+        "type": "eu",
+        "country": "EU",
+        "funding_body": "European Commission",
+        "website": "https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/home",
+        "description": "Programa da UE para promover direitos, igualdade e valores europeus",
+        "total_budget": "1.55B EUR (2021-2027)",
+        "eligible_entities": [
+          "Non-profits",
+          "Public Authorities",
+          "Research Institutions",
+          "SMEs"
+        ],
+        "eligible_activities": [
+          "Cultural Heritage Preservation",
+          "Digital Rights",
+          "Citizen Engagement",
+          "Equality Promotion",
+          "European Values"
+        ],
+        "max_funding_rate": 90,
+        "compliance_requirements": [
+          "European Values",
+          "Human Rights",
+          "Inclusion",
+          "Accessibility",
+          "Sustainability"
+        ],
+        "application_period": "Annual calls",
+        "priority": 6,
+        "relevance_score": 75,
+        "tags": ["rights", "equality", "values", "heritage"]
+      },
+      {
+        "id": "digital-europe",
+        "name": "Digital Europe Programme",
+        "type": "eu",
+        "country": "EU",
+        "funding_body": "European Commission",
+        "website": "https://digital-strategy.ec.europa.eu/en/policies/digital-europe-programme",
+        "description": "Programa para acelerar a transformacao digital da Europa",
+        "total_budget": "7.5B EUR (2021-2027)",
+        "eligible_entities": [
+          "Public Authorities",
+          "SMEs",
+          "Research Institutions",
+          "Non-profits"
+        ],
+        "eligible_activities": [
+          "Digital Infrastructure",
+          "AI & Data",
+          "Cybersecurity",
+          "Digital Skills",
+          "Digital Public Services"
+        ],
+        "max_funding_rate": 70,
+        "compliance_requirements": [
+          "Digital Sovereignty",
+          "Interoperability",
+          "Open Standards",
+          "Cybersecurity",
+          "Data Protection"
+        ],
+        "application_period": "Annual calls",
+        "priority": 7,
+        "relevance_score": 90,
+        "tags": ["digital", "ai", "data", "infrastructure"]
+      },
+      {
+        "id": "horizon-europe",
+        "name": "Horizon Europe",
+        "type": "eu",
+        "country": "EU",
+        "funding_body": "European Commission",
+        "website": "https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/home",
+        "description": "Programa-quadro de investigacao e inovacao da UE",
+        "total_budget": "95.5B EUR (2021-2027)",
+        "eligible_entities": [
+          "Research Institutions",
+          "SMEs",
+          "Industry",
+          "Non-profits"
+        ],
+        "eligible_activities": [
+          "Research & Innovation",
+          "Digital Technologies",
+          "Cultural Heritage",
+          "AI & Data",
+          "Societal Challenges"
+        ],
+        "max_funding_rate": 100,
+        "compliance_requirements": [
+          "Excellence",
+          "Impact",
+          "Open Science",
+          "Ethics",
+          "Sustainability"
+        ],
+        "application_period": "Continuous calls",
+        "priority": 8,
+        "relevance_score": 85,
+        "tags": ["research", "innovation", "technology", "society"]
+      }
+    ],
+    "national": [
+      {
+        "id": "poctep",
+        "name": "POCTEP - Programa de Cooperacao Transfronteirica",
+        "type": "regional",
+        "country": "PT,ES",
+        "funding_body": "Interreg",
+        "website": "https://www.poctep.eu",
+        "description": "Programa de cooperacao transfronteirica entre Portugal e Espanha",
+        "total_budget": "500M EUR",
+        "relevance_score": 70
+      },
+      {
+        "id": "compete-2020",
+        "name": "COMPETE 2020",
+        "type": "national",
+        "country": "PT",
+        "funding_body": "IAPMEI",
+        "website": "https://www.compete2020.gov.pt",
+        "description": "Sistema de Incentivos a Investigacao e Desenvolvimento Tecnologico",
+        "total_budget": "4.5B EUR",
+        "relevance_score": 85
+      }
+    ]
+  },
+  "compliance_checklist": {
+    "legal": [
+      {
+        "id": "rgpd",
+        "name": "RGPD Compliance",
+        "description": "Conformidade com o Regulamento Geral sobre a Protecao de Dados",
+        "required": true,
+        "checks": [
+          "Data anonymization/pseudonymization",
+          "Consent management",
+          "Data subject rights",
+          "Data breach notification",
+          "DPO appointment",
+          "Privacy by design"
+        ]
+      },
+      {
+        "id": "ai-act",
+        "name": "AI Act Compliance",
+        "description": "Conformidade com o Regulamento de IA da UE",
+        "required": true,
+        "checks": [
+          "Risk classification",
+          "Technical documentation",
+          "EU registration",
+          "Conformity assessment",
+          "Post-market monitoring"
+        ]
+      },
+      {
+        "id": "nis2",
+        "name": "NIS2 Compliance",
+        "description": "Conformidade com a Diretiva de Seguranca de Rede e Informacao",
+        "required": true,
+        "checks": [
+          "Security measures",
+          "Incident reporting",
+          "Risk management",
+          "Supply chain security"
+        ]
+      }
+    ],
+    "technical": [
+      {
+        "id": "interoperability",
+        "name": "Interoperability Standards",
+        "description": "Conformidade com standards de interoperabilidade",
+        "required": true,
+        "checks": [
+          "DataCite 4.4 metadata",
+          "INSPIRE compliance",
+          "DCAT-AP compliance",
+          "Schema.org markup",
+          "OpenAPI documentation"
+        ]
+      },
+      {
+        "id": "open-data",
+        "name": "Open Data Principles",
+        "description": "Principios de dados abertos",
+        "required": true,
+        "checks": [
+          "Open licenses",
+          "Machine-readable formats",
+          "Persistent identifiers",
+          "Metadata quality",
+          "Accessibility"
+        ]
+      },
+      {
+        "id": "soberania-digital",
+        "name": "Digital Sovereignty",
+        "description": "Soberania tecnologica e digital",
+        "required": true,
+        "checks": [
+          "European hosting",
+          "Open source software",
+          "Open standards",
+          "Data localization",
+          "Vendor independence"
+        ]
+      }
+    ],
+    "financial": [
+      {
+        "id": "cost-tracking",
+        "name": "Cost Tracking",
+        "description": "Rastreamento de custos e despesas",
+        "required": true
+      },
+      {
+        "id": "audit-trail",
+        "name": "Audit Trail",
+        "description": "Rastro de auditoria completo",
+        "required": true
+      },
+      {
+        "id": "financial-reporting",
+        "name": "Financial Reporting",
+        "description": "Relatorios financeiros regulares",
+        "required": true
+      }
+    ]
+  },
+  "recommendations": {
+    "high_priority": [
+      "Obtain DataCite prefix for direct DOI minting",
+      "Register organization in ROR (Research Organization Registry)",
+      "Implement automated metadata validation",
+      "Set up continuous compliance monitoring",
+      "Establish partnerships with European research infrastructures"
+    ],
+    "medium_priority": [
+      "Apply for Forgero hosting",
+      "Integrate with OpenAIRE",
+      "Set up ORCID auto-update workflow",
+      "Implement funding opportunity alerts",
+      "Create project dashboard for monitoring"
+    ],
+    "low_priority": [
+      "Explore commercial partnerships",
+      "Investigate patent opportunities",
+      "Develop training materials",
+      "Create community engagement program"
+    ]
+  }
+}
