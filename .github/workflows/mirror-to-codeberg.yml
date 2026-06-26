@@ -1,0 +1,81 @@
+name: Mirror to Codeberg
+
+on:
+  push:
+    branches:
+      - master
+      - main
+      - '*'
+  pull_request:
+    branches:
+      - master
+      - main
+  schedule:
+    - cron: '0 * * * *'  # Sincroniza a cada hora
+
+jobs:
+  mirror-to-codeberg:
+    name: Mirror repository to Codeberg
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Busca todo o histórico
+
+      - name: Create Codeberg repository if not exists
+        env:
+          CODEBERG_TOKEN: ${{ secrets.CODEBERG_TOKEN }}
+          CODEBERG_USER: milkivc
+          CODEBERG_REPO: atlas-datasets
+        run: |
+          # Verificar se o repositório existe no Codeberg
+          REPO_EXISTS=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "Authorization: token $CODEBERG_TOKEN" \
+            "https://codeberg.org/api/v1/repos/$CODEBERG_USER/$CODEBERG_REPO")
+          
+          if [ "$REPO_EXISTS" != "200" ]; then
+            echo "🆕 Criando repositório no Codeberg: $CODEBERG_REPO"
+            curl -X POST \
+              -H "Authorization: token $CODEBERG_TOKEN" \
+              -H "Content-Type: application/json" \
+              -d '{"name": "$CODEBERG_REPO", "description": "Mirror de milkivc/atlas-datasets - Associação MILK", "private": false, "mirror": true}' \
+              "https://codeberg.org/api/v1/user/repos"
+            echo "✅ Repositório criado no Codeberg"
+          else
+            echo "✅ Repositório já existe no Codeberg"
+          fi
+
+      - name: Sync to Codeberg
+        env:
+          CODEBERG_TOKEN: ${{ secrets.CODEBERG_TOKEN }}
+          CODEBERG_USER: milkivc
+          CODEBERG_REPO: atlas-datasets
+        run: |
+          # Configurar remote do Codeberg
+          git remote add codeberg https://$CODEBERG_USER:$CODEBERG_TOKEN@codeberg.org/$CODEBERG_USER/$CODEBERG_REPO.git
+          
+          # Fazer push para o Codeberg (mirror)
+          git push --mirror codeberg --force
+          
+          echo "✅ Sincronização com Codeberg concluída!"
+          echo "🔗 Repositório no Codeberg: https://codeberg.org/$CODEBERG_USER/$CODEBERG_REPO"
+
+      - name: Verify sync
+        env:
+          CODEBERG_TOKEN: ${{ secrets.CODEBERG_TOKEN }}
+          CODEBERG_USER: milkivc
+          CODEBERG_REPO: atlas-datasets
+        run: |
+          # Verificar se o último commit está no Codeberg
+          LOCAL_COMMIT=$(git rev-parse HEAD)
+          REMOTE_COMMIT=$(curl -s \
+            -H "Authorization: token $CODEBERG_TOKEN" \
+            "https://codeberg.org/api/v1/repos/$CODEBERG_USER/$CODEBERG_REPO/commits" | jq -r '.[0].sha' 2>/dev/null || echo "")
+          
+          if [ "$LOCAL_COMMIT" = "$REMOTE_COMMIT" ]; then
+            echo "✅ Commit verificado no Codeberg"
+          else
+            echo "⚠️  Commit não corresponde. Tentando novamente..."
+            git push --mirror codeberg --force
+          fi
