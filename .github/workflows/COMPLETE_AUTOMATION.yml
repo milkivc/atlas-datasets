@@ -1,0 +1,128 @@
+name: ATLAS VIVO - Complete Automation
+
+on:
+  push:
+    branches: [ master, main ]
+  schedule:
+    - cron: '0 2,8,14,20 * * *'  # 4x por dia
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Execution mode'
+        required: true
+        default: 'dry-run'
+        type: choice
+        options:
+        - dry-run
+        - production
+
+jobs:
+  setup-environment:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests pyyaml jq
+      
+      - name: Set matrix
+        id: set-matrix
+        run: |
+          echo "matrix={'repos':['atlas-datasets','atlas-docs','atlas-vivo-milk']}" >> $GITHUB_OUTPUT
+
+  verify-tokens:
+    needs: setup-environment
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Verify GitHub Token
+        run: |
+          if [ -n "${{ secrets.GITHUB_TOKEN }}" ]; then
+            echo "✅ GitHub Token: Configurado"
+          else
+            echo "⚠️  GitHub Token: Não configurado"
+          fi
+      
+      - name: Verify Zenodo Token
+        run: |
+          if [ -n "${{ secrets.ZENODO_TOKEN }}" ]; then
+            echo "✅ Zenodo Token: Configurado"
+          else
+            echo "⚠️  Zenodo Token: Não configurado"
+          fi
+      
+      - name: Verify ORCID Token
+        run: |
+          if [ -n "${{ secrets.ORCID_TOKEN }}" ]; then
+            echo "✅ ORCID Token: Configurado"
+          else
+            echo "⚠️  ORCID Token: Não configurado"
+          fi
+      
+      - name: Verify Codeberg Token
+        run: |
+          if [ -n "${{ secrets.CODEBERG_TOKEN }}" ]; then
+            echo "✅ Codeberg Token: Configurado"
+          else
+            echo "⚠️  Codeberg Token: Não configurado"
+          fi
+
+  execute-sync:
+    needs: verify-tokens
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests pyyaml jq
+      
+      - name: Execute Sync All Platforms
+        run: |
+          python3 agent-integration/scripts/sync-all-platforms.py --verbose
+        env:
+          ZENODO_TOKEN: ${{ secrets.ZENODO_TOKEN }}
+          ORCID_TOKEN: ${{ secrets.ORCID_TOKEN }}
+          CODEBERG_TOKEN: ${{ secrets.CODEBERG_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  check-funding:
+    needs: verify-tokens
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests pyyaml jq
+      
+      - name: Check Funding Compliance
+        run: |
+          python3 agent-integration/scripts/funding-checker.py report
+        env:
+          ZENODO_TOKEN: ${{ secrets.ZENODO_TOKEN }}
+          ORCID_TOKEN: ${{ secrets.ORCID_TOKEN }}
+          CODEBERG_TOKEN: ${{ secrets.CODEBERG_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
