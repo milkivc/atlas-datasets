@@ -1,0 +1,38 @@
+🎮 ATLAS - CONTROLE TOTAL - ACESSO RÁPIDO
+============================================
+
+📱 PARA IPAD/CELULAR (MAIS PRÁTICO):
+
+1. Abra este arquivo no navegador (Safari/Chrome)
+2. Salve como app na tela inicial:
+   - iPad/iPhone: Compartilhar → Adicionar à Tela Inicial
+   - Android: Menu → Adicionar à tela inicial
+3. Toque no ícone ATLAS e use!
+
+💻 PARA COMPUTADOR:
+
+1. Abra o arquivo ATLAS_LINK.html no navegador
+2. Ou execute: bash ATLAS_CONSOLE_QUICK.sh
+
+🔗 LINK DIRETO (copie e cole no navegador):
+file:///workspace/milkivc__atlas-datasets/ATLAS_LINK.html
+
+📊 O QUE VOCÊ VAI VER:
+- 10/10 programas elegíveis (95.5% conformidade)
+- €1.1M+ potencial de financiamento
+- 8 APIs deployadas
+- Todas as plataformas sincronizadas
+- Tokens configurados
+
+🎯 COMO USAR:
+1. Toque no botão: "🔹 TOQUE AQUI PARA COMEÇAR 🔹"
+2. Escolha uma opção:
+   - 📊 Dashboard
+   - 💰 Financiamento
+   - 🔄 Sincronizar
+   - 🔐 Tokens
+   - 🚀 APIs
+   - 🎯 Executar Tudo
+3. Toque em "Voltar" para retornar
+
+✅ TUDO PRONTO! Apenas um toque/clique!
