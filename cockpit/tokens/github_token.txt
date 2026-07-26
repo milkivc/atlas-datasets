@@ -1,0 +1,15 @@
+# GitHub Personal Access Token (PAT)
+# SUBSTITUIR PELO TOKEN REAL DO SEU GMAIL
+# 
+# Como obter:
+# 1. Acesse https://github.com/settings/tokens
+# 2. Clique em "Generate new token"
+# 3. Selecione os scopes:
+#    - repo (Full control of private repositories)
+#    - admin:repo_hook (Manage repository webhooks)
+#    - workflow (Update GitHub Action workflows)
+#    - read:org (Read organization and team membership)
+# 4. Copie o token gerado e substitua o valor abaixo
+
+# TOKEN SIMULADO (SUBSTITUIR PELO REAL)
+github_pat_SIMULADO_11B234567890abcdef1234567890abcdef1234567890

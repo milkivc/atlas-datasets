@@ -1,0 +1,269 @@
+{
+  "//": "Lista de Repositórios da Associação MILK",
+  "//": "Versão: 1.0.0",
+  "//": "Data: 2026-07-26",
+  "//": "Licença: EUPL-1.2",
+
+  "repositories": [
+    {
+      "name": "atlas-datasets",
+      "description": "Repositorio central de datasets geospaciais, culturais e juridicos do projeto Atlas Vivo MILK",
+      "github_url": "https://github.com/milkivc/atlas-datasets",
+      "codeberg_url": "https://codeberg.org/milkivc/atlas-datasets",
+      "license": "EUPL-1.2",
+      "main_branch": "main",
+      "topics": [
+        "patrimonio-cultural",
+        "dados-geospaciais",
+        "interoperabilidade",
+        "preservacao-digital",
+        "Portugal",
+        "Associacao-MILK",
+        "Atlas-Vivo",
+        "RGPD",
+        "AI-Act",
+        "FAIR-Principles"
+      ],
+      "has_doi": true,
+      "doi_prefix": "10.5281/zenodo",
+      "metadata": {
+        "cff": true,
+        "codemeta": true,
+        "datacite": true,
+        "schema_org": true
+      },
+      "sync_to_codeberg": true,
+      "auto_validate": true,
+      "priority": 1
+    },
+    {
+      "name": "atlas-docs",
+      "description": "Documentacao oficial do Atlas Vivo MILK, incluindo guias, relatorios e manuais",
+      "github_url": "https://github.com/milkivc/atlas-docs",
+      "codeberg_url": "https://codeberg.org/milkivc/atlas-docs",
+      "license": "EUPL-1.2",
+      "main_branch": "master",
+      "topics": [
+        "documentacao",
+        "cultura",
+        "patrimonio",
+        "interoperabilidade",
+        "conformidade",
+        "Associacao-MILK",
+        "Atlas-Vivo"
+      ],
+      "has_doi": true,
+      "doi_prefix": "10.5281/zenodo",
+      "metadata": {
+        "cff": true,
+        "codemeta": true,
+        "datacite": true,
+        "schema_org": true
+      },
+      "sync_to_codeberg": true,
+      "auto_validate": true,
+      "priority": 2
+    },
+    {
+      "name": "atlas-vivo-milk",
+      "description": "Projeto principal do Atlas Vivo MILK para preservacao do patrimonio cultural imaterial",
+      "github_url": "https://github.com/milkivc/atlas-vivo-milk",
+      "codeberg_url": "https://codeberg.org/milkivc/atlas-vivo-milk",
+      "license": "EUPL-1.2",
+      "main_branch": "master",
+      "topics": [
+        "patrimonio-cultural",
+        "atlas-vivo",
+        "preservacao",
+        "interoperabilidade",
+        "Associacao-MILK",
+        "Portugal"
+      ],
+      "has_doi": true,
+      "doi_prefix": "10.5281/zenodo",
+      "metadata": {
+        "cff": true,
+        "codemeta": true,
+        "datacite": true,
+        "schema_org": true
+      },
+      "sync_to_codeberg": true,
+      "auto_validate": true,
+      "priority": 3
+    },
+    {
+      "name": "catalogo-operacional-milk",
+      "description": "Catálogo operacional do MILK com metodologias e dispositivos curatoriais",
+      "github_url": "https://github.com/milkivc/catalogo-operacional-milk",
+      "codeberg_url": "https://codeberg.org/milkivc/catalogo-operacional-milk",
+      "license": "EUPL-1.2",
+      "main_branch": "main",
+      "topics": [
+        "catalogo",
+        "metodologias",
+        "dispositivos-curatoriais",
+        "Associacao-MILK",
+        "Portugal"
+      ],
+      "has_doi": true,
+      "doi_prefix": "10.5281/zenodo",
+      "metadata": {
+        "cff": true,
+        "codemeta": true,
+        "datacite": true,
+        "schema_org": true
+      },
+      "sync_to_codeberg": true,
+      "auto_validate": true,
+      "priority": 4
+    },
+    {
+      "name": "folclore-vivo-metodologia",
+      "description": "Metodologia de pesquisa do Folclore Vivo para preservacao do patrimonio cultural",
+      "github_url": "https://github.com/milkivc/folclore-vivo-metodologia",
+      "codeberg_url": "https://codeberg.org/milkivc/folclore-vivo-metodologia",
+      "license": "EUPL-1.2",
+      "main_branch": "main",
+      "topics": [
+        "folclore",
+        "metodologia",
+        "pesquisa",
+        "patrimonio-cultural",
+        "Associacao-MILK"
+      ],
+      "has_doi": true,
+      "doi_prefix": "10.5281/zenodo",
+      "metadata": {
+        "cff": true,
+        "codemeta": true,
+        "datacite": true,
+        "schema_org": true
+      },
+      "sync_to_codeberg": true,
+      "auto_validate": true,
+      "priority": 5
+    },
+    {
+      "name": "milk-dispositivos-curatoriais",
+      "description": "Dispositivos curatoriais do MILK para preservacao e disseminacao cultural",
+      "github_url": "https://github.com/milkivc/milk-dispositivos-curatoriais",
+      "codeberg_url": "https://codeberg.org/milkivc/milk-dispositivos-curatoriais",
+      "license": "EUPL-1.2",
+      "main_branch": "main",
+      "topics": [
+        "dispositivos-curatoriais",
+        "preservacao",
+        "disseminacao",
+        "Associacao-MILK"
+      ],
+      "has_doi": true,
+      "doi_prefix": "10.5281/zenodo",
+      "metadata": {
+        "cff": true,
+        "codemeta": true,
+        "datacite": true,
+        "schema_org": true
+      },
+      "sync_to_codeberg": true,
+      "auto_validate": true,
+      "priority": 6
+    },
+    {
+      "name": "milkivc",
+      "description": "Repositorio principal da Associacao MILK com manifesto e documentacao fundacional",
+      "github_url": "https://github.com/milkivc/milkivc",
+      "codeberg_url": "https://codeberg.org/milkivc/milkivc",
+      "license": "EUPL-1.2",
+      "main_branch": "main",
+      "topics": [
+        "manifesto",
+        "documentacao",
+        "Associacao-MILK",
+        "Portugal"
+      ],
+      "has_doi": false,
+      "metadata": {
+        "cff": true,
+        "codemeta": true,
+        "datacite": false,
+        "schema_org": true
+      },
+      "sync_to_codeberg": true,
+      "auto_validate": true,
+      "priority": 7
+    },
+    {
+      "name": "site-institucional",
+      "description": "Site institucional da Associacao MILK com informacoes sobre projetos e servicos",
+      "github_url": "https://github.com/milkivc/site-institucional",
+      "codeberg_url": "https://codeberg.org/milkivc/site-institucional",
+      "license": "EUPL-1.2",
+      "main_branch": "main",
+      "topics": [
+        "site",
+        "institucional",
+        "Associacao-MILK",
+        "Portugal"
+      ],
+      "has_doi": false,
+      "metadata": {
+        "cff": true,
+        "codemeta": true,
+        "datacite": false,
+        "schema_org": true
+      },
+      "sync_to_codeberg": true,
+      "auto_validate": true,
+      "priority": 8
+    },
+    {
+      "name": "somostodospossiveis",
+      "description": "Projeto Somos Todos Possiveis para inclusao e participacao cultural",
+      "github_url": "https://github.com/milkivc/somostodospossiveis",
+      "codeberg_url": "https://codeberg.org/milkivc/somostodospossiveis",
+      "license": "EUPL-1.2",
+      "main_branch": "master",
+      "topics": [
+        "inclusao",
+        "participacao",
+        "cultura",
+        "Associacao-MILK"
+      ],
+      "has_doi": false,
+      "metadata": {
+        "cff": true,
+        "codemeta": true,
+        "datacite": false,
+        "schema_org": true
+      },
+      "sync_to_codeberg": true,
+      "auto_validate": true,
+      "priority": 9
+    }
+  ],
+
+  "//": "========================================================================",
+  "//": "Configurações de Sincronização",
+  "//": "========================================================================",
+
+  "sync_settings": {
+    "default": {
+      "auto_sync": true,
+      "sync_branches": ["main", "master"],
+      "sync_tags": true,
+      "conflict_resolution": "prefer_codeberg"
+    },
+    "exceptions": {
+      "milkivc": {
+        "auto_sync": true,
+        "sync_branches": ["main"],
+        "sync_tags": false
+      },
+      "site-institucional": {
+        "auto_sync": true,
+        "sync_branches": ["main"],
+        "sync_tags": false
+      }
+    }
+  }
+}

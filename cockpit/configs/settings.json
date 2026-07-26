@@ -1,0 +1,251 @@
+{
+  "//": "Configurações Gerais do Cockpit - Associação MILK",
+  "//": "Versão: 1.0.0",
+  "//": "Data: 2026-07-26",
+  "//": "Licença: EUPL-1.2",
+
+  "organization": {
+    "name": "Associacao MILK - Movimento de Intervencoes e Linguagens Kulturais e Arte",
+    "short_name": "MILK",
+    "description": "Associacao sem fins lucrativos dedicada a preservacao do patrimonio cultural imaterial portugues",
+    "website": "https://github.com/milkivc",
+    "email": "nuno@associacaomilk.pt",
+    "ror_id": "https://ror.org/05k9p4d32",
+    "nipc": "518 706 451",
+    "address": {
+      "city": "Lisboa",
+      "country": "Portugal",
+      "postal_code": "1200-000"
+    },
+    "founding_date": "2023-01-01"
+  },
+
+  "//": "========================================================================",
+  "//": "Configurações de Repositórios",
+  "//": "========================================================================",
+
+  "repositories": {
+    "default_branch": "main",
+    "license": "EUPL-1.2",
+    "visibility": "public",
+    "topics": [
+      "patrimonio-cultural",
+      "dados-geospaciais",
+      "interoperabilidade",
+      "preservacao-digital",
+      "Portugal",
+      "Associacao-MILK",
+      "Atlas-Vivo",
+      "RGPD",
+      "AI-Act",
+      "FAIR-Principles",
+      "EUPL-1.2",
+      "Codeberg",
+      "Forgejo"
+    ]
+  },
+
+  "//": "========================================================================",
+  "//": "Configurações de Metadados",
+  "//": "========================================================================",
+
+  "metadata": {
+    "default_author": {
+      "name": "Nuno Filipe Fernandes Vieira Cabral e Araujo",
+      "email": "nuno@associacaomilk.pt",
+      "orcid": "https://orcid.org/0009-0009-1781-4020",
+      "affiliation": "Associacao MILK"
+    },
+    "co_authors": [
+      {
+        "name": "Eduardo Mauricio Vieira Cabral e Araujo",
+        "email": "eduardo@associacaomilk.pt",
+        "orcid": "https://orcid.org/0009-0007-6892-6570",
+        "affiliation": "Associacao MILK"
+      }
+    ],
+    "license": "EUPL-1.2",
+    "license_url": "https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12",
+    "keywords": [
+      "patrimonio cultural",
+      "dados geospaciais",
+      "interoperabilidade",
+      "preservacao digital",
+      "Portugal",
+      "Associacao MILK",
+      "Atlas Vivo",
+      "RGPD",
+      "AI Act",
+      "FAIR Principles",
+      "EUPL-1.2",
+      "INSPIRE",
+      "OpenAIRE",
+      "ORCID",
+      "Codeberg",
+      "Forgejo"
+    ],
+    "funder": {
+      "name": "Associacao MILK - Movimento de Intervencoes e Linguagens Kulturais e Arte",
+      "url": "https://github.com/milkivc",
+      "ror_id": "https://ror.org/05k9p4d32"
+    }
+  },
+
+  "//": "========================================================================",
+  "//": "Configurações de DOIs (DataCite)",
+  "//": "========================================================================",
+
+  "doi": {
+    "prefix": "10.5281",
+    "shoulder": "zenodo",
+    "publisher": "Associacao MILK",
+    "publication_year": "2026",
+    "resource_type": "Dataset",
+    "resource_type_general": "Dataset"
+  },
+
+  "//": "========================================================================",
+  "//": "Configurações de APIs",
+  "//": "========================================================================",
+
+  "apis": {
+    "github": {
+      "base_url": "https://api.github.com",
+      "version": "v3",
+      "user_agent": "MILK-Cockpit/1.0.0",
+      "timeout": 30,
+      "retries": 3
+    },
+    "codeberg": {
+      "base_url": "https://codeberg.org/api/v1",
+      "user_agent": "MILK-Cockpit/1.0.0",
+      "timeout": 30,
+      "retries": 3
+    },
+    "datacite": {
+      "base_url": "https://api.datacite.org",
+      "version": "4.4",
+      "user_agent": "MILK-Cockpit/1.0.0",
+      "timeout": 30,
+      "retries": 3
+    },
+    "orcid": {
+      "base_url": "https://api.orcid.org/v3.0",
+      "user_agent": "MILK-Cockpit/1.0.0",
+      "timeout": 30,
+      "retries": 3
+    },
+    "ror": {
+      "base_url": "https://api.ror.org",
+      "user_agent": "MILK-Cockpit/1.0.0",
+      "timeout": 30,
+      "retries": 3
+    },
+    "openaire": {
+      "base_url": "https://api.openaire.eu",
+      "user_agent": "MILK-Cockpit/1.0.0",
+      "timeout": 30,
+      "retries": 3
+    },
+    "inspire": {
+      "base_url": "https://inspire.ec.europa.eu",
+      "user_agent": "MILK-Cockpit/1.0.0",
+      "timeout": 30,
+      "retries": 3
+    }
+  },
+
+  "//": "========================================================================",
+  "//": "Configurações de Sincronização",
+  "//": "========================================================================",
+
+  "sync": {
+    "github_to_codeberg": {
+      "enabled": true,
+      "auto_sync": true,
+      "sync_branches": ["main", "master", "develop"],
+      "sync_tags": true,
+      "sync_frequency": "on_push",
+      "conflict_resolution": "prefer_codeberg"
+    },
+    "codeberg_to_github": {
+      "enabled": false,
+      "auto_sync": false
+    }
+  },
+
+  "//": "========================================================================",
+  "//": "Configurações de Validação",
+  "//": "========================================================================",
+
+  "validation": {
+    "fair_principles": {
+      "enabled": true,
+      "check_findable": true,
+      "check_accessible": true,
+      "check_interoperable": true,
+      "check_reusable": true
+    },
+    "metadata_formats": {
+      "cff": true,
+      "codemeta": true,
+      "datacite": true,
+      "schema_org": true
+    },
+    "legal_compliance": {
+      "rgpd": true,
+      "ai_act": true,
+      "inspire": true,
+      "eupl_1_2": true
+    }
+  },
+
+  "//": "========================================================================",
+  "//": "Configurações de Relatórios",
+  "//": "========================================================================",
+
+  "reports": {
+    "compliance_report": {
+      "enabled": true,
+      "output_format": ["markdown", "json", "html"],
+      "output_dir": "cockpit/reports",
+      "include_metadata": true,
+      "include_legal": true,
+      "include_fair": true
+    },
+    "sync_report": {
+      "enabled": true,
+      "output_format": ["markdown", "json"],
+      "output_dir": "cockpit/reports",
+      "include_success": true,
+      "include_failures": true
+    }
+  },
+
+  "//": "========================================================================",
+  "//": "Configurações de Backup",
+  "//": "========================================================================",
+
+  "backup": {
+    "enabled": true,
+    "backup_dir": "cockpit/backups",
+    "compression": "gzip",
+    "retention_days": 30,
+    "schedule": "daily",
+    "include_repos": true,
+    "include_metadata": true,
+    "include_tokens": false
+  },
+
+  "//": "========================================================================",
+  "//": "Configurações de Logging",
+  "//": "========================================================================",
+
+  "logging": {
+    "level": "INFO",
+    "log_file": "cockpit/logs/cockpit.log",
+    "max_file_size": "10MB",
+    "backup_count": 5,
+    "console_output": true
+  }
+}

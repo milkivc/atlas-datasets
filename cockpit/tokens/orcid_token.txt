@@ -1,0 +1,15 @@
+# ORCID API Token (Client ID e Client Secret)
+# SUBSTITUIR PELOS VALORES REAIS DO SEU GMAIL
+# 
+# Como obter:
+# 1. Acesse https://orcid.org/developer-tools
+# 2. Clique em "Register a new application"
+# 3. Preencha os dados:
+#    - Application name: MILK Cockpit Integration
+#    - Website: https://github.com/milkivc
+#    - Redirect URI: https://github.com/milkivc/cockpit/auth/callback
+# 4. Copie o Client ID e Client Secret gerados
+
+# VALORES SIMULADOS (SUBSTITUIR PELOS REAIS)
+CLIENT_ID=APP-SIMULADO_1234567890ABCDEF
+CLIENT_SECRET=SIMULADO_12345678-1234-1234-1234-1234567890AB
