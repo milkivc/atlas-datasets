@@ -2,82 +2,167 @@ name: Validate Metadata
 
 on:
   push:
-    branches: [ master, main ]
+    branches: [ main, master ]
     paths:
-      - 'metadata.json'
-      - '.github/schemas/metadata-schema.json'
+      - 'CITATION.cff'
+      - 'codemeta.json'
+      - 'datacite.json'
+      - 'schema.org.json'
   pull_request:
-    branches: [ master, main ]
+    branches: [ main, master ]
     paths:
-      - 'metadata.json'
-      - '.github/schemas/metadata-schema.json'
-  workflow_dispatch:
+      - 'CITATION.cff'
+      - 'codemeta.json'
+      - 'datacite.json'
+      - 'schema.org.json'
 
 jobs:
-  validate:
-    name: Validate JSON-LD Metadata
+  validate-cff:
+    name: Validate CITATION.cff
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          node-version: '20'
+          python-version: '3.10'
 
-      - name: Install AJV CLI
-        run: npm install -g ajv-cli
-
-      - name: Validate metadata.json
+      - name: Install cff-validator
         run: |
-          ajv validate -s .github/schemas/metadata-schema.json -d metadata.json --spec=draft7
+          pip install cff-validator
 
-      - name: Validate all JSON files
+      - name: Validate CITATION.cff
         run: |
-          for file in $(find . -type f -name "*.json" ! -path "./.git/*" ! -path "./.github/schemas/*"); do
-            echo "Validating $file..."
-            jq empty "$file" || { echo "Invalid JSON: $file"; exit 1; }
-          done
+          cff-validator CITATION.cff
 
-  check-required-fields:
-    name: Check Required Metadata Fields
+  validate-codemeta:
+    name: Validate CodeMeta
     runs-on: ubuntu-latest
-    needs: validate
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Check required fields
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Validate codemeta.json
         run: |
-          # Check if required fields are present
-          REQUIRED_FIELDS=("title" "description" "license" "creators" "version" "datePublished")
-          for field in "${REQUIRED_FIELDS[@]}"; do
-            if ! jq -e ".$field" metadata.json > /dev/null 2>&1; then
-              echo "Missing required field: $field"
-              exit 1
-            fi
-          done
+          jq empty codemeta.json
+          jq -e '.name' codemeta.json > /dev/null
+          jq -e '.description' codemeta.json > /dev/null
+          jq -e '.license' codemeta.json > /dev/null
+          jq -e '.author' codemeta.json > /dev/null
+
+  validate-datacite:
+    name: Validate DataCite
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Validate datacite.json
+        run: |
+          jq empty datacite.json
+          jq -e '.identifier' datacite.json > /dev/null
+          jq -e '.creators' datacite.json > /dev/null
+          jq -e '.titles' datacite.json > /dev/null
+
+  validate-schema-org:
+    name: Validate Schema.org
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Validate schema.org.json
+        run: |
+          jq empty schema.org.json
+          jq -e '.name' schema.org.json > /dev/null
+          jq -e '.description' schema.org.json > /dev/null
+
+  validate-fair-principles:
+    name: Check FAIR Principles Compliance
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Check FAIR Compliance
+        run: |
+          echo "=== FAIR Principles Compliance Check ==="
           
-          # Check creators have ORCID
-          CREATORS_COUNT=$(jq '.creators | length' metadata.json)
-          for ((i=0; i<CREATORS_COUNT; i++)); do
-            if ! jq -e ".creators[$i].orcid" metadata.json > /dev/null 2>&1; then
-              echo "Creator $i is missing ORCID"
-              exit 1
-            fi
-          done
-          
-          # Check version format
-          VERSION=$(jq -r '.version' metadata.json)
-          if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            echo "Invalid version format: $VERSION (expected X.Y.Z)"
-            exit 1
+          # Findable
+          if jq -e '.identifier | any(.[]; contains("doi.org"))' codemeta.json > /dev/null; then
+            echo "✅ Findable: DOI found"
+          else
+            echo "⚠️ Findable: No DOI found"
           fi
           
-          # Check date format
-          DATE=$(jq -r '.datePublished' metadata.json)
-          if [[ ! "$DATE" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
-            echo "Invalid date format: $DATE (expected YYYY-MM-DD)"
-            exit 1
+          if jq -e '.author | any(.[]; .["@id"] | contains("orcid.org"))' codemeta.json > /dev/null; then
+            echo "✅ Findable: ORCID found"
+          else
+            echo "⚠️ Findable: No ORCID found"
+          fi
+          
+          # Accessible
+          if [ "${{ github.event.repository.private }}" = "false" ]; then
+            echo "✅ Accessible: Repository is public"
+          else
+            echo "⚠️ Accessible: Repository is private"
+          fi
+          
+          # Interoperable
+          if [ -f "schema.org.json" ] && [ -f "datacite.json" ] && [ -f "codemeta.json" ]; then
+            echo "✅ Interoperable: Multiple metadata formats found"
+          else
+            echo "⚠️ Interoperable: Missing metadata formats"
+          fi
+          
+          # Reusable
+          if jq -e '.license' codemeta.json > /dev/null; then
+            echo "✅ Reusable: License found"
+          else
+            echo "⚠️ Reusable: No license found"
+          fi
+
+  validate-legal-compliance:
+    name: Check Legal Compliance
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check for LEGAL.md
+        run: |
+          if [ -f "LEGAL.md" ]; then
+            echo "✅ Legal compliance document found"
+          else
+            echo "⚠️ No LEGAL.md file found"
+          fi
+
+      - name: Check for EUPL-1.2 License
+        run: |
+          if grep -q "EUPL-1.2" CITATION.cff codemeta.json datacite.json schema.org.json; then
+            echo "✅ EUPL-1.2 license found in metadata"
+          else
+            echo "⚠️ EUPL-1.2 license not found in metadata"
+          fi
+
+      - name: Check for RGPD Compliance
+        run: |
+          if grep -q "RGPD\|GDPR" LEGAL.md; then
+            echo "✅ RGPD compliance mentioned in LEGAL.md"
+          else
+            echo "⚠️ RGPD compliance not mentioned in LEGAL.md"
           fi

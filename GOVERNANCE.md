@@ -1,227 +1,123 @@
-# Governance Model - Atlas Vivo
+# GOVERNANCE.md - Estrutura de Governança da Associação MILK
 
-Associacao MILK - Movimento de Intervencoes e Linguagens Kulturais e Arte
-NIPC: 518706451
-
----
-
-## Overview
-
-This document outlines the governance structure and decision-making processes for the Atlas Vivo project, ensuring transparency, accountability, and alignment with the mission of the Associacao MILK.
+**Associação MILK - Movimento de Intervenções e Linguagens Kulturais e Arte**
+**NIPC: 518 706 451**
+**Lisboa, Portugal**
+**Licença: EUPL-1.2**
 
 ---
 
-## Governance Structure
+## 🏛️ **Estrutura Organizacional**
 
-### 1. Strategic Level - Associacao MILK
+### **1. Órgãos Sociais**
 
-**Responsibilities:**
-- Define the overall vision and strategy for Atlas Vivo
-- Ensure alignment with the mission of Associacao MILK
-- Approve major project decisions
-- Allocate resources and budget
-- Establish partnerships and collaborations
-- Ensure legal and regulatory compliance
+#### **1.1. Assembleia Geral**
+- **Composição:** Todos os membros da Associação MILK.
+- **Funções:**
+  - Aprovar os estatutos e regulamentos internos.
+  - Eleger e destituir os membros da Direção e do Conselho Fiscal.
+  - Aprovar o plano de atividades e o orçamento anual.
+  - Aprovar o relatório de atividades e o relatório de contas.
+  - Decidir sobre a dissolução da Associação.
+- **Reuniões:**
+  - **Ordinary:** 1 vez por ano (até 31 de março).
+  - **Extraordinary:** Sempre que necessário, por convocação da Direção ou a pedido de 1/3 dos membros.
 
-**Members:**
-- Board of Directors of Associacao MILK
-- Executive Director
-- Legal Advisor
-- Data Protection Officer (DPO)
+#### **1.2. Direção**
+- **Composição:** 3 a 5 membros (Presidente, Vice-Presidente, Secretário, Tesoureiro, Vogais).
+- **Funções:**
+  - Gerir a Associação de acordo com os estatutos e as decisões da Assembleia Geral.
+  - Representar a Associação perante terceiros.
+  - Elaborar o plano de atividades e o orçamento anual.
+  - Executar as deliberações da Assembleia Geral.
+  - Contratar e gerir o pessoal da Associação.
+- **Mandato:** 3 anos (renovável).
+- **Reuniões:** Mensais ou sempre que necessário.
 
-**Decision-Making:**
-- Consensus-based with majority vote for formal decisions
-- Monthly strategic meetings
-- Annual review and planning
+**Membros Atuais da Direção:**
+| **Cargo**            | **Nome**                                      | **Email**                     | **ORCID**                          | **Início do Mandato** |
+|----------------------|-----------------------------------------------|-------------------------------|------------------------------------|-----------------------|
+| Presidente           | Nuno Filipe Fernandes Vieira Cabral e Araujo | nuno@associacaomilk.pt        | [0009-0009-1781-4020](https://orcid.org/0009-0009-1781-4020) | 2023-01-01           |
+| Vice-Presidente      | Eduardo Mauricio Vieira Cabral e Araujo     | eduardo@associacaomilk.pt     | [0009-0007-6892-6570](https://orcid.org/0009-0007-6892-6570) | 2023-01-01           |
 
----
-
-### 2. Operational Level - Atlas Vivo Core Team
-
-**Responsibilities:**
-- Day-to-day management of the project
-- Implementation of strategic decisions
-- Technical architecture and development
-- Data management and curation
-- Community engagement
-- Documentation and reporting
-
-**Members:**
-- Eduardo Mauricio Vieira Cabral e Araujo (Technical Lead)
-  - ORCID: 0009-0007-6892-6570
-  - Email: eduardo@associacaomilk.pt
-  - Role: Technical architecture, data management, integration
-
-- Nuno Filipe Fernandes Vieira Cabral e Araujo (Curatorial Lead)
-  - ORCID: 0009-0009-1781-4020
-  - Email: nuno@associacaomilk.pt
-  - Role: Methodology, curation, cultural heritage
-
-**Decision-Making:**
-- Collaborative decision-making
-- Weekly operational meetings
-- Monthly progress reviews
+#### **1.3. Conselho Fiscal**
+- **Composição:** 3 membros (Presidente, Secretário, Vogal).
+- **Funções:**
+  - Fiscalizar a gestão financeira da Associação.
+  - Emitir pareceres sobre o relatório de contas anual.
+  - Apresentar à Assembleia Geral o relatório de fiscalização.
+- **Mandato:** 3 anos (renovável).
 
 ---
 
-### 3. Advisory Level - External Advisors
+## 📜 **Documentos de Governança**
 
-**Responsibilities:**
-- Provide expert guidance on specific domains
-- Review project deliverables
-- Advise on best practices and standards
-- Support fundraising and partnership development
+### **2.1. Estatutos e Regulamentos**
+- **Estatutos:** [Link](https://github.com/milkivc/atlas-datasets/tree/master/********COES-LICENCAS-DIPLOMAS)
+- **Regulamento Interno:** [Link](https://github.com/milkivc/atlas-datasets/tree/master/********COES-LICENCAS-DIPLOMAS)
+- **Código de Conduta:** [Link](https://github.com/milkivc/atlas-datasets/blob/master/CODE_OF_CONDUCT.md)
 
-**Domains:**
-- Legal and Compliance (RGPD, AI Act)
-- Cultural Heritage and Museum Studies
-- Geospatial Data and GIS
-- Open Science and Data Management
-- Digital Humanities
-- Technology and Infrastructure
-
-**Selection:**
-- Invited based on expertise
-- 1-2 year terms (renewable)
-- Quarterly advisory meetings
+### **2.2. Políticas**
+- **Política de Transparência:** [Link](https://github.com/milkivc/atlas-datasets/tree/master/********COES-LICENCAS-DIPLOMAS)
+- **Política de Conflito de Interesses:** [Link](https://github.com/milkivc/atlas-datasets/tree/master/********COES-LICENCAS-DIPLOMAS)
+- **Política de Privacidade:** [Link](https://github.com/milkivc/site-institucional/blob/master/Privacy_Policy.md)
 
 ---
 
-## Decision-Making Process
+## 💰 **Gestão Financeira**
 
-### Types of Decisions
+### **3.1. Orçamento e Contas**
+- **Orçamento Anual:** [Link](https://github.com/milkivc/atlas-datasets/tree/master/financial)
+- **Relatório de Contas:** [Link](https://github.com/milkivc/atlas-datasets/tree/master/financial)
 
-| Type | Description | Authority | Process |
-|------|-------------|----------|---------|
-| Strategic | Vision, mission, long-term goals | Associacao MILK Board | Board meeting + vote |
-| Operational | Day-to-day project management | Core Team | Team discussion + consensus |
-| Technical | Architecture, technology choices | Technical Lead | Team review + approval |
-| Financial | Budget, spending, funding | Board + Core Team | Joint review + approval |
-| Legal | Compliance, contracts, policies | Board + DPO | Legal review + approval |
-
-### Decision Workflow
-
-1. Identify the decision needed
-2. Gather relevant information and input
-3. Discuss options and implications
-4. Consult affected stakeholders
-5. Decide based on authority level
-6. Document the decision and rationale
-7. Communicate to all relevant parties
-8. Implement the decision
-9. Review the outcomes
+### **3.2. Fontes de Financiamento**
+| **Fonte**               | **Descrição**                                      | **Valor (EUR)** |
+|-------------------------|----------------------------------------------------|-----------------|
+| Quotas dos Membros      | Contribuições anuais dos membros.                 | 5,000           |
+| Doações                 | Doações de indivíduos e empresas.                  | 10,000          |
+| Patrocínios             | Patrocínios de empresas e instituições.           | 15,000          |
+| Financiamento Público   | Subvenções e apoios de entidades públicas.       | 50,000          |
+| Financiamento Europeu   | Projetos financiados pela UE.                    | 100,000         |
 
 ---
 
-## Roles and Responsibilities
+## 🤝 **Parcerias**
 
-### Core Team Roles
-
-| Role | Responsibilities | Authority | Accountability |
-|------|-------------------|----------|----------------|
-| Technical Lead | Architecture, development, integration | Technical decisions | Core Team |
-| Curatorial Lead | Methodology, content, curation | Content decisions | Core Team |
-| Data Manager | Data quality, metadata, preservation | Data standards | Technical Lead |
-| Community Manager | Engagement, outreach, documentation | Community decisions | Core Team |
-
-### Project Roles
-
-| Role | Responsibilities | Authority |
-|------|-------------------|----------|
-| Contributor | Code, data, documentation contributions | None (subject to review) |
-| Reviewer | Review contributions, provide feedback | Approve/reject contributions |
-| Maintainer | Merge contributions, manage releases | Repository management |
-| Administrator | Repository settings, access control | Repository administration |
+### **4.1. Parcerias Estratégicas**
+| **Parceiro**      | **Tipo**          | **Descrição**                                      |
+|-------------------|-------------------|----------------------------------------------------|
+| Codeberg e.V.     | Hosting           | Hospedagem de repositórios em infraestrutura ética. |
+| OpenAIRE          | Indexação         | Indexação de publicações e datasets.              |
+| DataCite          | DOI Registration   | Registo de DOIs para datasets e publicações.       |
 
 ---
 
-## Documentation and Reporting
+## 📅 **Calendário de Reuniões**
 
-### Required Documentation
+### **5.1. Reuniões da Direção**
+- **Frequência:** Mensal
+- **Próxima Reunião:** 2026-08-01 (Lisboa)
 
-All decisions and significant changes must be documented in:
-
-1. Meeting Minutes - Record of all meetings with decisions and action items
-2. Decision Log - Register of all major decisions with rationale
-3. Change Log - History of changes to the project
-4. Status Reports - Regular updates on project progress
-5. Financial Reports - Tracking of budget and expenses
-
-### Reporting Schedule
-
-| Report | Frequency | Audience | Format |
-|--------|-----------|----------|--------|
-| Status Update | Weekly | Core Team | Internal |
-| Progress Report | Monthly | Board + Advisors | Formal |
-| Financial Report | Quarterly | Board | Formal |
-| Annual Report | Annually | All Stakeholders | Public |
+### **5.2. Assembleias Gerais**
+- **Frequência:** Anual
+- **Próxima Assembleia:** 2026-12-15 (Lisboa)
 
 ---
 
-## Change Management
+## 📞 **Contatos**
 
-### Process for Changes
-
-1. Propose the change (via issue or document)
-2. Review the change (team discussion)
-3. Approve the change (based on authority level)
-4. Implement the change
-5. Verify the change
-6. Document the change
-7. Communicate the change
-
-### Types of Changes
-
-| Type | Description | Process |
-|------|-------------|---------|
-| Minor | Bug fixes, small improvements | Fast-track review |
-| Major | New features, significant changes | Full review process |
-| Critical | Security, compliance, architecture | Urgent review + approval |
-| Breaking | Changes that affect existing functionality | Extended review + migration plan |
+| **Cargo**            | **Nome**                                      | **Email**                     |
+|----------------------|-----------------------------------------------|-------------------------------|
+| Presidente           | Nuno Filipe Fernandes Vieira Cabral e Araujo | nuno@associacaomilk.pt        |
+| Vice-Presidente      | Eduardo Mauricio Vieira Cabral e Araujo     | eduardo@associacaomilk.pt     |
 
 ---
 
-## Conflict Resolution
-
-### Conflict Types
-
-1. Technical Disagreements - Resolved through technical discussion and evidence
-2. Strategic Disagreements - Resolved through board discussion and vote
-3. Personal Conflicts - Resolved through mediation by neutral party
-4. Compliance Issues - Resolved through legal review
-
-### Resolution Process
-
-1. Identify the conflict
-2. Understand all perspectives
-3. Gather relevant information
-4. Discuss options for resolution
-5. Mediate if necessary
-6. Decide on resolution
-7. Implement the resolution
-8. Follow-up to ensure resolution is effective
+## 📢 **Transparência**
+- **Pedidos de Informação:** transparencia@associacaomilk.pt
+- **Documentos Públicos:** [Link](https://github.com/milkivc/atlas-datasets/tree/master/********COES-LICENCAS-DIPLOMAS)
 
 ---
 
-## Code of Conduct
-
-All participants in the Atlas Vivo project are expected to adhere to our [Code of Conduct](CODE_OF_CONDUCT.md), which promotes a welcoming, inclusive, and respectful environment for all contributors and users.
-
----
-
-## Contact
-
-For governance-related questions or concerns, please contact:
-
-- Project Lead: eduardo@associacaomilk.pt
-- Associacao MILK: milk@associacaomilk.pt
-- Data Protection Officer: dpo@associacaomilk.pt
-
----
-
-## Review and Updates
-
-This governance model will be reviewed annually and updated as needed to reflect the evolving needs of the Atlas Vivo project and Associacao MILK.
-
-Last Review: 25/06/2026
-Next Review: 25/06/2027
+**© 2026 Associação MILK**
+**Licença: [EUPL-1.2](https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12)**
