@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: ocsr-codeberg-publish
@@ -28,12 +28,15 @@ jobs:
         with:
           ref: ocsr-codeberg-deploy
           fetch-depth: 1
+
       - name: Validate publication
+        id: validate
         run: |
           set -euo pipefail
           test -s ocsr-codeberg-site/index.html
           ! grep -RIE '(MISTRAL_API_KEY|CODEBERG_TOKEN|ZENODO_TOKEN|ORCID_TOKEN|ghp_|sk-[A-Za-z0-9])' ocsr-codeberg-site
           grep -q 'Codeberg como forja canónica' ocsr-codeberg-site/index.html
+
       - name: Resolve Codeberg account
         id: codeberg
         env:
@@ -41,41 +44,44 @@ jobs:
         run: |
           set -euo pipefail
           test -n "${CODEBERG_TOKEN:-}" || { echo 'CODEBERG_TOKEN ausente'; exit 20; }
-          response="$(curl --fail-with-body --silent --show-error -H "Authorization: token ${CODEBERG_TOKEN}" -H 'Accept: application/json' https://codeberg.org/api/v1/user)"
+          response="$(curl --fail-with-body --silent --show-error \
+            -H "Authorization: token ${CODEBERG_TOKEN}" \
+            -H 'Accept: application/json' \
+            https://codeberg.org/api/v1/user)"
           login="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["login"])' <<<"$response")"
           test -n "$login"
           echo "login=$login" >> "$GITHUB_OUTPUT"
+
       - name: Create repository when absent
+        id: repo
         env:
           CODEBERG_TOKEN: ${{ secrets.CODEBERG_TOKEN }}
           CODEBERG_LOGIN: ${{ steps.codeberg.outputs.login }}
         run: |
           set -euo pipefail
-          status="$(curl --silent --output /tmp/repo.json --write-out '%{http_code}' -H "Authorization: token ${CODEBERG_TOKEN}" -H 'Accept: application/json' "https://codeberg.org/api/v1/repos/${CODEBERG_LOGIN}/${CODEBERG_REPO}")"
+          status="$(curl --silent --output /tmp/repo.json --write-out '%{http_code}' \
+            -H "Authorization: token ${CODEBERG_TOKEN}" \
+            -H 'Accept: application/json' \
+            "https://codeberg.org/api/v1/repos/${CODEBERG_LOGIN}/${CODEBERG_REPO}")"
           if [ "$status" = '404' ]; then
-            curl --fail-with-body --silent --show-error -X POST -H "Authorization: token ${CODEBERG_TOKEN}" -H 'Content-Type: application/json' -d "{\"name\":\"${CODEBERG_REPO}\",\"description\":\"OCSR — Objeto para Cartografias e Semântica em Rede · Associação MILK\",\"private\":false,\"auto_init\":false,\"default_branch\":\"pages\"}" https://codeberg.org/api/v1/user/repos >/tmp/repo-created.json
-          elif [ "$status" != '200' ]; then cat /tmp/repo.json >&2; exit 21; fi
-      - name: Build publication commit
-        id: build
-        run: |
-          set -euo pipefail
-          rm -rf /tmp/ocsr-pages && mkdir -p /tmp/ocsr-pages
-          cp -a ocsr-codeberg-site/. /tmp/ocsr-pages/
-          cd /tmp/ocsr-pages
-          git init -b pages
-          git config user.name 'Associação MILK OCSR'
-          git config user.email 'somostodospossiveis@users.noreply.github.com'
-          printf '%s\n' 'Codeberg Pages' > .nojekyll
-          git add --all
-          git commit -m 'publish: OCSR public cockpit'
-          echo "commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-      - name: Push without force
+            curl --fail-with-body --silent --show-error -X POST \
+              -H "Authorization: token ${CODEBERG_TOKEN}" \
+              -H 'Content-Type: application/json' \
+              -d "{\"name\":\"${CODEBERG_REPO}\",\"description\":\"OCSR — Objeto para Cartografias e Semântica em Rede · Associação MILK\",\"private\":false,\"auto_init\":false,\"default_branch\":\"pages\"}" \
+              https://codeberg.org/api/v1/user/repos >/tmp/repo-created.json
+          elif [ "$status" != '200' ]; then
+            cat /tmp/repo.json >&2
+            exit 21
+          fi
+
+      - name: Prepare authenticated Git transport
+        id: transport
         env:
           CODEBERG_TOKEN: ${{ secrets.CODEBERG_TOKEN }}
           CODEBERG_LOGIN: ${{ steps.codeberg.outputs.login }}
         run: |
           set -euo pipefail
-          askpass="$(mktemp)"; trap 'rm -f "$askpass"' EXIT
+          askpass="$RUNNER_TEMP/codeberg-askpass.sh"
           cat >"$askpass" <<'ASKPASS'
           #!/bin/sh
           case "$1" in
@@ -85,20 +91,113 @@ jobs:
           esac
           ASKPASS
           chmod 700 "$askpass"
-          cd /tmp/ocsr-pages
-          git remote add origin "https://codeberg.org/${CODEBERG_LOGIN}/${CODEBERG_REPO}.git"
-          GIT_ASKPASS="$askpass" GIT_TERMINAL_PROMPT=0 git fetch origin pages || true
-          if git show-ref --verify --quiet refs/remotes/origin/pages; then git rebase origin/pages; fi
-          GIT_ASKPASS="$askpass" GIT_TERMINAL_PROMPT=0 git push origin HEAD:pages
+          echo "path=$askpass" >> "$GITHUB_OUTPUT"
+
+      - name: Build publication commit
+        id: build
+        env:
+          CODEBERG_TOKEN: ${{ secrets.CODEBERG_TOKEN }}
+          CODEBERG_LOGIN: ${{ steps.codeberg.outputs.login }}
+          ASKPASS_PATH: ${{ steps.transport.outputs.path }}
+        run: |
+          set -euo pipefail
+          rm -rf "$RUNNER_TEMP/ocsr-pages"
+          remote="https://codeberg.org/${CODEBERG_LOGIN}/${CODEBERG_REPO}.git"
+          if GIT_ASKPASS="$ASKPASS_PATH" GIT_TERMINAL_PROMPT=0 git ls-remote --exit-code --heads "$remote" pages >/dev/null 2>&1; then
+            GIT_ASKPASS="$ASKPASS_PATH" GIT_TERMINAL_PROMPT=0 git clone --depth 1 --branch pages "$remote" "$RUNNER_TEMP/ocsr-pages"
+            find "$RUNNER_TEMP/ocsr-pages" -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          else
+            mkdir -p "$RUNNER_TEMP/ocsr-pages"
+            git -C "$RUNNER_TEMP/ocsr-pages" init -b pages
+            git -C "$RUNNER_TEMP/ocsr-pages" remote add origin "$remote"
+          fi
+          cp -a ocsr-codeberg-site/. "$RUNNER_TEMP/ocsr-pages/"
+          printf '%s\n' 'Codeberg Pages' > "$RUNNER_TEMP/ocsr-pages/.nojekyll"
+          git -C "$RUNNER_TEMP/ocsr-pages" config user.name 'Associação MILK OCSR'
+          git -C "$RUNNER_TEMP/ocsr-pages" config user.email 'somostodospossiveis@users.noreply.github.com'
+          git -C "$RUNNER_TEMP/ocsr-pages" add --all
+          if git -C "$RUNNER_TEMP/ocsr-pages" diff --cached --quiet; then
+            echo 'No content changes; retaining current Codeberg commit.'
+          else
+            git -C "$RUNNER_TEMP/ocsr-pages" commit -m 'publish: OCSR public cockpit'
+          fi
+          echo "commit=$(git -C "$RUNNER_TEMP/ocsr-pages" rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Push without force
+        id: push
+        env:
+          CODEBERG_TOKEN: ${{ secrets.CODEBERG_TOKEN }}
+          CODEBERG_LOGIN: ${{ steps.codeberg.outputs.login }}
+          ASKPASS_PATH: ${{ steps.transport.outputs.path }}
+        run: |
+          set -euo pipefail
+          GIT_ASKPASS="$ASKPASS_PATH" GIT_TERMINAL_PROMPT=0 \
+            git -C "$RUNNER_TEMP/ocsr-pages" push -u origin HEAD:pages
+
       - name: Verify Codeberg commit
+        id: verify
         env:
           CODEBERG_TOKEN: ${{ secrets.CODEBERG_TOKEN }}
           CODEBERG_LOGIN: ${{ steps.codeberg.outputs.login }}
           LOCAL_COMMIT: ${{ steps.build.outputs.commit }}
         run: |
           set -euo pipefail
-          remote="$(curl --fail-with-body --silent --show-error -H "Authorization: token ${CODEBERG_TOKEN}" -H 'Accept: application/json' "https://codeberg.org/api/v1/repos/${CODEBERG_LOGIN}/${CODEBERG_REPO}/branches/pages" | python3 -c 'import json,sys; print(json.load(sys.stdin)["commit"]["id"])')"
+          remote="$(curl --fail-with-body --silent --show-error \
+            -H "Authorization: token ${CODEBERG_TOKEN}" \
+            -H 'Accept: application/json' \
+            "https://codeberg.org/api/v1/repos/${CODEBERG_LOGIN}/${CODEBERG_REPO}/branches/pages" \
+            | python3 -c 'import json,sys; print(json.load(sys.stdin)["commit"]["id"])')"
           test "$remote" = "$LOCAL_COMMIT"
-          printf 'Repository: https://codeberg.org/%s/%s\n' "$CODEBERG_LOGIN" "$CODEBERG_REPO"
-          printf 'Pages: https://%s.codeberg.page/%s/\n' "$CODEBERG_LOGIN" "$CODEBERG_REPO"
-          printf 'Verified commit: %s\n' "$remote"
+          echo "remote_commit=$remote" >> "$GITHUB_OUTPUT"
+          echo "repository=https://codeberg.org/${CODEBERG_LOGIN}/${CODEBERG_REPO}" >> "$GITHUB_OUTPUT"
+          echo "pages=https://${CODEBERG_LOGIN}.codeberg.page/${CODEBERG_REPO}/" >> "$GITHUB_OUTPUT"
+
+      - name: Write deployment receipt
+        if: always()
+        env:
+          JOB_STATUS: ${{ job.status }}
+          CODEBERG_LOGIN: ${{ steps.codeberg.outputs.login }}
+          LOCAL_COMMIT: ${{ steps.build.outputs.commit }}
+          REMOTE_COMMIT: ${{ steps.verify.outputs.remote_commit }}
+          REPOSITORY_URL: ${{ steps.verify.outputs.repository }}
+          PAGES_URL: ${{ steps.verify.outputs.pages }}
+          VALIDATE_OUTCOME: ${{ steps.validate.outcome }}
+          ACCOUNT_OUTCOME: ${{ steps.codeberg.outcome }}
+          REPO_OUTCOME: ${{ steps.repo.outcome }}
+          BUILD_OUTCOME: ${{ steps.build.outcome }}
+          PUSH_OUTCOME: ${{ steps.push.outcome }}
+          VERIFY_OUTCOME: ${{ steps.verify.outcome }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, os
+          from datetime import datetime, timezone
+          receipt = {
+              "schema": "milk.ocsr.codeberg-deployment-receipt/1.0",
+              "recorded_at": datetime.now(timezone.utc).isoformat(),
+              "status": os.environ.get("JOB_STATUS"),
+              "codeberg_login": os.environ.get("CODEBERG_LOGIN") or None,
+              "repository": os.environ.get("REPOSITORY_URL") or None,
+              "pages": os.environ.get("PAGES_URL") or None,
+              "local_commit": os.environ.get("LOCAL_COMMIT") or None,
+              "remote_commit": os.environ.get("REMOTE_COMMIT") or None,
+              "verified": bool(os.environ.get("REMOTE_COMMIT")) and os.environ.get("LOCAL_COMMIT") == os.environ.get("REMOTE_COMMIT"),
+              "steps": {
+                  "validate": os.environ.get("VALIDATE_OUTCOME"),
+                  "account": os.environ.get("ACCOUNT_OUTCOME"),
+                  "repository": os.environ.get("REPO_OUTCOME"),
+                  "build": os.environ.get("BUILD_OUTCOME"),
+                  "push": os.environ.get("PUSH_OUTCOME"),
+                  "verify": os.environ.get("VERIFY_OUTCOME"),
+              },
+              "secret_exposed": False,
+          }
+          with open("ocsr-codeberg-deployment-status.json", "w", encoding="utf-8") as f:
+              json.dump(receipt, f, ensure_ascii=False, indent=2)
+              f.write("\n")
+          PY
+          git config user.name 'Associação MILK OCSR Bot'
+          git config user.email 'somostodospossiveis@users.noreply.github.com'
+          git add ocsr-codeberg-deployment-status.json
+          git commit -m "ci(ocsr): record Codeberg deployment ${JOB_STATUS}" || true
+          git push origin HEAD:ocsr-codeberg-deploy
