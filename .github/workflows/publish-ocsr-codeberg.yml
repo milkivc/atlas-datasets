@@ -1,0 +1,139 @@
+name: Publicar OCSR no Codeberg
+
+on:
+  push:
+    branches:
+      - master
+      - ocsr-codeberg-deploy
+    paths:
+      - 'ocsr-codeberg-site/**'
+      - '.github/workflows/publish-ocsr-codeberg.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ocsr-codeberg-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      CODEBERG_REPO: ocsr
+    steps:
+      - name: Checkout OCSR publication branch
+        uses: actions/checkout@v4
+        with:
+          ref: ocsr-codeberg-deploy
+          fetch-depth: 1
+
+      - name: Validate required publication files
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s ocsr-codeberg-site/index.html
+          ! grep -RIE '(MISTRAL_API_KEY|CODEBERG_TOKEN|ZENODO_TOKEN|ORCID_TOKEN|ghp_|sk-[A-Za-z0-9])' ocsr-codeberg-site
+          grep -q 'Codeberg como forja canónica' ocsr-codeberg-site/index.html
+
+      - name: Resolve authorised Codeberg account
+        id: codeberg
+        shell: bash
+        env:
+          CODEBERG_TOKEN: ${{ secrets.CODEBERG_TOKEN }}
+        run: |
+          set -euo pipefail
+          test -n "${CODEBERG_TOKEN:-}" || { echo 'CODEBERG_TOKEN ausente'; exit 20; }
+          response="$(curl --fail-with-body --silent --show-error \
+            -H "Authorization: token ${CODEBERG_TOKEN}" \
+            -H 'Accept: application/json' \
+            https://codeberg.org/api/v1/user)"
+          login="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["login"])' <<<"$response")"
+          test -n "$login"
+          echo "login=$login" >> "$GITHUB_OUTPUT"
+          echo "Conta Codeberg autorizada resolvida sem expor credenciais."
+
+      - name: Create repository when absent
+        shell: bash
+        env:
+          CODEBERG_TOKEN: ${{ secrets.CODEBERG_TOKEN }}
+          CODEBERG_LOGIN: ${{ steps.codeberg.outputs.login }}
+        run: |
+          set -euo pipefail
+          status="$(curl --silent --output /tmp/repo.json --write-out '%{http_code}' \
+            -H "Authorization: token ${CODEBERG_TOKEN}" \
+            -H 'Accept: application/json' \
+            "https://codeberg.org/api/v1/repos/${CODEBERG_LOGIN}/${CODEBERG_REPO}")"
+          if [ "$status" = '404' ]; then
+            curl --fail-with-body --silent --show-error \
+              -X POST \
+              -H "Authorization: token ${CODEBERG_TOKEN}" \
+              -H 'Content-Type: application/json' \
+              -d "{\"name\":\"${CODEBERG_REPO}\",\"description\":\"OCSR — Objeto para Cartografias e Semântica em Rede · Associação MILK\",\"private\":false,\"auto_init\":false,\"default_branch\":\"pages\"}" \
+              https://codeberg.org/api/v1/user/repos >/tmp/repo-created.json
+          elif [ "$status" != '200' ]; then
+            cat /tmp/repo.json >&2
+            exit 21
+          fi
+
+      - name: Build immutable publication commit
+        id: build
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/ocsr-pages
+          mkdir -p /tmp/ocsr-pages
+          cp -a ocsr-codeberg-site/. /tmp/ocsr-pages/
+          cd /tmp/ocsr-pages
+          git init -b pages
+          git config user.name 'Associação MILK OCSR'
+          git config user.email 'somostodospossiveis@users.noreply.github.com'
+          printf '%s\n' 'Codeberg Pages' > .nojekyll
+          git add --all
+          git commit -m 'publish: OCSR public cockpit'
+          echo "commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Push to canonical Codeberg pages branch
+        shell: bash
+        env:
+          CODEBERG_TOKEN: ${{ secrets.CODEBERG_TOKEN }}
+          CODEBERG_LOGIN: ${{ steps.codeberg.outputs.login }}
+        run: |
+          set -euo pipefail
+          askpass="$(mktemp)"
+          trap 'rm -f "$askpass"' EXIT
+          cat >"$askpass" <<'ASKPASS'
+          #!/bin/sh
+          case "$1" in
+            *Username*) printf '%s\n' "$CODEBERG_LOGIN" ;;
+            *Password*) printf '%s\n' "$CODEBERG_TOKEN" ;;
+            *) exit 1 ;;
+          esac
+          ASKPASS
+          chmod 700 "$askpass"
+          cd /tmp/ocsr-pages
+          git remote add origin "https://codeberg.org/${CODEBERG_LOGIN}/${CODEBERG_REPO}.git"
+          GIT_ASKPASS="$askpass" GIT_TERMINAL_PROMPT=0 git fetch origin pages || true
+          if git show-ref --verify --quiet refs/remotes/origin/pages; then
+            git rebase origin/pages
+          fi
+          GIT_ASKPASS="$askpass" GIT_TERMINAL_PROMPT=0 git push origin HEAD:pages
+
+      - name: Verify remote commit and public page
+        shell: bash
+        env:
+          CODEBERG_TOKEN: ${{ secrets.CODEBERG_TOKEN }}
+          CODEBERG_LOGIN: ${{ steps.codeberg.outputs.login }}
+          LOCAL_COMMIT: ${{ steps.build.outputs.commit }}
+        run: |
+          set -euo pipefail
+          remote="$(curl --fail-with-body --silent --show-error \
+            -H "Authorization: token ${CODEBERG_TOKEN}" \
+            -H 'Accept: application/json' \
+            "https://codeberg.org/api/v1/repos/${CODEBERG_LOGIN}/${CODEBERG_REPO}/branches/pages" \
+            | python3 -c 'import json,sys; print(json.load(sys.stdin)["commit"]["id"])')"
+          test "$remote" = "$LOCAL_COMMIT"
+          printf 'Repository: https://codeberg.org/%s/%s\n' "$CODEBERG_LOGIN" "$CODEBERG_REPO"
+          printf 'Pages: https://%s.codeberg.page/%s/\n' "$CODEBERG_LOGIN" "$CODEBERG_REPO"
+          printf 'Verified commit: %s\n' "$remote"
