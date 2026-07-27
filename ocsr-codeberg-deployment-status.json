@@ -1,0 +1,20 @@
+{
+  "schema": "milk.ocsr.codeberg-deployment-receipt/1.0",
+  "recorded_at": "2026-07-27T23:29:03.671320+00:00",
+  "status": "failure",
+  "codeberg_login": null,
+  "repository": null,
+  "pages": null,
+  "local_commit": null,
+  "remote_commit": null,
+  "verified": false,
+  "steps": {
+    "validate": "success",
+    "account": "failure",
+    "repository": "skipped",
+    "build": "skipped",
+    "push": "skipped",
+    "verify": "skipped"
+  },
+  "secret_exposed": false
+}
