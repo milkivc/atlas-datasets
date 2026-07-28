@@ -1,0 +1,11 @@
+name: Test
+
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  test:
+    runs-on: codeberg-medium
+    steps:
+      - run: echo "Test"
