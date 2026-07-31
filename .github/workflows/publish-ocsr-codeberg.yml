@@ -1,28 +1,102 @@
-name: OCSR Codeberg — Manual Validation Only
+name: Atlas MILK — Validação Automática Mistral do Pacote OCSR
 
 on:
+  schedule:
+    - cron: '43 */6 * * *'
   workflow_dispatch:
+  push:
+    branches:
+      - master
+      - ocsr-codeberg-deploy
+    paths:
+      - 'ocsr-codeberg-site/**'
+      - '.github/workflows/publish-ocsr-codeberg.yml'
 
 permissions:
   contents: read
 
+concurrency:
+  group: atlas-milk-mistral-ocsr-validation
+  cancel-in-progress: true
+
 jobs:
   validate:
     runs-on: ubuntu-latest
+    env:
+      MISTRAL_AGENT_ID: ag_019e93f1cc6571089ffe3042ff0fe7ce
+      MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
     steps:
-      - name: Checkout publication material read-only
+      - name: Checkout OCSR material read-only
         uses: actions/checkout@v4
         with:
           ref: ocsr-codeberg-deploy
           fetch-depth: 1
           persist-credentials: false
 
-      - name: Validate local publication package without network or secrets
+      - name: Deterministic package validation
         shell: bash
         run: |
           set -euo pipefail
           test -s ocsr-codeberg-site/index.html
+          mkdir -p audit
+          find ocsr-codeberg-site -type f -print | sort > audit/files.txt
+          while IFS= read -r file; do
+            sha256sum "$file"
+          done < audit/files.txt > audit/sha256.txt
           ! grep -RIE '(MISTRAL_API_KEY|CODEBERG_TOKEN|ZENODO_TOKEN|ORCID_TOKEN|ghp_|sk-[A-Za-z0-9])' ocsr-codeberg-site
-          echo "Validation only: no repository creation, no API call, no push, no Pages publication."
-          git status --porcelain
-          test -z "$(git status --porcelain)"
+          {
+            echo 'ATLAS VIVO MILK — OCSR VALIDATION MANIFEST'
+            echo "repository=${GITHUB_REPOSITORY}"
+            echo "commit=${GITHUB_SHA}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "file_count=$(wc -l < audit/files.txt)"
+            echo 'Only filenames and SHA-256 values are sent to Mistral. No file contents, credentials, personal data, invisible-layer corpus or secret orchestration are included.'
+          } > audit/manifest.txt
+          cat audit/files.txt audit/sha256.txt >> audit/manifest.txt
+
+      - name: Mistral agent review of minimised OCSR manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "${MISTRAL_API_KEY:-}" ]; then
+            printf '%s\n' 'MISTRAL_NOT_CONFIGURED — deterministic validation completed; no external call made.' > audit/mistral-status.txt
+            exit 0
+          fi
+          python3 - <<'PY'
+          import json, os, urllib.request
+          manifest = open('audit/manifest.txt', encoding='utf-8').read()
+          prompt = '''Actua como agente de integridade e soberania do Atlas Vivo MILK. Analisa exclusivamente este manifesto minimizado do pacote OCSR. Não assumes que o pacote está publicado, registado, licenciado ou canónico. Distingue FACTO, INFERÊNCIA, HIPÓTESE e PROPOSTA. Verifica sinais de mistura entre camada pública, camada invisível e orquestração secreta apenas pelos nomes e hashes; quando não houver prova, declara NÃO VERIFICÁVEL. Não publiques, não cries repositórios, não alteres direitos e não peças segredos. Responde em JSON com: status, riscos, incoerencias, gates_pendentes, recomendacao_humana.\n\n''' + manifest
+          payload = json.dumps({
+            'agent_id': os.environ['MISTRAL_AGENT_ID'],
+            'inputs': [{'role':'user','content':prompt}],
+            'store': False
+          }).encode()
+          req = urllib.request.Request(
+            'https://api.mistral.ai/v1/conversations',
+            data=payload,
+            headers={'Authorization':'Bearer '+os.environ['MISTRAL_API_KEY'],'Content-Type':'application/json'},
+            method='POST'
+          )
+          try:
+            with urllib.request.urlopen(req, timeout=60) as r:
+              body = r.read().decode('utf-8')
+            open('audit/mistral-response.json','w',encoding='utf-8').write(body)
+            open('audit/mistral-status.txt','w',encoding='utf-8').write('MISTRAL_AGENT_CALLED — private report created; no publication or repository write.\n')
+          except Exception as exc:
+            open('audit/mistral-status.txt','w',encoding='utf-8').write('MISTRAL_CALL_FAILED — deterministic validation preserved; no publication occurred. '+type(exc).__name__+'\n')
+          PY
+
+      - name: Preserve private audit report
+        uses: actions/upload-artifact@v4
+        with:
+          name: atlas-milk-ocsr-integrity-${{ github.run_id }}
+          path: audit/
+          retention-days: 30
+          if-no-files-found: error
+
+      - name: Confirm automatic work without external effect
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -z "$(git status --porcelain --untracked-files=no)"
+          echo 'Automatic analysis remains active. No Codeberg API call, repository creation, push, Pages deployment, commit or publication was performed.'
