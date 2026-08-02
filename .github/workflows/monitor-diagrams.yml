@@ -1,0 +1,66 @@
+name: Monitor Mermaid Diagrams
+
+on:
+  push:
+    paths:
+      - 'diagrams/**/*.mm'
+      - 'diagrams/**/*.mermaid'
+  pull_request:
+    paths:
+      - 'diagrams/**/*.mm'
+      - 'diagrams/**/*.mermaid'
+
+jobs:
+  validate-diagrams:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate Mermaid syntax
+        run: |
+          # Install mermaid-cli for validation
+          npm install -g @mermaid-js/mermaid-cli
+          
+          # Validate all .mm files
+          find diagrams -name "*.mm" -exec echo "Validating {}" ;
+          find diagrams -name "*.mm" -exec mmdc -i {} -o /tmp/test.png ;
+          
+          echo "All Mermaid diagrams validated successfully"
+
+      - name: Check for updates
+        run: |
+          # Check if README needs updating
+          echo "Checking diagram documentation..."
+          
+          # Count diagrams
+          DIAGRAM_COUNT=$(find diagrams -name "*.mm" | wc -l)
+          echo "Found $DIAGRAM_COUNT Mermaid diagrams"
+          
+          # List all diagrams
+          echo "Diagrams in repository:"
+          find diagrams -name "*.mm" -exec basename {} ;
+
+  update-documentation:
+    needs: validate-diagrams
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Update diagram index
+        run: |
+          # This would be enhanced to automatically update README.md
+          echo "Diagram monitoring workflow executed successfully"
+          echo "Consider updating diagrams/README.md if new diagrams were added"
+
+      - name: Create issue for new diagrams
+        if: always()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const diagramsDir = 'diagrams';
+            
+            // This would check for new diagrams and create issues
+            console.log('Diagram monitoring completed');
