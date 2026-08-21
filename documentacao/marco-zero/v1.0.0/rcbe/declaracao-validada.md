@@ -8,7 +8,7 @@
 Paulo Castro Silva (Advogado, Cédula: 21874L)
 
 ## Beneficiários Efetivos
-1. Nuno Filipe Fernandes Vieira Cabral e Araújo (ORCID: 0009-0004-9132-2925)
+1. Nuno Filipe Fernandes Vieira Cabral e Araújo (ORCID: 0009-0009-1781-4020)
 2. Eduardo Mauricio Vieira Cabral e Araújo (ORCID: 0009-0007-6892-6570)
 
 **Data Submissão:** 14/06/2025 - 14:55:15
