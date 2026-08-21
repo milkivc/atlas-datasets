@@ -1,50 +1,47 @@
 {
-  "metadata": {
-    "title": "Atlas Vivo MILK - Dados Territoriais",
-    "upload_type": "dataset",
-    "description": "Repositório de dados geoespaciais do Atlas Vivo MILK, incluindo shapefiles, KML e CSV com informações sobre patrimônio cultural e territorial em Portugal. Dados organizados para interoperabilidade com Zenodo, ORCID e sistemas de financiamento europeus.",
-    "creators": [
-      {
-        "name": "Associação MILK",
-        "affiliation": "Associação MILK - Movimento de Intervenções e Linguagens Kulturais e Arte"
-      },
-      {
-        "name": "Eduardo Maurício Vieira Cabral e Araujo",
-        "orcid": "0009-0004-9132-2925",
-        "affiliation": "Associação MILK"
-      }
-    ],
-    "license": "CC-BY-SA-4.0",
-    "version": "1.0.0",
-    "keywords": [
-      "geoespacial",
-      "Portugal",
-      "patrimônio cultural",
-      "dados abertos",
-      "shapefile",
-      "KML",
-      "CSV",
-      "GeoJSON",
-      "Zenodo",
-      "ORCID"
-    ],
-    "notes": "Dados licenciados sob CC BY-SA 4.0. Conformidade com RGPD, AI Act e NIS2. Infraestrutura alinhada com provedores europeus (PTServidor, Forgejo).",
-    "related_identifiers": [
-      {
-        "identifier": "https://github.com/milkivc/atlas-datasets",
-        "scheme": "url",
-        "relation": "isSupplementTo"
-      },
-      {
-        "identifier": "https://github.com/milkivc/atlas-vivo-milk",
-        "scheme": "url",
-        "relation": "isPartOf"
-      }
-    ],
-    "communities": [
-      {
-        "identifier": "milkivc"
-      }
-    ]
-  }
+  "title": "ATLAS VIVO MILK - Corpus Cultural e Territorial",
+  "upload_type": "dataset",
+  "description": "Corpo integral das curadorias físicas e digitais do projeto ATLAS VIVO MILK.",
+  "creators": [
+    {
+      "name": "Nuno Filipe Fernandes Vieira Cabral e Araújo",
+      "orcid": "0009-0009-1781-4020",
+      "affiliation": "Associação MILK"
+    },
+    {
+      "name": "Eduardo Maurício Vieira Cabral e Araújo",
+      "orcid": "0009-0007-6892-6570",
+      "affiliation": "Associação MILK"
+    }
+  ],
+  "resource_type": {
+    "type": "dataset",
+    "subtype": "geospatial"
+  },
+  "keywords": [
+    "Atlas Vivo",
+    "MILK",
+    "Portugal",
+    "geospatial",
+    "cultural heritage"
+  ],
+  "license": "CC-BY-4.0",
+  "version": "2026.08.21",
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/milkivc/atlas-vivo-milk",
+      "scheme": "url",
+      "relation": "isSupplementTo"
+    },
+    {
+      "identifier": "0009-0009-1781-4020",
+      "scheme": "orcid",
+      "relation": "isAuthoredBy"
+    },
+    {
+      "identifier": "0009-0007-6892-6570",
+      "scheme": "orcid",
+      "relation": "isAuthoredBy"
+    }
+  ]
 }
