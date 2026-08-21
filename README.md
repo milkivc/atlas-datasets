@@ -1,72 +1,37 @@
-# Atlas Vivo MILK - Dados Territoriais
+# ATLAS VIVO MILK - Dataset Collection
 
-[![ORCID](https://img.shields.io/badge/ORCID-0009--0004--9132--2925-green?logo=orcid)](https://orcid.org/0009-0004-9132-2925)
-[![Zenodo](https://img.shields.io/badge/Zenodo-DOI-blue?logo=zenodo)](https://doi.org/10.5281/zenodo.XXXXXXX)
-[![GitHub](https://img.shields.io/badge/GitHub-milkivc%2Fatlas--datasets-black?logo=github)](https://github.com/milkivc/atlas-datasets)
+[![GitHub](https://img.shields.io/badge/GitHub-milkivc/atlas--datasets-blue?logo=github)](https://github.com/milkivc/atlas-datasets)
+[![Zenodo](https://img.shields.io/badge/Zenodo-DOI-0066CC?logo=zenodo)](https://doi.org/)
+[![ORCID-Nuno](https://img.shields.io/badge/ORCID-Nuno_A-0009_0009_1781_4020-A6CE39?logo=orcid)](https://orcid.org/0009-0009-1781-4020)
+[![ORCID-Eduardo](https://img.shields.io/badge/ORCID-Eduardo_M-0009_0007_6892_6570-A6CE39?logo=orcid)](https://orcid.org/0009-0007-6892-6570)
+[![License](https://img.shields.io/badge/License-CC_BY_4.0-blue.svg)](https://creativecommons.org/licenses/by/4.0/)
 
-## Descrição
-Este repositório contém **dados geoespaciais** do Atlas Vivo MILK, incluindo shapefiles, KML e CSV com informações sobre património cultural e territorial em Portugal. Os dados estão organizados para facilitar a interoperabilidade com plataformas como **Zenodo**, **ORCID**, e sistemas de financiamento europeus.
+## Overview
 
----
+This repository contains the complete dataset collection for the ATLAS VIVO MILK project, including Livro Cubo, 104 Curadorias, SOMOSTODOSPOSSIVEIS game, and all ecosystem devices/programs.
 
-## Estrutura do Repositório
-```
-.
-├── README.md                 # Este ficheiro
-├── LICENSE                   # Licença CC-BY-SA-4.0
-├── metadata.json             # Metadados padronizados
-├── .github/
-│   ├── workflows/
-│   │   ├── validate-metadata.yml  # Validação de metadados
-│   │   └── generate-doi.yml        # Geração de DOI via Zenodo
-│   └── schemas/
-│       └── metadata-schema.json   # Schema para validação
-└── data/                     # Dados geoespaciais
-    ├── shapefiles/
-    ├── kml/
-    └── csv/
-```
+## Creators
 
----
+- Nuno Filipe Fernandes Vieira Cabral e Araujo (Project Leader)
+  - ORCID: https://orcid.org/0009-0009-1781-4020
+  - GitHub: https://github.com/nunofilipearaujo-crypt
 
-## Licença
-Este repositório está licenciado sob a **CC BY-SA 4.0**. Consulte o ficheiro [LICENSE](LICENSE) para mais detalhes.
+- Eduardo Mauricio Vieira Cabral e Araujo (Data Curator)
+  - ORCID: https://orcid.org/0009-0007-6892-6570
+  - GitHub: https://github.com/eduardomauer
 
----
+## Organization
 
-## Autores
-- [Associação MILK](https://orcid.org/0000-0000-0000-0000) - Movimentos de Intervenções e Linguagens Kulturais e Arte
-- [Eduardo Maurício Vieira Cabral e Araujo](https://orcid.org/0009-0004-9132-2925)
+Associação MILK - Movimento de Intervenções e Linguagens Kulturais e Arte
+- NIPC: 518706451
+- Email: contacto@associacaomilk.pt
 
----
+## Compliance
 
-## Como Contribuir
-1. Faça um *fork* do repositório.
-2. Crie uma *branch* para a sua contribuição (`git checkout -b feature/nova-funcionalidade`).
-3. Adicione os seus dados ou alterações, garantindo que:
-   - Os metadados estejam atualizados em `metadata.json`.
-   - Os dados sigam a licença **CC BY-SA 4.0**.
-   - Os ficheiros estejam organizados nas pastas corretas.
-4. Submeta um *pull request* para a branch `main`.
+- RGPD Compliant
+- AI Act Compliant
+- ISO 42001 Compliant
 
----
+## License
 
-## Integração com Zenodo e ORCID
-- **Zenodo**: Cada *release* deste repositório gera automaticamente um **DOI** via [Zenodo GitHub App](https://zenodo.org/integrations/github).
-- **ORCID**: Os autores estão vinculados aos seus perfis ORCID para garantir autoria e conformidade com padrões europeus.
-
----
-
-## Conformidade
-- **RGPD**: Todos os dados pessoais estão anonimizados ou com consentimento explícito.
-- **AI Act**: Modelos de IA utilizados são *open-source* (ex: Mistral AI).
-- **NIS2**: Logs de auditoria imutáveis para metadados críticos.
-- **EU Tech Sovereignty**: Infraestrutura alinhada com provedores europeus (PTServidor, Forgejo).
-
----
-
-## Links Úteis
-- [Atlas Vivo MILK](https://github.com/milkivc/atlas-vivo-milk)
-- [Documentação do Atlas](https://github.com/milkivc/atlas-docs)
-- [Zenodo Community MILK](https://zenodo.org/communities/milk/)
-- [ORCID Eduardo Maurício Vieira Cabral e Araujo](https://orcid.org/0009-0004-9132-2925)
+CC-BY-4.0
