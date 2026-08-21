@@ -1,0 +1,47 @@
+{
+  "title": "ATLAS VIVO MILK - Complete Dataset Collection",
+  "upload_type": "dataset",
+  "description": "Complete collection of ATLAS VIVO MILK datasets including all curadorias, Livro Cubo, SOMOSTODOSPOSSIVEIS game, and ecosystem devices/programs.",
+  "creators": [
+    {
+      "name": "Nuno Filipe Fernandes Vieira Cabral e Araújo",
+      "orcid": "0009-0009-1781-4020",
+      "affiliation": "Associação MILK"
+    },
+    {
+      "name": "Eduardo Maurício Vieira Cabral e Araújo",
+      "orcid": "0009-0007-6892-6570",
+      "affiliation": "Associação MILK"
+    }
+  ],
+  "resource_type": {
+    "type": "dataset",
+    "subtype": "collection"
+  },
+  "keywords": [
+    "Atlas Vivo",
+    "MILK",
+    "cultural heritage",
+    "geospatial",
+    "curatorship"
+  ],
+  "license": "CC-BY-4.0",
+  "version": "2026.08.21",
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/milkivc/atlas-vivo-milk",
+      "scheme": "url",
+      "relation": "isSupplementTo"
+    },
+    {
+      "identifier": "0009-0009-1781-4020",
+      "scheme": "orcid",
+      "relation": "isAuthoredBy"
+    },
+    {
+      "identifier": "0009-0007-6892-6570",
+      "scheme": "orcid",
+      "relation": "isAuthoredBy"
+    }
+  ]
+}
