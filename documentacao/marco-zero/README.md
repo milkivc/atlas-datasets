@@ -36,7 +36,7 @@ marco-zero/
 
 ## Fundadores
 
-- Nuno Filipe Fernandes Vieira Cabral e Araujo (ORCID: 0009-0004-9132-2925)
+- Nuno Filipe Fernandes Vieira Cabral e Araujo (ORCID: 0009-0009-1781-4020)
 - Eduardo Mauricio Vieira Cabral e Araujo (ORCID: 0009-0007-6892-6570)
 
 ## Identificadores

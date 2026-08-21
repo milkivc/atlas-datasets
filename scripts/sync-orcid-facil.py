@@ -56,13 +56,13 @@ def pergunta(texto):
 
 CONFIGURACAO = {
     "orcid": {
-        "client_id": "APP-3ODSS4X3FFMVZUDL",
-        "client_secret": "6e7f85ef-e9da-4082-9f36-db6531a41fc1",
+        "client_id": os.environ.get("ORCID_CLIENT_ID", ""),
+        "client_secret": os.environ.get("ORCID_CLIENT_SECRET", ""),
     },
     "pesquisadores": [
         {
             "nome": "Nuno Filipe Fernandes Vieira Cabral e Araujo",
-            "orcid": "0009-0004-9132-2925",
+            "orcid": "0009-0009-1781-4020",
             "role": "conceptor"
         },
         {

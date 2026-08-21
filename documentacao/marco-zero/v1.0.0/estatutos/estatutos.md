@@ -4,7 +4,7 @@
 **Data:** 12 de junho de 2025
 
 ## Fundadores
-- Nuno Filipe Fernandes Vieira Cabral e Araújo (ORCID: 0009-0004-9132-2925)
+- Nuno Filipe Fernandes Vieira Cabral e Araújo (ORCID: 0009-0009-1781-4020)
 - Eduardo Mauricio Vieira Cabral e Araújo (ORCID: 0009-0007-6892-6570)
 
 ## Artigo 1 - Denominação

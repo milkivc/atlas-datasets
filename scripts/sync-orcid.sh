@@ -6,11 +6,11 @@
 set -e
 
 # ====== CONFIGURACOES ======
-ORCID_CLIENT_ID="APP-3ODSS4X3FFMVZUDL"
-ORCID_CLIENT_SECRET="${ORCID_CLIENT_SECRET:-6e7f85ef-e9da-4082-9f36-db6531a41fc1}"
+ORCID_CLIENT_ID="${ORCID_CLIENT_ID:?Defina ORCID_CLIENT_ID no ambiente}"
+ORCID_CLIENT_SECRET="${ORCID_CLIENT_SECRET:?Defina ORCID_CLIENT_SECRET no ambiente}"
 
 # ORCIDs dos pesquisadores
-ORCID_NUNO="0009-0004-9132-2925"
+ORCID_NUNO="0009-0009-1781-4020"
 ORCID_EDUARDO="0009-0007-6892-6570"
 
 # DOIs a sincronizar (SUBSTITUIR pelos DOIs obtidos no Zenodo)
@@ -95,8 +95,8 @@ add_doi_to_orcid() {
                     "value": "Nuno Filipe Fernandes Vieira Cabral e Araujo"
                 },
                 "contributor-orcid": {
-                    "uri": "https://orcid.org/0009-0004-9132-2925",
-                    "path": "0009-0004-9132-2925",
+                    "uri": "https://orcid.org/0009-0009-1781-4020",
+                    "path": "0009-0009-1781-4020",
                     "host": "orcid.org"
                 },
                 "contributor-attributes": {

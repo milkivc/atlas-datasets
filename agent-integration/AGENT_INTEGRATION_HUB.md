@@ -161,7 +161,7 @@ agent-integration/
 |------|-------|--------|--------|
 | Nuno Filipe Fernandes Vieira Cabral e Araujo | [0009-0009-1781-4020](https://orcid.org/0009-0009-1781-4020) | Curatorial Lead | ✅ Verificado |
 | Eduardo Mauricio Vieira Cabral e Araujo | [0009-0007-6892-6570](https://orcid.org/0009-0007-6892-6570) | Technical Lead | ✅ Verificado |
-| Eduardo Mauricio Vieira Cabral e Araujo | [0009-0004-9132-2925](https://orcid.org/0009-0004-9132-2925) | Alternativo | ✅ Verificado |
+| Eduardo Mauricio Vieira Cabral e Araujo | [0009-0009-1781-4020](https://orcid.org/0009-0009-1781-4020) | Alternativo | ✅ Verificado |
 
 ---
 
