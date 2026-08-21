@@ -279,7 +279,7 @@ REPOSITORY_NAME=atlas-datasets
             Write-Host "  Execute para cada repositório:`n"
             Write-Host "  gh secret set ZENODO_TOKEN --repo REPO --body `"YOUR_TOKEN`""
             Write-Host "  gh secret set ORCID_CLIENT_ID --repo REPO --body `"APP-3ODSS4X3FFMVZUDL`""
-            Write-Host "  gh secret set ORCID_CLIENT_SECRET --repo REPO --body `"6e7f85ef-e9da-4082-9f36-db6531a41fc1`""
+            Write-Host "  gh secret set ORCID_CLIENT_SECRET --repo REPO --body `"YOUR_ORCID_CLIENT_SECRET`""
             Write-Host "  gh secret set CODEBERG_TOKEN --repo REPO --body `"YOUR_TOKEN`""
             Write-Host "  gh secret set GITHUB_TOKEN --repo REPO --body `"YOUR_TOKEN`"`n"
             Write-Host "  Para: milkivc/atlas-datasets, milkivc/atlas-docs, milkivc/atlas-vivo-milk"
