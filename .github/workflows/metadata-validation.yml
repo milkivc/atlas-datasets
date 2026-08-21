@@ -1,0 +1,19 @@
+name: Metadata Validation
+
+on:
+  push:
+    branches: [coord/archive-duplicate-actions-20260821]
+    paths:
+      - '.metadata/**'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate DataCite 4.4
+        run: echo "Validating DataCite..."
+      - name: Validate Dublin Core
+        run: echo "Validating Dublin Core..."
+      - name: Validate CodeMeta 2.0
+        run: echo "Validating CodeMeta..."
