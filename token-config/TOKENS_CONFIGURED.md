@@ -6,7 +6,7 @@
 ### Tokens Recebidos:
 - ✅ ZENODO_TOKEN
 - ✅ ORCID_CLIENT_ID: APP-3ODSS4X3FFMVZUDL
-- ✅ ORCID_CLIENT_SECRET: 6e7f85ef-e9da-4082-9f36-db6531a41fc1
+- ✅ ORCID_CLIENT_SECRET: [configurado como segredo; não publicar]
 - ✅ CODEBERG_TOKEN
 - ✅ GITHUB_TOKEN
 
@@ -21,7 +21,7 @@
 # Para cada repositório:
 gh secret set ZENODO_TOKEN --repo milkivc/atlas-datasets --body "YOUR_ZENODO_TOKEN"
 gh secret set ORCID_CLIENT_ID --repo milkivc/atlas-datasets --body "APP-3ODSS4X3FFMVZUDL"
-gh secret set ORCID_CLIENT_SECRET --repo milkivc/atlas-datasets --body "6e7f85ef-e9da-4082-9f36-db6531a41fc1"
+gh secret set ORCID_CLIENT_SECRET --repo milkivc/atlas-datasets --body "YOUR_ORCID_CLIENT_SECRET"
 gh secret set CODEBERG_TOKEN --repo milkivc/atlas-datasets --body "YOUR_CODEBERG_TOKEN"
 gh secret set GITHUB_TOKEN --repo milkivc/atlas-datasets --body "YOUR_GITHUB_TOKEN"
 gh secret set REPOSITORY_NAME --repo milkivc/atlas-datasets --body "atlas-datasets"
