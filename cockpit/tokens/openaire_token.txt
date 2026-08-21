@@ -1,0 +1,10 @@
+# OpenAIRE API Token (Opcional)
+# SUBSTITUIR PELO TOKEN REAL DO SEU GMAIL
+# 
+# Como obter:
+# 1. Contate o OpenAIRE em https://www.openaire.eu/support
+# 2. Solicite acesso a API para a Associacao MILK
+# 3. Copie o token recebido por email
+
+# TOKEN SIMULADO (SUBSTITUIR PELO REAL)
+openaire_api_SIMULADO_1234567890abcdef1234567890abcdef

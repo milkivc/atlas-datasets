@@ -1,0 +1,80 @@
+# Dependências do Cockpit de Integração - Associação MILK
+# Versão: 1.0.0
+# Licença: EUPL-1.2
+
+# ============================================================================
+# Dependências para conectores de API
+# ============================================================================
+
+# HTTP requests (para todas as APIs)
+requests>=2.31.0
+
+# Parsing de JSON/YAML
+pyyaml>=6.0.1
+
+# Manipulação de JSON (CLI)
+jq>=1.7.1
+
+# Variáveis de ambiente (para tokens)
+python-dotenv>=1.0.0
+
+# ============================================================================
+# Dependências para validação de metadados
+# ============================================================================
+
+# Validação de CFF (Citation File Format)
+cff-validator>=1.0.0
+
+# Validação de JSON Schema
+jsonschema>=4.20.0
+
+# ============================================================================
+# Dependências para automação
+# ============================================================================
+
+# GitPython (para manipulação de repositórios Git)
+GitPython>=3.1.40
+
+# Progress bars
+ tqdm>=4.66.1
+
+# ============================================================================
+# Dependências para geração de relatórios
+# ============================================================================
+
+# Markdown generation
+markdown>=3.5.1
+
+# Tabulate (para tabelas em relatórios)
+tabulate>=0.9.0
+
+# ============================================================================
+# Dependências para testes
+# ============================================================================
+
+# Pytest (para testes unitários)
+pytest>=7.4.3
+
+# Mocking (para testes)
+pytest-mock>=3.12.0
+
+# ============================================================================
+# Dependências opcionais (para desenvolvimento)
+# ============================================================================
+
+# Linting
+flake8>=6.1.0
+black>=23.11.0
+isort>=5.12.0
+
+# Type checking
+mypy>=1.8.0
+
+# ============================================================================
+# Instalação
+# ============================================================================
+# Para instalar todas as dependências:
+# pip install -r requirements.txt
+
+# Para instalar apenas dependências de produção (sem testes/dev):
+# pip install requests pyyaml jq python-dotenv jsonschema GitPython tqdm markdown tabulate

@@ -1,0 +1,16 @@
+# DataCite API Token
+# SUBSTITUIR PELO TOKEN REAL DO SEU GMAIL
+# 
+# Como obter:
+# 1. Registe-se em https://www.datacite.org/
+# 2. Solicite um prefixo DOI para a Associacao MILK
+# 3. Acesse https://www.datacite.org/user
+# 4. Clique em "API Tokens" > "Generate new token"
+# 5. Selecione os scopes:
+#    - doi:create
+#    - doi:read
+#    - doi:update
+# 6. Copie o token gerado e substitua o valor abaixo
+
+# TOKEN SIMULADO (SUBSTITUIR PELO REAL)
+DataCite.MILK.SIMULADO_1234567890abcdef1234567890abcdef

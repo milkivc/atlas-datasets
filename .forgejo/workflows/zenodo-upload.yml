@@ -1,0 +1,19 @@
+name: Atlas Vivo - Zenodo Upload
+
+on:
+  push:
+    tags: ['v*']
+
+jobs:
+  upload:
+    runs-on: codeberg-medium
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - run: pip install requests
+      - run: python .forgejo/scripts/zenodo_upload.py
+        env:
+          ZENODO_TOKEN: ${{ secrets.ZENODO_TOKEN }}
+          TAG_NAME: ${{ github.ref_name }}
