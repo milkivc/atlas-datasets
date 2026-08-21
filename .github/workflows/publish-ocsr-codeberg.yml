@@ -1,0 +1,181 @@
+name: Atlas MILK — OCSR com Gate Mistral e Publicação Codeberg
+
+on:
+  schedule:
+    - cron: '43 */6 * * *'
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+      - ocsr-codeberg-deploy
+    paths:
+      - 'ocsr-codeberg-site/**'
+      - '.github/workflows/publish-ocsr-codeberg.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: atlas-milk-mistral-ocsr-publication
+  cancel-in-progress: true
+
+jobs:
+  validate-and-publish:
+    runs-on: ubuntu-latest
+    env:
+      MISTRAL_AGENT_ID: ag_019e93f1cc6571089ffe3042ff0fe7ce
+      MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+      CODEBERG_TOKEN: ${{ secrets.CODEBERG_TOKEN }}
+      CODEBERG_REPO: ocsr
+    steps:
+      - name: Checkout OCSR publication branch
+        uses: actions/checkout@v4
+        with:
+          ref: ocsr-codeberg-deploy
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Deterministic package validation
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s ocsr-codeberg-site/index.html
+          mkdir -p audit
+          find ocsr-codeberg-site -type f -print | sort > audit/files.txt
+          while IFS= read -r file; do sha256sum "$file"; done < audit/files.txt > audit/sha256.txt
+          ! grep -RIE '(MISTRAL_API_KEY|CODEBERG_TOKEN|ZENODO_TOKEN|ORCID_TOKEN|ghp_|sk-[A-Za-z0-9])' ocsr-codeberg-site
+          {
+            echo 'ATLAS VIVO MILK — OCSR PUBLICATION MANIFEST'
+            echo "repository=${GITHUB_REPOSITORY}"
+            echo "commit=${GITHUB_SHA}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "file_count=$(wc -l < audit/files.txt)"
+            echo 'Only public-package filenames and SHA-256 values are reviewed by Mistral.'
+            echo 'No Drive content, personal data, invisible-layer corpus or secret orchestration is included.'
+          } > audit/manifest.txt
+          cat audit/files.txt audit/sha256.txt >> audit/manifest.txt
+
+      - name: Mistral publication gate
+        id: mistral
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "${MISTRAL_API_KEY:-}" ]; then
+            echo 'decision=PENDENTE_MISTRAL' >> "$GITHUB_OUTPUT"
+            echo 'MISTRAL_NOT_CONFIGURED' > audit/mistral-status.txt
+            exit 0
+          fi
+          python3 - <<'PY'
+          import json, os, urllib.request
+          manifest=open('audit/manifest.txt',encoding='utf-8').read()
+          prompt='''Actua como gate europeu de publicação do Atlas Vivo MILK. Analisa exclusivamente o manifesto minimizado do pacote público OCSR. Autoriza publicação somente se não houver indícios de segredos, dados pessoais, camada invisível, orquestração secreta, autoria/titularidade não verificável ou afirmações de execução sem prova. Responde obrigatoriamente em JSON com decision igual a PUBLICAR_APROVADO ou PUBLICAR_BLOQUEADO, e campos riscos e fundamento.\n\n'''+manifest
+          payload=json.dumps({'agent_id':os.environ['MISTRAL_AGENT_ID'],'inputs':[{'role':'user','content':prompt}],'store':False}).encode()
+          req=urllib.request.Request('https://api.mistral.ai/v1/conversations',data=payload,headers={'Authorization':'Bearer '+os.environ['MISTRAL_API_KEY'],'Content-Type':'application/json'},method='POST')
+          decision='PUBLICAR_BLOQUEADO'
+          try:
+            with urllib.request.urlopen(req,timeout=60) as r: body=r.read().decode('utf-8')
+            open('audit/mistral-response.json','w',encoding='utf-8').write(body)
+            if 'PUBLICAR_APROVADO' in body: decision='PUBLICAR_APROVADO'
+          except Exception as exc:
+            open('audit/mistral-response.json','w',encoding='utf-8').write(json.dumps({'error':type(exc).__name__}))
+          open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8').write('decision='+decision+'\n')
+          open('audit/mistral-status.txt','w',encoding='utf-8').write(decision+'\n')
+          PY
+
+      - name: Resolve authorised Codeberg account
+        if: steps.mistral.outputs.decision == 'PUBLICAR_APROVADO'
+        id: codeberg
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${CODEBERG_TOKEN:-}" || { echo 'CODEBERG_TOKEN ausente'; exit 20; }
+          response="$(curl --fail-with-body --silent --show-error -H "Authorization: token ${CODEBERG_TOKEN}" -H 'Accept: application/json' https://codeberg.org/api/v1/user)"
+          login="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["login"])' <<<"$response")"
+          test -n "$login"
+          echo "login=$login" >> "$GITHUB_OUTPUT"
+
+      - name: Ensure canonical repository exists
+        if: steps.mistral.outputs.decision == 'PUBLICAR_APROVADO'
+        shell: bash
+        env:
+          CODEBERG_LOGIN: ${{ steps.codeberg.outputs.login }}
+        run: |
+          set -euo pipefail
+          status="$(curl --silent --output /tmp/repo.json --write-out '%{http_code}' -H "Authorization: token ${CODEBERG_TOKEN}" -H 'Accept: application/json' "https://codeberg.org/api/v1/repos/${CODEBERG_LOGIN}/${CODEBERG_REPO}")"
+          if [ "$status" = '404' ]; then
+            curl --fail-with-body --silent --show-error -X POST -H "Authorization: token ${CODEBERG_TOKEN}" -H 'Content-Type: application/json' -d "{\"name\":\"${CODEBERG_REPO}\",\"description\":\"OCSR — Associação MILK\",\"private\":false,\"auto_init\":false,\"default_branch\":\"pages\"}" https://codeberg.org/api/v1/user/repos >/tmp/repo-created.json
+          elif [ "$status" != '200' ]; then
+            cat /tmp/repo.json >&2
+            exit 21
+          fi
+
+      - name: Build qualified publication commit
+        if: steps.mistral.outputs.decision == 'PUBLICAR_APROVADO'
+        id: build
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/ocsr-pages
+          mkdir -p /tmp/ocsr-pages
+          cp -a ocsr-codeberg-site/. /tmp/ocsr-pages/
+          cp audit/sha256.txt /tmp/ocsr-pages/ATLAS_MILK_SHA256.txt
+          printf '%s\n' 'ag_019e93f1cc6571089ffe3042ff0fe7ce' > /tmp/ocsr-pages/ATLAS_MILK_MISTRAL_GATE.txt
+          cd /tmp/ocsr-pages
+          git init -b pages
+          git config user.name 'Associação MILK — Gate Mistral'
+          git config user.email 'somostodospossiveis@users.noreply.github.com'
+          printf '%s\n' 'Codeberg Pages' > .nojekyll
+          git add --all
+          git commit -m 'publish: OCSR approved by Mistral gate'
+          echo "commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Publish to canonical Codeberg pages branch
+        if: steps.mistral.outputs.decision == 'PUBLICAR_APROVADO'
+        shell: bash
+        env:
+          CODEBERG_LOGIN: ${{ steps.codeberg.outputs.login }}
+        run: |
+          set -euo pipefail
+          askpass="$(mktemp)"
+          trap 'rm -f "$askpass"' EXIT
+          cat >"$askpass" <<'ASKPASS'
+          #!/bin/sh
+          case "$1" in
+            *Username*) printf '%s\n' "$CODEBERG_LOGIN" ;;
+            *Password*) printf '%s\n' "$CODEBERG_TOKEN" ;;
+            *) exit 1 ;;
+          esac
+          ASKPASS
+          chmod 700 "$askpass"
+          cd /tmp/ocsr-pages
+          git remote add origin "https://codeberg.org/${CODEBERG_LOGIN}/${CODEBERG_REPO}.git"
+          GIT_ASKPASS="$askpass" GIT_TERMINAL_PROMPT=0 git fetch origin pages || true
+          if git show-ref --verify --quiet refs/remotes/origin/pages; then git rebase origin/pages; fi
+          GIT_ASKPASS="$askpass" GIT_TERMINAL_PROMPT=0 git push origin HEAD:pages
+
+      - name: Verify published commit
+        if: steps.mistral.outputs.decision == 'PUBLICAR_APROVADO'
+        shell: bash
+        env:
+          CODEBERG_LOGIN: ${{ steps.codeberg.outputs.login }}
+          LOCAL_COMMIT: ${{ steps.build.outputs.commit }}
+        run: |
+          set -euo pipefail
+          remote="$(curl --fail-with-body --silent --show-error -H "Authorization: token ${CODEBERG_TOKEN}" -H 'Accept: application/json' "https://codeberg.org/api/v1/repos/${CODEBERG_LOGIN}/${CODEBERG_REPO}/branches/pages" | python3 -c 'import json,sys; print(json.load(sys.stdin)["commit"]["id"])')"
+          test "$remote" = "$LOCAL_COMMIT"
+          echo "PUBLISHED_COMMIT=$remote" > audit/publication.txt
+          echo "REPOSITORY=https://codeberg.org/${CODEBERG_LOGIN}/${CODEBERG_REPO}" >> audit/publication.txt
+          echo "PAGES=https://${CODEBERG_LOGIN}.codeberg.page/${CODEBERG_REPO}/" >> audit/publication.txt
+
+      - name: Preserve audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: atlas-milk-ocsr-audit-${{ github.run_id }}
+          path: audit/
+          retention-days: 30
+          if-no-files-found: error
+
+      - name: Report continuation
+        if: always()
+        run: echo "Validação concluída; decisão Mistral=${{ steps.mistral.outputs.decision }}. A investigação continua sempre; apenas publicação externa exige aprovação e credenciais válidas."
