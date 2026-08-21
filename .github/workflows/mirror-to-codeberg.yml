@@ -39,7 +39,7 @@ jobs:
             curl -X POST \
               -H "Authorization: token $CODEBERG_TOKEN" \
               -H "Content-Type: application/json" \
-              -d '{"name": "$CODEBERG_REPO", "description": "Mirror de milkivc/atlas-datasets - Associação MILK", "private": false, "mirror": true}' \
+              -d "{\"name\": \"$CODEBERG_REPO\", \"description\": \"Mirror de milkivc/atlas-datasets - Associação MILK\", \"private\": false, \"mirror\": true}" \
               "https://codeberg.org/api/v1/user/repos"
             echo "✅ Repositório criado no Codeberg"
           else
@@ -52,8 +52,12 @@ jobs:
           CODEBERG_USER: milkivc
           CODEBERG_REPO: atlas-datasets
         run: |
-          # Configurar remote do Codeberg
-          git remote add codeberg https://$CODEBERG_USER:$CODEBERG_TOKEN@codeberg.org/$CODEBERG_USER/$CODEBERG_REPO.git
+          # Configurar Git com as credenciais de forma segura
+          git config --global user.email "mirror@atlas-datasets.local"
+          git config --global user.name "Atlas Mirror Bot"
+          
+          # Configurar remote do Codeberg com token
+          git remote add codeberg "https://${CODEBERG_USER}:${CODEBERG_TOKEN}@codeberg.org/${CODEBERG_USER}/${CODEBERG_REPO}.git"
           
           # Fazer push para o Codeberg (mirror)
           git push --mirror codeberg --force
