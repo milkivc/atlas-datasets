@@ -1,12 +1,21 @@
 cff-version: 1.2.0
-message: "If you use this dataset, please cite it as below."
-title: "Atlas Vivo MILK - Datasets"
-type: dataset
+message: "If you use this work, please cite it as follows."
+title: "ATLAS VIVO MILK - Corpus Cultural e Territorial"
 authors:
-  - given-names: "Associação"
-    family-names: "MILK"
-    affiliation: "Associação MILK"
-version: 1.0.0
-license: CC-BY-SA-4.0
-repository-code: "https://github.com/milkivc/atlas-datasets"
-keywords: ["folclore", "património imaterial", "lendas", "geodados", "Portugal", "datasets"]
+  - given-names: Nuno Filipe Fernandes Vieira Cabral e
+    family-names: Araujo
+    orcid: https://orcid.org/0009-0009-1781-4020
+    affiliation: Associacao MILK
+  - given-names: Eduardo Mauricio Vieira Cabral e
+    family-names: Araujo
+    orcid: https://orcid.org/0009-0007-6892-6570
+    affiliation: Associacao MILK
+abstract: "Corpo integral das curadorias fisicas e digitais do projeto ATLAS VIVO MILK."
+keywords:
+  - Atlas Vivo
+  - MILK
+  - cultural heritage
+  - geospatial
+  - curatorship
+license: CC-BY-4.0
+version: 2026.08.21
