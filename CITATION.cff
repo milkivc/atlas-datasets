@@ -1,55 +1,21 @@
 cff-version: 1.2.0
 message: "If you use this work, please cite it as follows."
-
-title: "Atlas Vivo - Datasets"
-
+title: "ATLAS VIVO MILK - Corpus Cultural e Territorial"
 authors:
-  - given-names: "Nuno Filipe Fernandes Vieira Cabral e"
-    family-names: "Araujo"
-    orcid: "https://orcid.org/0009-0009-1781-4020"
-    email: "nuno@associacaomilk.pt"
-    affiliation: "Associacao MILK - Movimento de Intervencoes e Linguagens Kulturais e Arte"
-  - given-names: "Eduardo Mauricio Vieira Cabral e"
-    family-names: "Araujo"
-    orcid: "https://orcid.org/0009-0007-6892-6570"
-    email: "eduardo@associacaomilk.pt"
-    affiliation: "Associacao MILK - Movimento de Intervencoes e Linguagens Kulturais e Arte"
-
-abstract: "Repositorio central de datasets geospaciais e culturais do projeto Atlas Vivo, contendo documentacao legal fundacional da Associacao MILK para preservacao do patrimonio cultural imaterial portugues."
-
+  - given-names: Nuno Filipe Fernandes Vieira Cabral e
+    family-names: Araújo
+    orcid: https://orcid.org/0009-0009-1781-4020
+    affiliation: Associação MILK - Movimento de Intervenções e Linguagens Kulturais e Arte
+  - given-names: Eduardo Maurício Vieira Cabral e
+    family-names: Araújo
+    orcid: https://orcid.org/0009-0007-6892-6570
+    affiliation: Associação MILK - Movimento de Intervenções e Linguagens Kulturais e Arte
+abstract: "Corpo integral das curadorias físicas e digitais do projeto ATLAS VIVO MILK."
 keywords:
-  - "patrimonio cultural"
-  - "dados geospaciais"
-  - "interoperabilidade"
-  - "preservacao digital"
-  - "Portugal"
-  - "Associacao MILK"
-  - "Atlas Vivo"
-
-version: "v1.0.0"
-
-date-released: "2026-06-25"
-
-url: "https://github.com/milkivc/atlas-datasets"
-
-repository: "https://github.com/milkivc/atlas-datasets"
-
-repository-code: "https://codeberg.org/milkivc/associacao-milk-marco-zero"
-
-license: "EUPL-1.2"
-
-preferred-citation:
-  title: "Atlas Vivo - Datasets"
-  authors:
-    - given-names: "Nuno Filipe Fernandes Vieira Cabral e"
-      family-names: "Araujo"
-      orcid: "https://orcid.org/0009-0009-1781-4020"
-    - given-names: "Eduardo Mauricio Vieira Cabral e"
-      family-names: "Araujo"
-      orcid: "https://orcid.org/0009-0007-6892-6570"
-  year: 2026
-  version: "v1.0.0"
-  url: "https://github.com/milkivc/atlas-datasets"
-  type: "software"
-
-commit: "ab000b8d51878d5b324ab291b9e37bdc7acca7b6"
+  - Atlas Vivo
+  - MILK
+  - cultural heritage
+  - geospatial
+  - curatorship
+license: CC-BY-4.0
+version: 2026.08.21
